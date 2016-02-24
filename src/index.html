@@ -1,0 +1,46 @@
+<template name="index">
+	<div class="jumbotron" style="background: url(/images/tennyson.png); color: white; background-position: center;">
+		<h2>Gigsearch</h2>
+		<p>Post and search for music gigs near you!</p>
+	</div>
+	<div class="row">
+		<div class="col-xs-3">
+			<h6>Filters</h6>
+			<hr />
+			<ul>
+				<li>
+					Filter 1
+				</li>
+				<li>
+					Filter 2
+				</li>
+				<li>
+					Filter 3
+				</li>
+				<li>
+					Etc
+				</li>
+			</ul>
+		</div>
+		<div class="col-xs-9">
+			<h6>Search Results</h6>
+			<hr />
+			<div class="row">
+				<div class="col-xs-6">
+					{{> serviceListing}}
+				</div>
+				<div class="col-xs-6">
+					{{> serviceListing}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					{{> serviceListing}}
+				</div>
+				<div class="col-xs-6">
+					{{> serviceListing}}
+				</div>
+			</div>
+		</div>
+	</div>
+</template>
