@@ -23,3 +23,5 @@ nemo64:bootstrap
 kadira:flow-router
 kadira:blaze-layout
 accounts-password
+accounts-facebook
+accounts-ui
