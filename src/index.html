@@ -26,20 +26,11 @@
 			<h6>Search Results</h6>
 			<hr />
 			<div class="row">
+				{{#each services}}
 				<div class="col-xs-6">
-					{{> serviceListing}}
+					{{> serviceListing service=this}}
 				</div>
-				<div class="col-xs-6">
-					{{> serviceListing}}
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-6">
-					{{> serviceListing}}
-				</div>
-				<div class="col-xs-6">
-					{{> serviceListing}}
-				</div>
+				{{/each}}
 			</div>
 		</div>
 	</div>

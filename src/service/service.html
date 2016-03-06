@@ -3,10 +3,10 @@
 	<div class="thumbnail">
 		<img src="/images/bottomofthehill.jpg" alt="...">
 		<div class="caption">
-			<h6>Bottom of the Hill</h6>
-			<p><b>Looking for:</b> Electronic artists, DJs, producers</p>
-			<p><b>Paying:</b> $1,000 lump sum</p>
-			<p><a href="#" class="btn btn-primary" role="button">Respond</a></p>
+			<h6>{{service.title}}</h6>
+			<p><b>Looking for:</b> {{service.description}}</p>
+			<p><b>Paying:</b> ${{service.wage}} lump sum</p>
+			<p><a href="/gig/{{service._id}}" class="btn btn-primary" role="button">Respond</a></p>
 		</div>
 	</div>
 </template>

@@ -15,5 +15,11 @@ if (Meteor.isClient) {
 
 			Meteor.logout();
 		}
-	});	
+	});
+
+	Template.index.helpers({
+		"services": function() {
+			return Services.find({});
+		}
+	})
 }
