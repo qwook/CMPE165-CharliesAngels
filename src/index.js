@@ -14,7 +14,10 @@ if (Meteor.isClient) {
 			event.preventDefault();
 
 			Meteor.logout();
-		}
+		}//,
+        //"click .notifcations": function(event) {
+            
+       // }
 	});
 
 	Template.index.helpers({

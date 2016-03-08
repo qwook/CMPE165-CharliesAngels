@@ -80,7 +80,17 @@ if (Meteor.isServer) {
 if (Meteor.isClient) {
 
 	Meteor.subscribe("services");
-
+    Template.serviceListingPage.helpers({
+       isLoggedIn: function() {
+        return Meteor.userId() !== null;
+       }
+    });
+    Template.serviceListingPage.events({
+        "click #apply": function(event) {
+            event.target.innerHTML = "Thank you for applying";
+        }
+    });
+        
 	Template.servicePostForm.events({
 		"input #serviceWage": function(event) {
 			event.target.value = event.target.value.replace(/\D/g, "");
