@@ -27,9 +27,5 @@ if (Meteor.isClient) {
 		"services": function() {
 			return Services.find({});
 		}
-<<<<<<< Updated upstream
-	})
-=======
-    });	
->>>>>>> Stashed changes
+    });
 }

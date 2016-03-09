@@ -15,11 +15,18 @@ FlowRouter.route('/gig/:id', {
         //debug logs
         console.log(this);
         console.log(Meteor.userId());
+
+        // get employer user object
+        var user = Meteor.users.findOne({_id: service.employer});
+        console.log(user);
+        console.log(service.employer);
         
 		BlazeLayout.render("layout", {
 			area: "serviceListingPage",
 			params: params,
-			service: service
+			service: service,
+			employer: user,
+			employerName: user.emails[0].address
 		});
 	}
 });
