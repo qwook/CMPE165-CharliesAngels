@@ -1,0 +1,8 @@
+#menuOverlay {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 30px;
+    background: green;
+    z-index: 999;
+}
