@@ -7,7 +7,8 @@
 			<h6>{{service.title}}</h6>
 			<p><b>Looking for:</b> {{service.description}}</p>
 			<p><b>Paying:</b> ${{service.wage}} lump sum</p>
-			<p><a href="/gig/{{service._id}}" class="btn btn-primary" role="button">Respond</a></p>
+			<p><a href="/gig/{{service._id}}" class="btn btn-primary" role="button">Respond</a><div style="float: right; width: 50px">
+			<a href="/edit/{{service._id}}" class="btn btn-primary" role="button">Edit</a></div></p>
 
 		</div>
 	</div>
