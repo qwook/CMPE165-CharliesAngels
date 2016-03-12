@@ -22,6 +22,8 @@ if (Meteor.isClient) {
             
        // }
 	});
+	
+
 
 	Template.index.helpers({
 		"services": function() {
