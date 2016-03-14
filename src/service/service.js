@@ -54,9 +54,9 @@ FlowRouter.route('/edit/:id', {
         // get employer user object
         var user = Meteor.users.findOne({_id: service.employer});
         console.log(user);
-        console.log(service.employer);
+       	console.log(service.employer);
         
-		BlazeLayout.render("layout", {
+		BlazeLayout.render("editpost", {
 			area: "serviceListingPage",
 			params: params,
 			service: service,
@@ -65,7 +65,7 @@ FlowRouter.route('/edit/:id', {
 		});
 	}
 });
-FlowRouter.route('/editjobpost', {
+FlowRouter.route('/editpost', {
 	action: function(params) {
 		BlazeLayout.render("layout", {area: "editpost"});
 	}
