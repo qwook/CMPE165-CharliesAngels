@@ -71,6 +71,12 @@ FlowRouter.route('/editpost', {
 	}
 });
 
+FlowRouter.route('/myprofile', {
+	action: function(params) {
+		BlazeLayout.render("layout", {area: "Profile"});
+	}
+});
+
 if (Meteor.isServer) {
 
 	Meteor.publish("services", function () {
