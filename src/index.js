@@ -14,6 +14,8 @@ if (Meteor.isClient) {
 	Template.layout.events({
         "click .post-a-gig": function (event) {
 		},
+	"click .profile": function (event) {
+		},
 		"click .logout": function(event) {
 			event.preventDefault();
 			Meteor.logout();
