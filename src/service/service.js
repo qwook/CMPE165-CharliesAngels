@@ -1,4 +1,3 @@
-
 Services = new Mongo.Collection("services");
 
 FlowRouter.route('/gig/:id', {
@@ -75,7 +74,7 @@ if (Meteor.isServer) {
 				employer: this.userId,
 				title: serviceObj.title,
 				description: serviceObj.description,
-				wage: serviceObj.wage,
+				wage: serviceObj.wage
 			});
 
 			return newService;
