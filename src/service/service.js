@@ -46,6 +46,46 @@ FlowRouter.route('/postgig', {
 		BlazeLayout.render("layout", {area: "servicePostForm"});
 	}
 });
+FlowRouter.route('/edit/:id', {
+	action: function(params) {
+		var service = Services.findOne({_id: params.id});
+        console.log("Flowrouter.route");
+        
+		console.log(service);
+        //Will either bring in the service or have an empty one so there are no errors when bringing up service.employer
+        service = service || {}
+        //used for displaying the apply button for employees (see servicelistingpage.html)
+        service.isUserEmployer = service.employer === Meteor.userId();
+
+        //debug logs
+        console.log(this);
+        console.log(Meteor.userId());
+
+        // get employer user object
+        var user = Meteor.users.findOne({_id: service.employer});
+        console.log(user);
+       	console.log(service.employer);
+        
+		BlazeLayout.render("editpost", {
+			area: "serviceListingPage",
+			params: params,
+			service: service,
+			employer: user,
+			employerName: user.emails[0].address
+		});
+	}
+});
+FlowRouter.route('/editpost', {
+	action: function(params) {
+		BlazeLayout.render("layout", {area: "editpost"});
+	}
+});
+
+FlowRouter.route('/myprofile', {
+	action: function(params) {
+		BlazeLayout.render("layout", {area: "Profile"});
+	}
+});
 
 if (Meteor.isServer) {
 
@@ -130,6 +170,29 @@ if (Meteor.isClient) {
 
 		}
 	});
+	Template.editpost.events({
+		"input #serviceWage": function(event) {
+			event.target.value = event.target.value.replace(/\D/g, "");
+		},
+
+		"submit .editpost": function() {
+			event.preventDefault();
+
+			Meteor.call("createService", {
+				title: event.target.serviceTitle.value,
+				description: event.target.serviceDescription.value,
+				wage: parseFloat(event.target.serviceWage.value)
+			}, function(err, id) {
+				if (id) {
+					FlowRouter.go("/edit/" + id);
+				} else {
+					console.log("Failure! Handle this!");
+				}
+			});
+
+		}
+	});
+
 
 }
 /*
