@@ -20,13 +20,23 @@ FlowRouter.route('/gig/:id', {
         var user = Meteor.users.findOne({_id: service.employer});
         console.log(user);
         console.log(service.employer);
+
+        var userName;
+
+        if (user.emails && user.emails[0].address) {
+        	userName = user.emails[0].address;
+        } else if (user.profile && user.profile.name) {
+        	userName = user.profile.name;
+        } else {
+        	userName = "UNKNOWN";
+        }
         
 		BlazeLayout.render("layout", {
 			area: "serviceListingPage",
 			params: params,
 			service: service,
 			employer: user,
-			employerName: user.emails[0].address
+			employerName: userName
 		});
 	}
 });
