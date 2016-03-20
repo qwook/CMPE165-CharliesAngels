@@ -25,7 +25,7 @@ if (Meteor.isClient) {
        // }
 	});
 
-	Template.index.helpers({
+	Template.contractPage.helpers({
 		"services": function() {
 			return Services.find({});
 		}

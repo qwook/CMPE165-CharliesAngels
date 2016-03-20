@@ -35,6 +35,7 @@ FlowRouter.route('/postgig', {
 		BlazeLayout.render("layout", {area: "servicePostForm"});
 	}
 });
+
 FlowRouter.route('/edit/:id', {
 	action: function(params) {
 		var service = Services.findOne({_id: params.id});
@@ -114,14 +115,14 @@ if (Meteor.isServer) {
 				employer: this.userId,
 				title: serviceObj.title,
 				description: serviceObj.description,
-				wage: serviceObj.wage
+				wage: serviceObj.wage,
 				live: true
 			});
 
 			return newService;
 		}
 	});
-
+	
 }
 
 if (Meteor.isClient) {
@@ -182,8 +183,6 @@ if (Meteor.isClient) {
 
 		}
 	});
-
-
 }
 /*
 Services = new Mongo.Collection("services");
