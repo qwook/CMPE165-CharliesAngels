@@ -26,6 +26,16 @@ if (Meteor.isClient) {
 	Template.index.helpers({
 		"services": function() {
 			return Services.find({});
-		}
+		},
+      
     });
+    
+   Template.layout.helpers({
+      "notifications": function(){
+         // Return all notifications for the current user
+         return Notification.find({userId: Meteor.userId()});
+      },
+      
+   });
+   
 }
