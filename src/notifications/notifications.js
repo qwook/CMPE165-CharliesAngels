@@ -1,4 +1,5 @@
 Notification = new Mongo.Collection('notification');
+
 //this was taken from https://github.com/DiscoverMeteor/Microscope/blob/master/lib/collections/notifications.js  -- use to fit our needs
 Notification.allow({
    update: function (userId, doc, fieldNames) {
@@ -33,7 +34,6 @@ if (Meteor.isServer) {
          });
          return newNotification;
       }
-
    });
 
 }
