@@ -227,5 +227,89 @@ if (Meteor.isClient) {
 		}
 	});
 
+   Meteor.subscribe("services");
+   Template.serviceListingPage.helpers({
+      isLoggedIn: function () {
+         return Meteor.userId() !== null;
+      }
+   });
+   Template.serviceListingPage.events({
+      "click #apply": function (event) {
+         // We could be fancy and replace innerHTML with a spinning icon...
+         event.target.innerHTML = "...";
+
+         // event.target.dataset pulls data from our HTML "data-service-id" attribute
+         // which holds the current service the user is applying for
+         var serviceId = event.target.dataset.serviceId;
+         var service = Services.findOne(serviceId);
+
+         Meteor.call("createNotification", {
+            // The creator of the service is the one who needs to be notified
+            userId: service.employer,
+            // The notification object can be used for various things but in this
+            // case we're telling the employer someone applied for this service
+            objectType: "service",
+            objectTypeId: service._id,
+            title: "New Application",
+            // Current logged in user is the applicant
+            description: "New application from " + Meteor.userId() + ".",
+            read: false
+         }, function (err, id) {
+            if (id) {
+               // Update button text
+               event.target.innerHTML = "Thank you for applying";
+            } else {
+               event.target.innerHTML = "There was an error applying";
+               // Handle this?
+               console.log(err);
+            }
+         });
+
+      }
+   });
+
+   Template.servicePostForm.events({
+      "input #serviceWage": function (event) {
+         event.target.value = event.target.value.replace(/\D/g, "");
+      },
+      "submit .servicePostForm": function () {
+         event.preventDefault();
+
+         Meteor.call("createService", {
+            title: event.target.serviceTitle.value,
+            description: event.target.serviceDescription.value,
+            wage: parseFloat(event.target.serviceWage.value)
+         }, function (err, id) {
+            if (id) {
+               FlowRouter.go("/gig/" + id);
+            } else {
+               console.log("Failure! Handle this!");
+            }
+         });
+
+      }
+   });
+   Template.editpost.events({
+      "input #serviceWage": function (event) {
+         event.target.value = event.target.value.replace(/\D/g, "");
+      },
+      "submit .editpost": function () {
+         event.preventDefault();
+
+         Meteor.call("createService", {
+            title: event.target.serviceTitle.value,
+            description: event.target.serviceDescription.value,
+            wage: parseFloat(event.target.serviceWage.value)
+         }, function (err, id) {
+            if (id) {
+               FlowRouter.go("/edit/" + id);
+            } else {
+               console.log("Failure! Handle this!");
+            }
+         });
+
+      }
+   });
+
 
 }

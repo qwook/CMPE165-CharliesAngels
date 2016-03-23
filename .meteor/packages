@@ -26,3 +26,5 @@ accounts-password
 accounts-facebook
 accounts-ui
 alanning:roles
+tomi:upload-server
+tomi:upload-jquery

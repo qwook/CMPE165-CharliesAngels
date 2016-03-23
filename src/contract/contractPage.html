@@ -11,16 +11,21 @@
 				.contract-musician -> the musician's name
 				-->
 			<p>
-				<span class="contract-employer">Employer</span> will agree to pay <span class="contract-musician">Musician</span> for the amount of <span class="contract-payment-sum">$$$</span> in exchange for his/her services. By signing this form below, both <span class="contract-employer">Employer</span> and <span class="contract-musician">Musician</span> will agree to the following terms previously set forth by <span class="contract-employer">Employer</span>'s service posting:
+				{{employerName}} will agree to pay {{musicianName}} for the amount of <span class="contract-payment-sum">$$$</span> in exchange for his/her services. By signing this form below, both {{employerName}} and {{musicianName}} will agree to the following terms previously set forth by {{employerName}}'s service posting:
 			</p>
 			<!-- Pull service object and fill in data -->
 			<div class="contract-service">
 				<h4>Service:</h4>
 				<p>
-					Title: <span class="contract-service-title">title</span><br />
-					Description: <span class="contract-service-description">description</span><br />
-					Pay: <span class="contract-service-pay">pay</span> <br />
+					Title: {{serviceTitle}} <br />
+					Description: {{serviceDescription}} <br />
+					Pay: {{servicePay}} <br />
 				</p>
+			</div>
+			<div>
+			<h4>Terms of Service</h4>
+			Upload terms of service
+			{{> upload_bootstrap }}
 			</div>
 		</div>
 		<!-- Set 'available' property of Service object to false when signatures of employer and musician are submitted -->
