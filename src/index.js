@@ -24,19 +24,17 @@ if (Meteor.isClient) {
             
        // }
     });
-
-<<<<<<< HEAD
 	Template.contractPage.helpers({
 		"services": function() {
-			return Services.find({});
-		}
-=======
-    Template.index.helpers({
+			  return Services.find({});
+	  }
+  });
+
+   Template.index.helpers({
         "services": function() {
             return Services.find({});
         },
       
->>>>>>> master
     });
     
    Template.layout.helpers({

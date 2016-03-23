@@ -89,7 +89,6 @@ FlowRouter.route('/myprofile', {
 
 if (Meteor.isServer) {
 
-<<<<<<< HEAD
 	Meteor.publish("services", function () {
 		return Services.find({});
 	});
@@ -133,57 +132,11 @@ if (Meteor.isServer) {
 			return newService;
 		}
 	});
-	
-=======
-   Meteor.publish("services", function () {
-      return Services.find({});
-   });
 
-   Meteor.methods({
-      "createService": function (serviceObj) {
-
-         if (!this.userId) {
-            console.log("not logged in");
-            return false;
-         }
-
-         if (!serviceObj) {
-            console.log("no service obj");
-            return false;
-         }
-
-         if (typeof (serviceObj.title) != "string" || serviceObj.title.length == 0) {
-            console.log("no title");
-            return false;
-         }
-
-         if (typeof (serviceObj.description) != "string" || serviceObj.description.length == 0) {
-            console.log("no descript");
-            return false;
-         }
-
-         if (Number.isNaN(parseInt(serviceObj.wage, 10))) {
-            console.log("no wage");
-            return false;
-         }
-
-         var newService = Services.insert({
-            employer: this.userId,
-            title: serviceObj.title,
-            description: serviceObj.description,
-            wage: serviceObj.wage,
-         });
-
-         return newService;
-      }
-   });
-
->>>>>>> master
 }
 
 if (Meteor.isClient) {
 
-<<<<<<< HEAD
 	Meteor.subscribe("services");
     Template.serviceListingPage.helpers({
        isLoggedIn: function() {
@@ -240,7 +193,6 @@ if (Meteor.isClient) {
 
 		}
 	});
-=======
    Meteor.subscribe("services");
    Template.serviceListingPage.helpers({
       isLoggedIn: function () {
@@ -326,7 +278,6 @@ if (Meteor.isClient) {
    });
 
 
->>>>>>> master
 }
 /*
  Services = new Mongo.Collection("services");
