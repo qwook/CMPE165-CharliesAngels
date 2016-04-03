@@ -45,7 +45,7 @@
                     <!-- If user is not the employer of the service post then display the apply for position button  -->
                     {{#if isLoggedIn}}
                     {{#unless service.isUserEmployer}}
-                    <p><button id="apply" class="btn btn-primary" data-service-id="{{service._id}}" role="button">Apply for Position</button></p>
+                    <p><a href="/apply/{{service._id}}" class="btn btn-primary" role="button">Apply</a></p>
                     {{/unless}}
                     {{/if}}
                 </div>
