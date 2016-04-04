@@ -43,7 +43,7 @@
                     <p>${{service.wage}}</p>
                     <p>{{service.description}}</p>
                     <!-- If user is not the employer of the service post then display the apply for position button  -->
-                    {{#if isLoggedIn}}
+                    {{#if currentUser}}
                     {{#unless service.isUserEmployer}}
                     <p><a href="/apply/{{service._id}}" class="btn btn-primary" role="button">Apply</a></p>
                     {{/unless}}
