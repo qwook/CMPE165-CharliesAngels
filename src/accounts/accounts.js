@@ -1,11 +1,6 @@
 
 if (Meteor.isServer) {
     Meteor.publish("userData", function () {
-        // if (this.userId) {
-        //     return Meteor.users.find({_id: this.userId});
-        // } else {
-        //     this.ready();
-        // }
         return Meteor.users.find({});
     });
 
@@ -16,7 +11,7 @@ if (Meteor.isServer) {
                 "password": password
             });
         }
-    })
+    });
 }
 
 if (Meteor.isClient) {
@@ -45,6 +40,33 @@ if (Meteor.isClient) {
             Meteor.loginWithPassword(e.target.email.value, e.target.password.value);
         }
     })
+
+    Template.profile.helpers({
+        displayName: function(user) {
+            if (!user) {
+                return "N/A";
+            }
+
+            if (user.services && user.services.facebook) {
+                if (user.services.facebook.name) {
+                    return user.services.facebook.name;
+                }
+            }
+            return censorEmail(user.emails[0].address) || user._id;
+        },
+
+        description: function() {
+            if (this.user().profile) {
+                return this.user().profile.description || ""
+            }
+        },
+
+        isCurrentUser: function() {
+            if (this.user()._id == Meteor.userId()) {
+                return true;
+            }
+        }
+    })
 }
 
 FlowRouter.route('/register', {
@@ -52,3 +74,21 @@ FlowRouter.route('/register', {
         BlazeLayout.render("layout", {area: "register"});
     }
 });
+
+FlowRouter.route('/profile/:id', {
+    subscriptions: function() {
+        this.register('userData', Meteor.subscribe('userData'));
+        this.register('soundcloud', Meteor.subscribe('soundcloud'));
+    },
+    action: function(params) {
+        FlowRouter.subsReady(function() {
+            var user = Meteor.users.findOne({_id: params.id});
+            BlazeLayout.render("layout", {
+                area: "profile",
+                params: params,
+                user: user
+            });
+        });
+    }
+});
+
