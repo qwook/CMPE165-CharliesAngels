@@ -129,6 +129,7 @@ if (Meteor.isServer) {
                 title: serviceObj.title,
                 description: serviceObj.description,
                 wage: serviceObj.wage,
+				live: true
             });
 
             return newService;
@@ -151,7 +152,8 @@ if (Meteor.isClient) {
             Meteor.call("createService", {
                 title: event.target.serviceTitle.value,
                 description: event.target.serviceDescription.value,
-                wage: parseFloat(event.target.serviceWage.value)
+                wage: parseFloat(event.target.serviceWage.value),
+				live: true
             }, function (err, id) {
                 if (id) {
                     FlowRouter.go("/gig/" + id);
