@@ -9,12 +9,23 @@
             <p><b>Paying:</b> ${{service.wage}} lump sum</p>
 
             <p>
-                <a href="/gig/{{service._id}}" class="btn btn-primary" role="button">Respond</a>
-                {{#if currentUser}}
-                {{#if service.isUserEmployer}}
-                <a href="/edit/{{service._id}}" class="btn btn-primary pull-right" role="button">Edit</a>
+            {{#if currentUser}}
+                {{#unless service.isUserEmployer}}
+                 <a href="/gig/{{service._id}}" class="btn btn-primary" role="button">Respond</a>
+                {{/unless}}
                 {{/if}}
-                {{/if}}
+               
+               {{#if currentUser}}
+               {{#if service.isUserEmployer}}
+                   <div style="float: right; width: 100px">
+                        <button class="btn btn-danger pull-right" id="deletePost">Delete
+                        </button>
+                    </div>
+                    <div style="float: right; width: 20px">
+                        <a href="/editpost/{{service._id}}" class="btn btn-warning pull-right" id="editPost">Edit</a>
+                    </div>
+               {{/if}}
+           {{/if}}
             </p>
         </div>
     </div>
