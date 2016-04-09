@@ -22,8 +22,7 @@ if (Meteor.isClient) {
             e.preventDefault();
 
             if (e.target.tos.value == "on" || e.target.tos.value == true) {
-                console.log(e.target.email.value);
-                console.log(e.target.password.value);
+            
 
                 Meteor.call("register", e.target.email.value, e.target.password.value, function() {
                     FlowRouter.go("/");
