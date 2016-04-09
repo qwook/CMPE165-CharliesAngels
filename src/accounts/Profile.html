@@ -1,18 +1,44 @@
-<head>
-  <title>Profile</title>
-</head>
 
+<template name="profile">
 
+    <div class="jumbotron">
+        <h1>{{displayName user}}</h1>
+        <p>{{description}}</p>
+    </div>
 
+    <div class="row">
+        <div class="col-xs-8">
+            <h4>Portfolio</h4>
+            <hr/>
+
+            {{> soundCloudSongList}}
+
+            {{#if isCurrentUser}}
+                <a href="#" class="btn btn-primary soundcloud-button"><span class="glyphicon glyphicon-plus"></span> Add a Song from Soundcloud!</a>
+            {{/if}}
+
+        </div>
+        <div class="col-xs-4">
+            <h4>Feedback</h4>
+            <hr/>
+            {{> feedbackListing}}
+        </div>
+    </div>
+
+    {{> soundcloudModal isCurrentUser=isCurrentUser}}
+
+</template>
+
+<!-- Henry: Whoever made this, we need to rename it to editprofile. -->
 <template name ="Profile">
-    
+
     <div name ="Profile">
         <div class = "inner">
             <span class ="corners-top">
                 <span></span>
             </span>
             <div style="width: 100%;">
-                
+
                 <div id="cpmain" class="ucp-main">
                     <form id="ucp" method ="post" action="/editprofile">
                         <h2> Edit Your Profile</h2>
