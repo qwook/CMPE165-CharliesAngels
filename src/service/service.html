@@ -15,22 +15,17 @@
     				<a href="/gig/{{service._id}}" class="btn btn-primary" role="button">Respond</a>
 				{{/if}}
                 
-                {{#if currentUser}}
-                    {{#if service.isUserEmployer}}
-        				{{#if service.live}}
-                        <a href="/edit/{{service._id}}" class="btn btn-primary pull-right" role="button">Edit</a>
-                        {{/if}}
-    				{{/if}}
-                {{/if}}
-               
+                       
                {{#if currentUser}}
                    {{#if service.isUserEmployer}}
+                   <!-- if contract is signed from this id, employer can't delete or edit, display a console to inform employer
+                   else  employer can edit/delete-->
                        <div style="float: right; width: 100px">
                             <button class="btn btn-danger pull-right" id="deletePost">Delete
                             </button>
                         </div>
                         <div style="float: right; width: 20px">
-                            <a href="/editpost/{{service._id}}" class="btn btn-warning pull-right" id="editPost">Edit</a>
+                            <a href="/edit/{{service._id}}" class="btn btn-warning pull-right" id="editPost">Edit</a>
                         </div>
                    {{/if}}
                {{/if}}
