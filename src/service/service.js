@@ -1,379 +1,323 @@
+// import { Services } from '../service/service.js';
 Services = new Mongo.Collection("services");
 
 FlowRouter.route('/gig/:id', {
-	action: function(params) {
-		var service = Services.findOne({_id: params.id});
-        console.log("Flowrouter.route");
-        
-		console.log(service);
-        //Will either bring in the service or have an empty one so there are no errors when bringing up service.employer
-        service = service || {}
-        //used for displaying the apply button for employees (see servicelistingpage.html)
-        service.isUserEmployer = service.employer === Meteor.userId();
+    subscriptions: function() {
+        this.register('services', Meteor.subscribe('services'));
+    },
 
-        //debug logs
-        console.log(this);
-        console.log(Meteor.userId());
+        action: function (params) {
+             FlowRouter.subsReady(function() {
+                var service = Services.findOne({_id: params.id});
+              
+                //Will either bring in the service or have an empty one so there are no errors when bringing up service.employer
+                service = service || {}
+                //used for displaying the apply button for employees (see servicelistingpage.html)
+                service.isUserEmployer = service.employer === Meteor.userId();
 
-        // get employer user object
-        var user = Meteor.users.findOne({_id: service.employer});
-        console.log(user);
-        console.log(service.employer);
+                // get employer user object
+                var user = Meteor.users.findOne({_id: service.employer});
+         
+                var userName;
 
-        var userName;
-
-        if (user.emails && user.emails[0].address) {
-        	userName = user.emails[0].address;
-        } else if (user.profile && user.profile.name) {
-        	userName = user.profile.name;
-        } else {
-        	userName = "UNKNOWN";
+           
+                if (user.emails && user.emails[0].address) {
+                    userName = user.emails[0].address;
+                } else if (user.profile && user.profile.name) {
+                    userName = user.profile.name;
+                } else {
+                    userName = "UNKNOWN";
+                }
+           
+                BlazeLayout.render("layout", {
+                    area: "serviceListingPage",
+                    params: params,
+                    service: service,
+                    employer: user,
+                    employerName: userName
+                });
+            });
         }
-        
-		BlazeLayout.render("layout", {
-			area: "serviceListingPage",
-			params: params,
-			service: service,
-			employer: user,
-			employerName: userName
-		});
-	}
+});
+
+//Page for applying to a gig
+FlowRouter.route('/apply/:id', {
+
+    action: function (params) {
+
+        //making space if needing functions here
+        var service = Services.findOne({_id: params.id});
+        service = service || {}
+        var employer = Meteor.users.findOne({_id: service.employer});
+
+        BlazeLayout.render("layout", {
+            area: "applyForm",
+            params: params,
+            service: service,
+            employer: employer
+        });
+    }
 });
 
 FlowRouter.route('/postgig', {
-   action: function (params) {
-      BlazeLayout.render("layout", {area: "servicePostForm"});
-   }
+    action: function (params) {
+        BlazeLayout.render("layout", {area: "servicePostForm"});
+    }
 });
 
 FlowRouter.route('/edit/:id', {
-   action: function (params) {
-      var service = Services.findOne({_id: params.id});
-      console.log("Flowrouter.route");
+    subscriptions: function() {
+        this.register('services', Meteor.subscribe('services'));
+    },
+    action: function (params) {
+        FlowRouter.subsReady(function() {
 
-      console.log(service);
-      //Will either bring in the service or have an empty one so there are no errors when bringing up service.employer
-      service = service || {}
-      //used for displaying the apply button for employees (see servicelistingpage.html)
-      service.isUserEmployer = service.employer === Meteor.userId();
+            var service = Services.findOne({_id: params.id});
+            
+            //Will either bring in the service or have an empty one so there are no errors when bringing up service.employer
+            service = service || {}
+            //used for displaying the apply button for employees (see servicelistingpage.html)
+            service.isUserEmployer = service.employer === Meteor.userId();
 
-      //debug logs
-      console.log(this);
-      console.log(Meteor.userId());
-
-      // get employer user object
-      var user = Meteor.users.findOne({_id: service.employer});
-      console.log(user);
-      console.log(service.employer);
-
-      BlazeLayout.render("editpost", {
-         area: "serviceListingPage",
-         params: params,
-         service: service,
-         employer: user,
-         employerName: user.emails[0].address
-      });
-   }
-});
-FlowRouter.route('/editpost', {
-   action: function (params) {
-      BlazeLayout.render("layout", {area: "editpost"});
-   }
+            // get employer user object
+            var user = Meteor.users.findOne({_id: service.employer});
+           
+            BlazeLayout.render("layout", {
+                area: "EditPost",
+                params: params,
+                service: service,
+                employer: user,
+                // This doesnt work atm.
+                // employerName: user.emails[0].address
+            });
+        });
+    }
 });
 
-FlowRouter.route('/myprofile', {
-	action: function(params) {
-		BlazeLayout.render("layout", {area: "Profile"});
-	}
+FlowRouter.route('/myGigs', {
+    action: function (params) {
+        BlazeLayout.render("layout", {
+            area: "myGigList",
+            params: params
+
+        });
+    }
+
 });
 
 if (Meteor.isServer) {
 
-	Meteor.publish("services", function () {
-		return Services.find({});
-	});
+    Meteor.publish("services", function () {
+        return Services.find({});
+    });
 
-	Meteor.methods({
-		"createService": function(serviceObj) {
-			
+    Meteor.methods({
+        "createService": function (serviceObj) {
+
             if (!this.userId) {
-				console.log("not logged in");
-				return false;
-			}
+                console.log("not logged in");
+                return false;
+            }
 
-			if (!serviceObj) {
-				console.log("no service obj");
-				return false;
-			}
+            if (!serviceObj) {
+                console.log("no service obj");
+                return false;
+            }
 
-			if (typeof(serviceObj.title) != "string" || serviceObj.title.length == 0) {
-				console.log("no title");
-				return false;
-			}
+            if (typeof (serviceObj.title) != "string" || serviceObj.title.length == 0) {
+                console.log("no title");
+                return false;
+            }
 
-			if (typeof(serviceObj.description) != "string" || serviceObj.description.length == 0) {
-				console.log("no descript");
-				return false;
-			}
+            if (typeof (serviceObj.description) != "string" || serviceObj.description.length == 0) {
+                console.log("no descript");
+                return false;
+            }
 
-			if ( Number.isNaN(parseInt(serviceObj.wage, 10)) ) {
-				console.log("no wage");
-				return false;
-			}
+            if (Number.isNaN(parseInt(serviceObj.wage, 10))) {
+                console.log("no wage");
+                return false;
+            }
 
-			var newService = Services.insert({
-				employer: this.userId,
-				title: serviceObj.title,
-				description: serviceObj.description,
-				wage: serviceObj.wage,
+            var newService = Services.insert({
+                employer: this.userId,
+                title: serviceObj.title,
+                description: serviceObj.description,
+                wage: serviceObj.wage,
 				live: true
-			});
+            });
 
-			return newService;
-		}
-	});
+            return newService;
+        },
+         "updateService": function (id, serviceObj) {
+
+            if (!this.userId) {
+                console.log("not logged in");
+                return false;
+            }
+
+            if (!serviceObj) {
+                console.log("no service obj");
+                return false;
+            }
+
+            if (typeof (serviceObj.title) != "string" || serviceObj.title.length == 0) {
+                console.log("no title");
+                return false;
+            }
+
+            if (typeof (serviceObj.description) != "string" || serviceObj.description.length == 0) {
+                console.log("no descript");
+                return false;
+            }
+
+            if (Number.isNaN(parseInt(serviceObj.wage, 10))) {
+                console.log("no wage");
+                return false;
+            }
+
+
+               Services.update(id, {$set: {
+                title: serviceObj.title,
+                description: serviceObj.description,
+                wage: serviceObj.wage,
+            }
+
+            });
+
+            return id;
+        },
+        "deleteService": function(id, serviceObj)
+        {
+             Services.remove(id, {
+                title: serviceObj.title,
+                description: serviceObj.description,
+                wage: serviceObj.wage,
+            });
+         }
+     });
+
+       
 
 }
 
 if (Meteor.isClient) {
 
-	Meteor.subscribe("services");
-    Template.serviceListingPage.helpers({
-       isLoggedIn: function() {
-        return Meteor.userId() !== null;
-       }
-    });
-    Template.serviceListingPage.events({
-        "click #apply": function(event) {
-            event.target.innerHTML = "Thank you for applying";
+    Meteor.subscribe("services");
+
+    Template.servicePostForm.events({
+        "input #serviceWage": function (event) {
+            event.target.value = event.target.value.replace(/\D/g, "");
+        },
+        "submit .servicePostForm": function (event) {
+            event.preventDefault();
+
+            Meteor.call("createService", {
+                title: event.target.serviceTitle.value,
+                description: event.target.serviceDescription.value,
+                wage: parseFloat(event.target.serviceWage.value),
+				live: true
+            }, function (err, id) {
+                if (id) {
+                    FlowRouter.go("/gig/" + id);
+                } else {
+                    console.log(err);
+                }
+            });
+
         }
     });
+
+    Template.EditPost.events({
+        "input #serviceWage": function (event) {
+            event.target.value = event.target.value.replace(/\D/g, "");
+        },
+        "submit .editpost": function () {
+        event.preventDefault();
+
+            Meteor.call("updateService",this.service()._id, {
+                title: event.target.serviceTitle.value,
+                description: event.target.serviceDescription.value,
+                wage: parseFloat(event.target.serviceWage.value)
+            }, function (err, id) {
+                if (id) {
+                    FlowRouter.go("/gig/" + id);
+                } else {  
+                    console.log(err);
+                }
+            });
+
+        }
+    });
+
+    Template.serviceListingPage.helpers({
+        isLoggedIn: function () {
+            return Meteor.userId() !== null;
+        }
+    });
+
+    Template.serviceListing.events({
+        "click #deletePost": function(event) {
+             event.preventDefault();
+
+            Services.remove(this.service._id);
+            }, function (err, id) {
+                
+                    FlowRouter.go("/");
+               
+            }
+
         
-	Template.servicePostForm.events({
-		"input #serviceWage": function(event) {
-			event.target.value = event.target.value.replace(/\D/g, "");
-		},
+        });
+    
 
-		"submit .servicePostForm": function() {
-			event.preventDefault();
+    Template.applyForm.events({
+        //will want to call createApplication eventually. For now just button that does notify
 
-			Meteor.call("createService", {
-				title: event.target.serviceTitle.value,
-				description: event.target.serviceDescription.value,
-				wage: parseFloat(event.target.serviceWage.value)
-			}, function(err, id) {
-				if (id) {
-					FlowRouter.go("/gig/" + id);
-				} else {
-					console.log("Failure! Handle this!");
-				}
-			});
+        "click #sendApplication": function (event) {
+            event.preventDefault();
+            // We could be fancy and replace innerHTML with a spinning icon...
+            event.target.innerHTML = "...";
+            // event.target.dataset pulls data from our HTML "data-service-id" attribute
+            // which holds the current service the user is applying for
+            var serviceId = event.target.dataset.serviceId;
+            var service = Services.findOne(serviceId);
+            Meteor.call("createApplication", {
+                userId: Meteor.userId(),
+                gigId: service._id
 
-		}
-	});
-	Template.editpost.events({
-		"input #serviceWage": function(event) {
-			event.target.value = event.target.value.replace(/\D/g, "");
-		},
+            }, function (err, id) {
+                if (id) {
+                    Meteor.call("createNotification", {
+                        // The creator of the service is the one who needs to be notified
+                        userId: service.employer,
+                        // The notification object can be used for various things but in this
+                        // case we're telling the employer someone applied for this service
+                        objectType: "service",
+                        objectTypeId: service._id,
+                        title: "New Application",
+                        // Current logged in user is the applicant
+                        description: "New application from " + Meteor.userId() + ".",
+                        read: false
+                    }, function (err, id) {
+                        if (id) {
+                            // Update button text
+                            event.target.innerHTML = "Thank you for applying";
+                        } else {
+                            event.target.innerHTML = "There was an error making the notification for application.";
+                            // Handle this?
+                            console.log(err);
+                        }
+                    });
+                } else {
+                    event.target.innerHTML = "There was an error applying";
+                    console.log(err);
+                }
+            });
 
-		"submit .editpost": function() {
-			event.preventDefault();
 
-			Meteor.call("createService", {
-				title: event.target.serviceTitle.value,
-				description: event.target.serviceDescription.value,
-				wage: parseFloat(event.target.serviceWage.value)
-			}, function(err, id) {
-				if (id) {
-					FlowRouter.go("/edit/" + id);
-				} else {
-					console.log("Failure! Handle this!");
-				}
-			});
 
-		}
-	});
-   Meteor.subscribe("services");
-   Template.serviceListingPage.helpers({
-      isLoggedIn: function () {
-         return Meteor.userId() !== null;
-      }
-   });
-   Template.serviceListingPage.events({
-      "click #apply": function (event) {
-         // We could be fancy and replace innerHTML with a spinning icon...
-         event.target.innerHTML = "...";
-
-         // event.target.dataset pulls data from our HTML "data-service-id" attribute
-         // which holds the current service the user is applying for
-         var serviceId = event.target.dataset.serviceId;
-         var service = Services.findOne(serviceId);
-
-         Meteor.call("createNotification", {
-            // The creator of the service is the one who needs to be notified
-            userId: service.employer,
-            // The notification object can be used for various things but in this
-            // case we're telling the employer someone applied for this service
-            objectType: "service",
-            objectTypeId: service._id,
-            title: "New Application",
-            // Current logged in user is the applicant
-            description: "New application from " + Meteor.userId() + ".",
-            read: false
-         }, function (err, id) {
-            if (id) {
-               // Update button text
-               event.target.innerHTML = "Thank you for applying";
-            } else {
-               event.target.innerHTML = "There was an error applying";
-               // Handle this?
-               console.log(err);
-            }
-         });
-
-      }
-   });
-
-   Template.servicePostForm.events({
-      "input #serviceWage": function (event) {
-         event.target.value = event.target.value.replace(/\D/g, "");
-      },
-      "submit .servicePostForm": function () {
-         event.preventDefault();
-
-         Meteor.call("createService", {
-            title: event.target.serviceTitle.value,
-            description: event.target.serviceDescription.value,
-            wage: parseFloat(event.target.serviceWage.value)
-         }, function (err, id) {
-            if (id) {
-               FlowRouter.go("/gig/" + id);
-            } else {
-               console.log("Failure! Handle this!");
-            }
-         });
-
-      }
-   });
-   Template.editpost.events({
-      "input #serviceWage": function (event) {
-         event.target.value = event.target.value.replace(/\D/g, "");
-      },
-      "submit .editpost": function () {
-         event.preventDefault();
-
-         Meteor.call("createService", {
-            title: event.target.serviceTitle.value,
-            description: event.target.serviceDescription.value,
-            wage: parseFloat(event.target.serviceWage.value)
-         }, function (err, id) {
-            if (id) {
-               FlowRouter.go("/edit/" + id);
-            } else {
-               console.log("Failure! Handle this!");
-            }
-         });
-
-      }
-   });
-
+        }
+    });
 
 }
-/*
- Services = new Mongo.Collection("services");
- 
- FlowRouter.route('/gig/:id', {
- action: function(params) {
- var service = Services.findOne({_id: params.id});
- 
- console.log(service);
- 
- BlazeLayout.render("layout", {
- area: "serviceListingPage",
- params: params,
- service: service
- });
- }
- });
- 
- FlowRouter.route('/postgig', {
- action: function(params) {
- BlazeLayout.render("layout", {area: "servicePostForm"});
- }
- });
- 
- if (Meteor.isServer) {
- 
- Meteor.publish("services", function () {
- return Services.find({});
- });
- 
- Meteor.methods({
- "createService": function(serviceObj) {
- if (!this.userId) {
- console.log("not logged in");
- return false;
- }
- 
- if (!serviceObj) {
- console.log("no service obj");
- return false;
- }
- 
- if (typeof(serviceObj.title) != "string" || serviceObj.title.length == 0) {
- console.log("no title");
- return false;
- }
- 
- if (typeof(serviceObj.description) != "string" || serviceObj.description.length == 0) {
- console.log("no descript");
- return false;
- }
- 
- if (typeof(serviceObj.wage) != "number" || (new String(serviceObj.wage)).length == 0) {
- console.log("no wage");
- return false;
- }
- 
- var newService = Services.insert({
- employer: this.userId,
- title: serviceObj.title,
- description: serviceObj.description,
- wage: serviceObj.wage,
- });
- 
- return newService;
- }
- });
- 
- }
- 
- if (Meteor.isClient) {
- 
- Meteor.subscribe("services");
- 
- Template.servicePostForm.events({
- "input #serviceWage": function(event) {
- event.target.value = event.target.value.replace(/[^0-9.]+/g, "");
- },
- 
- "submit .servicePostForm": function() {
- event.preventDefault();
- 
- Meteor.call("createService", {
- title: event.target.serviceTitle.value,
- description: event.target.serviceDescription.value,
- wage: parseFloat(event.target.serviceWage.value)
- }, function(err, id) {
- if (id) {
- FlowRouter.go("/gig/" + id);
- } else {
- console.log("Failure! Handle this!");
- }
- });
- 
- }
- });
- 
- }
- */

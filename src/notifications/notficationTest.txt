@@ -1,9 +1,9 @@
 Testing notifcations:
 you applied to the post notification (will probably not end up using this notification but it is for testing purposes)
-	Logged in:
-	1. find a gig that current user did not post. (If there is none, create one.)
-	2. apply to the post
-	3. see in the notification bar as a new notification
+    Logged in:
+    1. find a gig that current user did not post. (If there is none, create one.)
+    2. apply to the post
+    3. see in the notification bar as a new notification
 
-	Not logged in:
-	1. make sure you cannot see the notification menu at the top of the page next to sign in. 
+    Not logged in:
+    1. make sure you cannot see the notification menu at the top of the page next to sign in. 

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Services = function () {
     return Services;
 }
@@ -19,11 +20,28 @@ FlowRouter.route('/contractPage', {
             employerName: employer.profile.name,
             musicianName: "musician",
             service: service,
+=======
+services = function () {
+    return Services;
+}
+
+FlowRouter.route('/signcontract', {
+    action: function(params) {
+        // fill in later
+        BlazeLayout.render("layout", {
+            area: "contractPage",
+            employerName: "employer",
+            musicianName: "musician",
+            serviceTitle: "serviceTitle",
+            serviceDescription: "description",
+            servicePay: "1000"
+>>>>>>> a15c2c35a5a3448d356135d61b5b010d91729d19
         });
     }
 });
 
 if (Meteor.isServer) {
+<<<<<<< HEAD
 
     //file:/server/init.js
     // setup for uploading pdfs
@@ -40,6 +58,8 @@ if (Meteor.isServer) {
         })
     });
 
+=======
+>>>>>>> a15c2c35a5a3448d356135d61b5b010d91729d19
     
     Meteor.publish("contracts", function() {
         return Contracts.find({});
@@ -54,12 +74,33 @@ if (Meteor.isServer) {
             service.live = false;
         }
     });
+<<<<<<< HEAD
 }
 
 if (Meteor.isClient) {
     
     Meteor.subscribe("services");
     
+=======
+    
+    //file:/server/init.js
+    // setup for uploading pdfs
+    Meteor.startup(function () {
+        UploadServer.init({
+            tmpDir: '/Users/tomi/Documents/Uploads/tmp',
+            uploadDir: '/Users/tomi/Documents/Uploads/',
+            getDirectory: function(file, formData) {
+                return formData.contentType;
+            },
+            finished: function(file, folder, formFields) {
+                console.log('Write to database: ' + folder + '/' + file);
+            }
+        })
+    });
+}
+
+if (Meteor.isClient) {
+>>>>>>> a15c2c35a5a3448d356135d61b5b010d91729d19
     Template.contractPage.events({
         "submit .contract-signature-employer": function () {
             event.preventDefault();
