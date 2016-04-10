@@ -186,18 +186,8 @@ if (Meteor.isServer) {
             });
 
             return id;
-        },
-        "deleteService": function(id, serviceObj)
-        {
-             Services.remove(id, {
-                title: serviceObj.title,
-                description: serviceObj.description,
-                wage: serviceObj.wage,
-            });
-         }
-     });
+        }
 
-       
 
 }
 
@@ -263,11 +253,8 @@ if (Meteor.isClient) {
             Services.remove(this.service._id);
             }, function (err, id) {
                 
-                    FlowRouter.go("/");
-               
+                    FlowRouter.go("/");          
             }
-
-        
         });
     
 

@@ -18,6 +18,7 @@
                        
                {{#if currentUser}}
                    {{#if service.isUserEmployer}}
+                    {{#if service.live}}
                    <!-- if contract is signed from this id, employer can't delete or edit, display a console to inform employer
                    else  employer can edit/delete-->
                        <div style="float: right; width: 100px">
@@ -27,6 +28,7 @@
                         <div style="float: right; width: 20px">
                             <a href="/edit/{{service._id}}" class="btn btn-warning pull-right" id="editPost">Edit</a>
                         </div>
+                    {{/if}}
                    {{/if}}
                {{/if}}
             </p>
