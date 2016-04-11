@@ -248,15 +248,20 @@ if (Meteor.isClient) {
     });
 
     Template.serviceListing.events({
+       
+        
         "click #deletePost": function(event) {
              event.preventDefault();
 
-            Services.remove(this.service._id);
-            }, function (err, id) {
-                
-                    FlowRouter.go("/");          
+            var result = confirm("Do you really want to delete this post?");
+            if (result) {
+                Services.remove(this.service._id);
+                FlowRouter.go("/");          
+
             }
-        });
+            
+        }
+    });
     
 
     Template.applyForm.events({
