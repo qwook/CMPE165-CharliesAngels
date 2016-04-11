@@ -187,6 +187,7 @@ if (Meteor.isServer) {
 
             return id;
         }
+    });
 
 
 }
@@ -301,10 +302,8 @@ if (Meteor.isClient) {
                     console.log(err);
                 }
             });
-
-
-
         }
+    
     });
 
 }

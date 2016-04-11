@@ -53,6 +53,10 @@ if (Meteor.isClient) {
             }
             return censorEmail(user.emails[0].address) || user._id;
         },
+        info: function()
+        {
+            return 
+        },
 
         description: function() {
             if (this.user().profile) {
@@ -77,6 +81,7 @@ FlowRouter.route('/register', {
 FlowRouter.route('/profile/:id', {
     subscriptions: function() {
         this.register('userData', Meteor.subscribe('userData'));
+        this.register('Editprofile', Meteor.subscribe('Editprofile'));
         this.register('soundcloud', Meteor.subscribe('soundcloud'));
     },
     action: function(params) {

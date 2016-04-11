@@ -3,11 +3,17 @@
 
     <div class="jumbotron">
         <h1>{{displayName user}}</h1>
+        <h4>{{info}}</h4>
+       
         <p>{{description}}</p>
     </div>
 
     <div class="row">
         <div class="col-xs-8">
+            {{#if isCurrentUser}}
+                <a href="/editprofile" class="btn btn-warning editprofile-button"><span class="glyphicon glyphicon-edit"></span> Edit Your Profile</a>
+            {{/if}}
+
             <h4>Portfolio</h4>
             <hr/>
 
@@ -30,133 +36,6 @@
 
 </template>
 
-<!-- Henry: Whoever made this, we need to rename it to editprofile. -->
-<template name ="Profile">
-
-    <div name ="Profile">
-        <div class = "inner">
-            <span class ="corners-top">
-                <span></span>
-            </span>
-            <div style="width: 100%;">
-
-                <div id="cpmain" class="ucp-main">
-                    <form id="ucp" method ="post" action="/editprofile">
-                        <h2> Edit Your Profile</h2>
-                        <div class="panel">
-                            <div class="inner">
-                                <span class="corners-top">
-                                    <span></span>
-                                </span>
-                                <p>
-                                    "Notice that these information can be viewed by employers. Please careful provide your information below.
-                                    The information with * is required."
-                                </p>
-                                <fieldset>
-                                    <dl>
-                                        <dt>
-                                            <label for="firstname">First Name:</label>
-                                        </dt>
-                                        <dd>
-                                            <input type="text" name="firstname" id="firstname" maxlength="255" value class="inputbox" vk_1fbd3="subscribed"> 
-                                        </dd>
-                                    </dl>
-                                    <dl>
-                                        <dt>
-                                            <label for="lastname">Last Name:</label>
-                                        </dt>
-                                        <dd>
-                                            <input type="text" name="lastname" id="lastname" maxlength="255" value class="inputbox" vk_1fbd3="subscribed"> 
-                                        </dd>
-                                    </dl>
-                                    <dl>
-                                        <dt>
-                                            <label for="address">Adresss:</label>
-                                        </dt>
-                                        <dd>
-                                            <input type="text" name="address" id="address" maxlength="255" value class="inputbox" vk_1fbd3="subscribed"> 
-                                        </dd>
-                                    </dl>
-                                    <dl>
-                                        <dt>
-                                            <label for="experience">Work Experience:</label>
-                                        </dt>
-                                        <dd>
-                                            <textarea name="experience" id="experience" class="inputbox" rows="3" cols="30"> 
-                                            </textarea>
-                                        </dd>
-                                    </dl>
-                                    <dl>
-                                        <dt>
-                                            <label for="education">Education:</label>
-                                        </dt>
-                                        <dd>
-                                            <textarea name="education" id="education" class="inputbox" rows="3" cols="30"> 
-                                            </textarea>
-                                        </dd>
-                                    </dl>
-                                    <dl>
-                                        <dt>
-                                            <label for="skills">Skills:</label>
-                                        </dt>
-                                        <dd>
-                                            <textarea name="skills" id="skills" class="inputbox" rows="3" cols="30"> 
-                                            </textarea>
-                                        </dd>
-                                    </dl>
-                                    <dl>
-                                        <dt>
-                                            <label for="gender_x">Gender:</label>
-                                            <br>
-                                            <span>Please identify your gender</span>
-                                        </dt>
-                                        <dd>
-                                            <label for="gender_m">
-                                                <input type="radio" name="gender" id="gender_m" value="1" checked="checked">"Male"
-                                            </label>
-                                            <label for="gender_f">
-                                                <input type="radio" name="gender" id="gender_f" value="2">"Female"
-                                            </label>
-                                            <label for="gender_x">
-                                                <input type="radio" name="gender" id="gender_x" value="0">"Prefer Not to Answer"
-                                            </label>
-                                        </dd>
-                                    </dl>
-                                    <dl>
-                                        <dt>
-                                            <label for="phonenumber">Phone Number: *</label>                
-                                            <br>
-                                            <span>Please enter your phone number</span>
-                                        </dt>
-                                        <dd>
-                                            <input type="text" class="inputbox autowidth" name="phonenumber" id="phonenumber" size="17" maxlength="13" vk_1fbd3="subscribed">
-                                        </dd>
-
-                                    </dl>
-                                </fieldset>
-                                <span class="corners-bottom">
-                                    <span></span>
-                                </span>
-                            </div>
-                        </div>
-                        <fieldset class="submit-buttons">
-                            <input type="reset" value="Reset" class="button2" vk_1fdb3="subscribed">"&nbsp;
-                            "
-                            <input type="submit" name="submit" value="Submit" class="button1">
-                            <input type="hidden" name="form_token" >
-                        </fieldset>
-
-                    </form>
-                </div>
-                <div class="clear"></div>
-            </div>
-            <span class="corners-bottom">
-                <span></span>
-            </span>
-        </div>
-    </div>
-
-</template>
 
 
 
