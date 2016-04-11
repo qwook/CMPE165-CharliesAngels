@@ -1,4 +1,4 @@
-
+<!-- this is a SINGLE, expanded service listing -->
 <template name="serviceListingPage">
     <div class="row">
         <div class="col-xs-3">
@@ -49,15 +49,26 @@
                     {{/unless}}
                     {{/if}}
                 </div>
+				
+				<!-- ONLY display this part if you are the employer. Will give acess to the employer options in here-->
+				{{#if service.isUserEmployer}}
                 <div class="col-xs-6">
                     <div class="well">
-                        <h5>{{employerName}}</h5>
+                        <h5>Employer Options</h5>
+						{{#if service.live}}
+						<p><a href="/edit/{{service._id}}" class="btn btn-primary" role="button">Edit</a></p>
+						{{/if}}
+						<p><a href="#" class="btn btn-primary" role="button">Delete</a></p>
+						<p><a href="#" class="btn btn-primary" role="button">View Current Applications</a></p>
                         <p>Lorem ipsum dolar set amet</p>
                     </div>
                 </div>
+				{{/if}}
+				
             </div>
         </div>
     </div>
     <b>{{params.id}}</b>
+	<b>Employer: {{employerName}}</b>
     sup
 </template>

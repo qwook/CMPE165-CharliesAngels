@@ -40,7 +40,6 @@
 <template name="layout">
     <div class="container">
         <br />
-
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -86,6 +85,9 @@
                             <li><a href="/myGigs/">My Gigs</a></li>
                             <li role="separator" class="divider"></li>
 
+                            <li><a href="/profile/{{currentUser._id}}">Profile</a></li>
+                            <li role="separator" class="divider"></li>
+
                             <li><a href="#">Settings</a></li>
                             <li role="separator" class="divider"></li>
 
@@ -98,7 +100,7 @@
                 </div>
             </div>
         </nav>
-        <!-- makes each listing appear-->
+
         <div class="row">
             <div class="col-xs-12">
                 {{> Template.dynamic template=area}}
