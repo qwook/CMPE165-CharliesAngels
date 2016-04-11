@@ -1,3 +1,15 @@
-<template name="myApplicationList">
-    LOOK AT ME YOU GOT TO MY APPLICATIONS
+<template name="myApplications">
+    <h6>My Applications</h6>
+    <hr />
+
+    <div class="col-xs-9">
+
+        <div class="row">
+            {{#each applications}}
+            <div class="col-xs-6">
+                {{> myApplicationsServiceListing application=this}}
+            </div>
+            {{/each}}
+        </div>
+    </div>
 </template>

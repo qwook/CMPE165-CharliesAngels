@@ -97,7 +97,7 @@ FlowRouter.route('/edit/:id', {
 FlowRouter.route('/myGigs', {
     action: function (params) {
         BlazeLayout.render("layout", {
-            area: "myGigList",
+            area: "myGigs",
             params: params
 
         });
@@ -270,7 +270,29 @@ if (Meteor.isClient) {
         
         });
     
+    Template.myGigs.helpers({
+        "services": function () {
+            var services = Services.find({employer:Meteor.userId()});
 
+            var mapped = services.map(function (service, index, array) {
+                //gives access to index for isUserEmployer flag for the edit and such buttons
+                service.isUserEmployer = service.employer === Meteor.userId();
+                return service;
+            });
+            return mapped;
+        }
+    });
+    
+    Template.myGigsServiceListing.helpers({
+        "applications": function () {
+            //NEEDS FIXING. NEED TO FIND A SPECIFIC GIG ID THAT IS LINKED TO THE BUTTON PRESSED
+            var applications = Application.find({});
+
+           
+            return applications;
+        }
+    });
+    
     Template.applyForm.events({
         //will want to call createApplication eventually. For now just button that does notify
 
