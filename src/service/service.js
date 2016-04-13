@@ -2,47 +2,45 @@
 Services = new Mongo.Collection("services");
 
 FlowRouter.route('/gig/:id', {
-    subscriptions: function() {
+    subscriptions: function () {
         this.register('services', Meteor.subscribe('services'));
     },
+    action: function (params) {
+        FlowRouter.subsReady(function () {
+            var service = Services.findOne({_id: params.id});
 
-        action: function (params) {
-             FlowRouter.subsReady(function() {
-                var service = Services.findOne({_id: params.id});
-              
-                //Will either bring in the service or have an empty one so there are no errors when bringing up service.employer
-                service = service || {}
-                //used for displaying the apply button for employees (see servicelistingpage.html)
-                service.isUserEmployer = service.employer === Meteor.userId();
+            //Will either bring in the service or have an empty one so there are no errors when bringing up service.employer
+            service = service || {}
+            //used for displaying the apply button for employees (see servicelistingpage.html)
+            service.isUserEmployer = service.employer === Meteor.userId();
 
-                // get employer user object
-                var user = Meteor.users.findOne({_id: service.employer});
-         
-                var userName;
+            // get employer user object
+            var user = Meteor.users.findOne({_id: service.employer});
 
-           
-                if (user.emails && user.emails[0].address) {
-                    userName = user.emails[0].address;
-                } else if (user.profile && user.profile.name) {
-                    userName = user.profile.name;
-                } else {
-                    userName = "UNKNOWN";
-                }
-           
-                BlazeLayout.render("layout", {
-                    area: "serviceListingPage",
-                    params: params,
-                    service: service,
-                    employer: user,
-                    employerName: userName
-                });
+            var userName;
+
+
+            if (user.emails && user.emails[0].address) {
+                userName = user.emails[0].address;
+            } else if (user.profile && user.profile.name) {
+                userName = user.profile.name;
+            } else {
+                userName = "UNKNOWN";
+            }
+
+            BlazeLayout.render("layout", {
+                area: "serviceListingPage",
+                params: params,
+                service: service,
+                employer: user,
+                employerName: userName
             });
-        }
+        });
+    }
 });
 
 //Page for applying to a gig
 FlowRouter.route('/apply/:id', {
-
     action: function (params) {
 
         //making space if needing functions here
@@ -66,14 +64,14 @@ FlowRouter.route('/postgig', {
 });
 
 FlowRouter.route('/edit/:id', {
-    subscriptions: function() {
+    subscriptions: function () {
         this.register('services', Meteor.subscribe('services'));
     },
     action: function (params) {
-        FlowRouter.subsReady(function() {
+        FlowRouter.subsReady(function () {
 
             var service = Services.findOne({_id: params.id});
-            
+
             //Will either bring in the service or have an empty one so there are no errors when bringing up service.employer
             service = service || {}
             //used for displaying the apply button for employees (see servicelistingpage.html)
@@ -81,7 +79,7 @@ FlowRouter.route('/edit/:id', {
 
             // get employer user object
             var user = Meteor.users.findOne({_id: service.employer});
-           
+
             BlazeLayout.render("layout", {
                 area: "EditPost",
                 params: params,
@@ -144,12 +142,12 @@ if (Meteor.isServer) {
                 title: serviceObj.title,
                 description: serviceObj.description,
                 wage: serviceObj.wage,
-				live: true
+                live: true
             });
 
             return newService;
         },
-         "updateService": function (id, serviceObj) {
+        "updateService": function (id, serviceObj) {
 
             if (!this.userId) {
                 console.log("not logged in");
@@ -177,27 +175,27 @@ if (Meteor.isServer) {
             }
 
 
-               Services.update(id, {$set: {
-                title: serviceObj.title,
-                description: serviceObj.description,
-                wage: serviceObj.wage,
-            }
+            Services.update(id, {$set: {
+                    title: serviceObj.title,
+                    description: serviceObj.description,
+                    wage: serviceObj.wage,
+                }
 
             });
 
             return id;
         },
-        "deleteService": function(id, serviceObj)
+        "deleteService": function (id, serviceObj)
         {
-             Services.remove(id, {
+            Services.remove(id, {
                 title: serviceObj.title,
                 description: serviceObj.description,
                 wage: serviceObj.wage,
             });
-         }
-     });
+        }
+    });
 
-       
+
 
 }
 
@@ -216,7 +214,7 @@ if (Meteor.isClient) {
                 title: event.target.serviceTitle.value,
                 description: event.target.serviceDescription.value,
                 wage: parseFloat(event.target.serviceWage.value),
-				live: true
+                live: true
             }, function (err, id) {
                 if (id) {
                     FlowRouter.go("/gig/" + id);
@@ -233,16 +231,16 @@ if (Meteor.isClient) {
             event.target.value = event.target.value.replace(/\D/g, "");
         },
         "submit .editpost": function () {
-        event.preventDefault();
+            event.preventDefault();
 
-            Meteor.call("updateService",this.service()._id, {
+            Meteor.call("updateService", this.service()._id, {
                 title: event.target.serviceTitle.value,
                 description: event.target.serviceDescription.value,
                 wage: parseFloat(event.target.serviceWage.value)
             }, function (err, id) {
                 if (id) {
                     FlowRouter.go("/gig/" + id);
-                } else {  
+                } else {
                     console.log(err);
                 }
             });
@@ -257,22 +255,20 @@ if (Meteor.isClient) {
     });
 
     Template.serviceListing.events({
-        "click #deletePost": function(event) {
-             event.preventDefault();
+        "click #deletePost": function (event) {
+            event.preventDefault();
 
-            Services.remove(this.service._id);
-            }, function (err, id) {
-                
-                    FlowRouter.go("/");
-               
-            }
+            Services.remove(this.service._id, function (err, id) {
+                FlowRouter.go("/");
+            });
+        }
 
-        
-        });
-    
+
+    });
+
     Template.myGigs.helpers({
         "services": function () {
-            var services = Services.find({employer:Meteor.userId()});
+            var services = Services.find({employer: Meteor.userId()});
 
             var mapped = services.map(function (service, index, array) {
                 //gives access to index for isUserEmployer flag for the edit and such buttons
@@ -282,15 +278,15 @@ if (Meteor.isClient) {
             return mapped;
         }
     });
-    
+
     Template.myGigsServiceListing.helpers({
         "applications": function () {
             //NEEDS FIXING. NEED TO FIND A SPECIFIC GIG ID THAT IS LINKED TO THE BUTTON PRESSED
-            var applications = Application.find({gigId:this.service._id});
+            var applications = Application.find({gigId: this.service._id});
             return applications;
         }
     });
-    
+
     Template.applyForm.events({
         //will want to call createApplication eventually. For now just button that does notify
 
@@ -329,15 +325,15 @@ if (Meteor.isClient) {
                             console.log(err);
                         }
                     });
-                } else{
-                    if (err && err.error === "existing-application"){
+                } else {
+                    if (err && err.error === "existing-application") {
                         event.target.innerHTML = "You have already applied.";
-                    }else{
+                    } else {
                         event.target.innerHTML = "There was an error applying.";
                         console.log(err);
                     }
-                        
-                  
+
+
                 }
             });
 
