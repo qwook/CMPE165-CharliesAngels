@@ -1,5 +1,5 @@
 <template name="myApplications">
-    <h6>My Applications</h6>
+    <h3>My Applications</h3>
     <hr />
 
     <div class="col-xs-9">
@@ -7,6 +7,7 @@
         <div class="row">
             {{#each applications}}
             <div class="col-xs-6">
+
                 {{> myApplicationsServiceListing application=this}}
             </div>
             {{/each}}

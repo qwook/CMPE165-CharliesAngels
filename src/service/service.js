@@ -286,9 +286,7 @@ if (Meteor.isClient) {
     Template.myGigsServiceListing.helpers({
         "applications": function () {
             //NEEDS FIXING. NEED TO FIND A SPECIFIC GIG ID THAT IS LINKED TO THE BUTTON PRESSED
-            var applications = Application.find({});
-
-           
+            var applications = Application.find({gigId:this.service._id});
             return applications;
         }
     });
@@ -331,9 +329,15 @@ if (Meteor.isClient) {
                             console.log(err);
                         }
                     });
-                } else {
-                    event.target.innerHTML = "There was an error applying";
-                    console.log(err);
+                } else{
+                    if (err && err.error === "existing-application"){
+                        event.target.innerHTML = "You have already applied.";
+                    }else{
+                        event.target.innerHTML = "There was an error applying.";
+                        console.log(err);
+                    }
+                        
+                  
                 }
             });
 

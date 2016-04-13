@@ -1,21 +1,8 @@
 <template name="myGigsServiceListing">
-
-
     <div class="thumbnail">
-        <!---->{{#if service.live}}
-        <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-service-id="{{service._id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span>View Applicants</span> <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-                {{#each applications}}
-                <li><div>{{this.status}} application from {{this.userId}}</div></li>
-                <li role="separator" class="divider"></li>
-                {{/each}}
-            </ul>
-        </div>
-        <p><a href="#" class="btn btn-primary" role="button">View Applicants</a></p>
-        <!---->{{/if}}
+        <!--{{#if service.live}}-->
+        <p><a href="/gig/{{service._id}}/gigApplications" class="btn btn-primary" role="button">View Applicants</a></p>
+        <!--{{/if}}-->
         <img src="/images/bottomofthehill.jpg" alt="...">
         <div class="caption">
 
@@ -36,13 +23,11 @@
                 </button>
             </div>
             <div style="float: right; width: 20px">
-                <a href="/editpost/{{service._id}}" class="btn btn-warning pull-right" id="editPost">Edit</a>
+                <a href="/edit/{{service._id}}" class="btn btn-warning pull-right" id="editPost">Edit</a>
             </div>
             {{/if}}
 
             </p>
         </div>
     </div>
-
-
 </template>
