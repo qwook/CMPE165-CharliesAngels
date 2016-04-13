@@ -3,15 +3,23 @@
 
     <div class="jumbotron">
         <h1>{{displayName user}}</h1>
+        
         <h4>{{info}}</h4>
-       
+        <h4>what is my name = + {{editpro.firstname}}</h4>
+        <h4>{{editpro.lastname}}</h4>
+        <h4>{{editpro.experience}}</h4>
+        <h4>{{editpro.education}}</h4>
+        <h4>{{editpro.skills}}</h4>
+        <h4>{{editpro.gender}}</h4>
+        <h4>{{editpro.phonenumber}}</h4>
+
         <p>{{description}}</p>
     </div>
 
     <div class="row">
         <div class="col-xs-8">
             {{#if isCurrentUser}}
-                <a href="/editprofile" class="btn btn-warning editprofile-button"><span class="glyphicon glyphicon-edit"></span> Edit Your Profile</a>
+                <a href="/editprofile/{{user._id}}" class="btn btn-warning editprofile-button"><span class="glyphicon glyphicon-edit"></span> Edit Your Profile</a>
             {{/if}}
 
             <h4>Portfolio</h4>
