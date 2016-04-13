@@ -1,29 +1,29 @@
-<<<<<<< HEAD
 Services = function () {
     return Services;
 }
 
 FlowRouter.route('/contractPage', {
+    subscriptions: function() {
+        this.register('services', Meteor.subscribe('services'));
+    },
     action: function(params) {
-        //var service = Services.findOne({_id: params.id});
-        var service = Services.findOne({_id: "Q4PPaWypS3kgYJNkG"})
+        var service = Services.findOne({_id: "KBex9o9NwsPAPfN3R"});
         console.log(service);
         // This will let us know whether it is employer or not.
         // service.isUserEmployer = service.employer === Meteor.userId():
-        
         var employerId = service.employer;
         var employer = Meteor.users.findOne({_id: employerId});
         
         // fill in later
         BlazeLayout.render("layout", {
             area: "contractPage",
-            employerName: employer.profile.name,
+            employerName: service.employer,
             musicianName: "musician",
-            service: service,
-=======
-services = function () {
-    return Services;
-}
+            service: "service",
+        });
+    }
+});
+
 
 FlowRouter.route('/signcontract', {
     action: function(params) {
@@ -35,31 +35,26 @@ FlowRouter.route('/signcontract', {
             serviceTitle: "serviceTitle",
             serviceDescription: "description",
             servicePay: "1000"
->>>>>>> a15c2c35a5a3448d356135d61b5b010d91729d19
         });
     }
 });
 
 if (Meteor.isServer) {
-<<<<<<< HEAD
-
     //file:/server/init.js
     // setup for uploading pdfs
     Meteor.startup(function () {
         UploadServer.init({
-            tmpDir: 'uploads/tmp',
-            uploadDir: 'uploads/',
-            getDirectory: function(file, formData) {
-                return formData.contentType;
-            },
-            finished: function(file, folder, formFields) {
-                console.log('Write to database: ' + folder + '/' + file);
-            }
-        })
+            tmpDir: '/Users/Johnny/Documents/GitHub/CMPE165-CharliesAngels/uploads/tmp',
+            uploadDir: '/Users/Johnny/Documents/GitHub/CMPE165-CharliesAngels/uploads',
+            checkCreateDirectories: true
+//            getDirectory: function(file, formData) {
+//                return formData.contentType;
+//            },
+//            finished: function(file, folder, formFields) {
+//                console.log('Write to database: ' + folder + '/' + file);
+//            }
+        });
     });
-
-=======
->>>>>>> a15c2c35a5a3448d356135d61b5b010d91729d19
     
     Meteor.publish("contracts", function() {
         return Contracts.find({});
@@ -74,33 +69,29 @@ if (Meteor.isServer) {
             service.live = false;
         }
     });
-<<<<<<< HEAD
 }
 
 if (Meteor.isClient) {
     
     Meteor.subscribe("services");
-    
-=======
-    
-    //file:/server/init.js
-    // setup for uploading pdfs
-    Meteor.startup(function () {
-        UploadServer.init({
-            tmpDir: '/Users/tomi/Documents/Uploads/tmp',
-            uploadDir: '/Users/tomi/Documents/Uploads/',
-            getDirectory: function(file, formData) {
-                return formData.contentType;
-            },
-            finished: function(file, folder, formFields) {
-                console.log('Write to database: ' + folder + '/' + file);
-            }
-        })
-    });
+//    
+//    //file:/server/init.js
+//    // setup for uploading pdfs
+//    Meteor.startup(function () {
+//        UploadServer.init({
+//            tmpDir: '/Users/tomi/Documents/Uploads/tmp',
+//            uploadDir: '/Users/tomi/Documents/Uploads/',
+//            getDirectory: function(file, formData) {
+//                return formData.contentType;
+//            },
+//            finished: function(file, folder, formFields) {
+//                console.log('Write to database: ' + folder + '/' + file);
+//            }
+//        })
+//    });
 }
 
 if (Meteor.isClient) {
->>>>>>> a15c2c35a5a3448d356135d61b5b010d91729d19
     Template.contractPage.events({
         "submit .contract-signature-employer": function () {
             event.preventDefault();

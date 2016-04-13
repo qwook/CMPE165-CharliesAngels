@@ -4,14 +4,11 @@
         <title></title>
     </head>
     <body>
-<<<<<<< HEAD
         <h2>Contract of Agreement</h2>
         <div class="contract-template">
             <p>
                 {{employerName}} will agree to pay {{musicianName}} for the amount of <span class="contract-payment-sum">$$$</span> in exchange for his/her services. By signing this form below, both {{employerName}} and {{musicianName}} will agree to the following terms previously set forth by {{employerName}}'s service posting:
             </p>
-            
-=======
         <h2>Terms of Services</h2>
         <div class="contract-template">
             <!-- Name of employer & name of musician will be filled here: 
@@ -21,12 +18,10 @@
             <p>
                 {{employerName}} will agree to pay {{musicianName}} for the amount of <span class="contract-payment-sum">$$$</span> in exchange for his/her services. By signing this form below, both {{employerName}} and {{musicianName}} will agree to the following terms previously set forth by {{employerName}}'s service posting:
             </p>
->>>>>>> a15c2c35a5a3448d356135d61b5b010d91729d19
             <!-- Pull service object and fill in data -->
             <div class="contract-service">
                 <h4>Service:</h4>
                 <p>
-<<<<<<< HEAD
                     Title: {{service.title}} <br />
                     Description: {{service.description}} <br />
                     Pay: {{service.pay}}  <a class="btn btn-primary btn-xs" role="button">Edit pay</a>  <br />
@@ -37,33 +32,21 @@
             Upload terms of service
             {{> upload_bootstrap contentType='pdfs' fileTypes='.pdf' }}
             </div>
-            <br />
-=======
-                    Title: {{serviceTitle}} <br />
-                    Description: {{serviceDescription}} <br />
-                    Pay: {{servicePay}} <br />
-                </p>
-            </div>
-            <div>
-                <h4>Terms of Service</h4>
-                Upload terms of service
-                {{> upload_bootstrap }}
-            </div>
->>>>>>> a15c2c35a5a3448d356135d61b5b010d91729d19
         </div>
         <!-- Set 'available' property of Service object to false when signatures of employer and musician are submitted -->
         <!-- Only show this input if Employer !-->
+        {{#if service.isUserEmployer}}
         <form class="contract-signature-employer">
             <input type="text" placeholder="Employer signature" />
             <input type="submit" />
         </form>
+        {{else}}
         <!-- Only show this input if Musician !-->
         <form class="contract-signature-musician">
             <input type="text" placeholder="Musican signature" />
             <input type="submit" />
         </form>
-        <form class="contract-confirm-checkbox">
-            <input type="checkbox" /> By signing the field above, I agree to all the terms and requirements described by this contract.
-        </form>
+        {{/if}}
+        </div>
     </body>
 </template>
