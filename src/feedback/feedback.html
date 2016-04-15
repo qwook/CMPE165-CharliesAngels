@@ -1,16 +1,43 @@
 
 <template name="feedbackList">
+	{{#each feedback}}
+    {{> feedbackListing}}
+	{{/each}}
 </template>
 
 <template name="feedbackListing">
 	<div>
 		<h6>John Smith</h6>
+		{{#each stars}}
 		<span class="glyphicon glyphicon-star"></span>&nbsp;
-		<span class="glyphicon glyphicon-star"></span>&nbsp;
-		
-		{{#each [1,2,3,4]}}
-			<span class="glyphicon glyphicon-star"></span>&nbsp;
 		{{/each}}
 		<hr />
 	</div>
+</template>
+
+<template name="stars">
+	
+</template>
+
+<template name="createFeedback">
+
+	<form class="createFeedback">
+		from: {{displayName currentUser}}<br/>
+		to: 
+		<select name="to">
+			{{#each users}}
+				<option value={{_id}}>{{displayName this}}</option>
+			{{/each}}
+		</select><br/>
+		{{> stars}}
+		service: 
+		<select name="service">
+			{{#each services}}
+				<option value={{_id}}>{{title}}</option>
+			{{/each}}
+		</select><br/>
+		<input name="description" type="text" />
+		<input type="submit" />
+	</form>
+
 </template>

@@ -1,4 +1,27 @@
 
+FlowRouter.route('/register', {
+    action: function(params) {
+        BlazeLayout.render("layout", {area: "register"});
+    }
+});
+
+FlowRouter.route('/profile/:id', {
+    subscriptions: function() {
+        this.register('userData', Meteor.subscribe('userData'));
+        this.register('soundcloud', Meteor.subscribe('soundcloud'));
+    },
+    action: function(params) {
+        FlowRouter.subsReady(function() {
+            var user = Meteor.users.findOne({_id: params.id});
+            BlazeLayout.render("layout", {
+                area: "profile",
+                params: params,
+                user: user
+            });
+        });
+    }
+});
+
 if (Meteor.isServer) {
     Meteor.publish("userData", function () {
         return Meteor.users.find({});
@@ -67,27 +90,4 @@ if (Meteor.isClient) {
         }
     })
 }
-
-FlowRouter.route('/register', {
-    action: function(params) {
-        BlazeLayout.render("layout", {area: "register"});
-    }
-});
-
-FlowRouter.route('/profile/:id', {
-    subscriptions: function() {
-        this.register('userData', Meteor.subscribe('userData'));
-        this.register('soundcloud', Meteor.subscribe('soundcloud'));
-    },
-    action: function(params) {
-        FlowRouter.subsReady(function() {
-            var user = Meteor.users.findOne({_id: params.id});
-            BlazeLayout.render("layout", {
-                area: "profile",
-                params: params,
-                user: user
-            });
-        });
-    }
-});
 
