@@ -5,10 +5,10 @@ FlowRouter.route('/myApplications', {
         BlazeLayout.render("layout", {
             area: "myApplications",
             params: params
-
         });
     }
 });
+
 FlowRouter.route('/gig/:gigId/gigApplications/', {
     action: function (params) {
         BlazeLayout.render("layout", {
@@ -17,9 +17,8 @@ FlowRouter.route('/gig/:gigId/gigApplications/', {
         });
     }
 });
+
 if (Meteor.isServer) {
-
-
     Meteor.methods({
         "createApplication": function (applicationObj) {
             var existing = Application.find(applicationObj);
