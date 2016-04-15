@@ -7,16 +7,22 @@
 
 <template name="feedbackListing">
 	<div>
-		<h6>John Smith</h6>
+		<h6>{{fromUser}}</h6>
 		{{#each stars}}
 		<span class="glyphicon glyphicon-star"></span>&nbsp;
 		{{/each}}
+		<p>{{description}}</p>
 		<hr />
 	</div>
 </template>
 
 <template name="stars">
-	
+		<span class="glyphicon glyphicon-star star" style="{{style 1}}" value="1"></span>&nbsp;
+		<span class="glyphicon glyphicon-star star" style="{{style 2}}" value="2"></span>&nbsp;
+		<span class="glyphicon glyphicon-star star" style="{{style 3}}" value="3"></span>&nbsp;
+		<span class="glyphicon glyphicon-star star" style="{{style 4}}" value="4"></span>&nbsp;
+		<span class="glyphicon glyphicon-star star" style="{{style 5}}" value="5"></span>&nbsp;
+		<input type="text" name="stars" class="hiddenStar" style="display: none;" />
 </template>
 
 <template name="createFeedback">
@@ -29,7 +35,7 @@
 				<option value={{_id}}>{{displayName this}}</option>
 			{{/each}}
 		</select><br/>
-		{{> stars}}
+		{{> stars}}<br />
 		service: 
 		<select name="service">
 			{{#each services}}
