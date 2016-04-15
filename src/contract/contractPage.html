@@ -33,20 +33,10 @@
             {{> upload_bootstrap contentType='pdfs' fileTypes='.pdf' }}
             </div>
         </div>
-        <!-- Set 'available' property of Service object to false when signatures of employer and musician are submitted -->
-        <!-- Only show this input if Employer !-->
-        {{#if service.isUserEmployer}}
-        <form class="contract-signature-employer">
-            <input type="text" placeholder="Employer signature" />
-            <input type="submit" />
-        </form>
-        {{else}}
-        <!-- Only show this input if Musician !-->
         <form class="contract-signature-musician">
             <input type="text" placeholder="Musican signature" />
             <input type="submit" />
         </form>
-        {{/if}}
         </div>
     </body>
 </template>
