@@ -7,7 +7,7 @@
         <h2>Contract of Agreement</h2>
         <div class="contract-template">
             <p>
-                {{employerName}} will agree to pay {{musicianName}} for the amount of <span class="contract-payment-sum">$$$</span> in exchange for his/her services. By signing this form below, both {{employerName}} and {{musicianName}} will agree to the following terms previously set forth by {{employerName}}'s service posting:
+                {{employerName}} will agree to pay {{musicianName}} for the amount of ${{service.wage}} in exchange for his/her services. By signing this form below, both {{employerName}} and {{musicianName}} will agree to the following terms previously set forth by {{employerName}}'s service posting:
             </p>
         <h2>Terms of Services</h2>
         <div class="contract-template">
@@ -16,7 +16,7 @@
                 .contract-musician -> the musician's name
             -->
             <p>
-                {{employerName}} will agree to pay {{musicianName}} for the amount of <span class="contract-payment-sum">$$$</span> in exchange for his/her services. By signing this form below, both {{employerName}} and {{musicianName}} will agree to the following terms previously set forth by {{employerName}}'s service posting:
+                {{employerName}} will agree to pay {{musicianName}} for the amount of ${{service.wage}} in exchange for his/her services. By signing this form below, both {{employerName}} and {{musicianName}} will agree to the following terms previously set forth by {{employerName}}'s service posting:
             </p>
             <!-- Pull service object and fill in data -->
             <div class="contract-service">
@@ -24,7 +24,7 @@
                 <p>
                     Title: {{service.title}} <br />
                     Description: {{service.description}} <br />
-                    Pay: {{service.pay}}  <a class="btn btn-primary btn-xs" role="button">Edit pay</a>  <br />
+                    Pay: ${{service.wage}}  <a class="btn btn-primary btn-xs" role="button">Edit pay</a>  <br />
                 </p>
             </div>
             <div>
