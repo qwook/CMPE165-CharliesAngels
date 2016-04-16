@@ -40,7 +40,7 @@
 <template name="layout">
     <div class="container">
         <br />
-        <nav class="navbar navbar-default">
+        <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="/">Gigsearch</a>
@@ -102,11 +102,22 @@
             </div>
         </nav>
 
-        <div class="row">
+        <!-- <div class="row"> -->
             <div class="col-xs-12">
                 {{> Template.dynamic template=area}}
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <hr/>
+
+                        <p class="pull-right">Copyright &copy; 2016 Charlie's Angels</p>
+                        <br/>
+                        <br/>
+                    </div>
+                </div>
+
             </div>
-        </div>
+        <!-- </div> -->
 
     </div>
 </template>
