@@ -80,10 +80,10 @@ if (Meteor.isServer) {
                 return false;
             }
 
-             var newProfile = update(id, {$set: {
-                employer: this.userId,
+              Meteor.user.update(id, {$set: {
+                employer: id,
                 firstname: profileObj.firstname,
-                lasttname: profileObj.lastname,
+                lastname: profileObj.lastname,
                 experience: profileObj.experience,
                 education: profileObj.education,
                 skills: profileObj.skills,
@@ -127,34 +127,29 @@ if (Meteor.isClient) {
     });
  
 
-    Template.editprofileTemp.helpers({
-               "isCurrentUser": function() {
-            console.log(this);
-            if (this.user()._id == Meteor.userId()) {
-                return true;
-            }
-        }
-    });
     Template.editprofileTemp.events({
-        "click #submitButton": function(event) {
+        "submit #ucp": function(event) {
             event.preventDefault();
+            
+           var gender = event.target.gender.value 
+            console.log("gender" + gender);
 
-            console.log("clicked submit");
-         
-             Meteor.call("editProfile",this.user._id, {
-                firstname: event.target.firstname.value,
-                lasttname: event.target.lastname.value,
-                experience: event.target.experience.value,
-                education: event.target.education.value,
-                skills: event.target.skills.value,
-                gender: event.target.gender.value,
-                phonenumber: event.target.phonenumber.value,
+             Meteor.call("editProfile",this.editId(), {
+
+                firstname: firstname.value,
+                lastname: lastname.value,
+                experience: experience.value,
+                education: education.value,
+                skills: skills.value,
+                gender: gender,
+                phonenumber: phonenumber.value,
        
             }, function (err, id) {
-                if (this.user._id) {
-                    console.log("link cua edit : " + this.user._id)
-                    FlowRouter.go("/profile/" + this.user._id);
+                if (id) {
+                    console.log("link edit : " + id)
+                    FlowRouter.go("/profile/" + id);
                 } else {  
+                     console.log("you are getting error " );
                     console.log(err);
                 }
             });
@@ -168,7 +163,7 @@ if (Meteor.isClient) {
 
             Meteor.loginWithPassword(e.target.email.value, e.target.password.value);
         }
-    })
+    });
 
     Template.profile.helpers({
         displayName: function(user) {
