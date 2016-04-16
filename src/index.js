@@ -18,6 +18,11 @@ if (Meteor.isClient) {
         "click .logout": function (event) {
             event.preventDefault();
             Meteor.logout();
+        },
+
+        "click .sign-in-fb": function(e) {
+            Meteor.loginWithFacebook();
+            e.preventDefault();
         }
     });
 
