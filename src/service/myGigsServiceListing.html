@@ -1,0 +1,33 @@
+<template name="myGigsServiceListing">
+    <div class="thumbnail">
+        <!--{{#if service.live}}-->
+        <p><a href="/gig/{{service._id}}/gigApplications" class="btn btn-primary" role="button">View Applicants</a></p>
+        <!--{{/if}}-->
+        <img src="/images/bottomofthehill.jpg" alt="...">
+        <div class="caption">
+
+            <h6>{{service.title}}</h6>
+            <p><b>Looking for:</b> {{service.description}}</p>
+            <p><b>Paying:</b> ${{service.wage}} lump sum</p>
+
+            <p>
+                {{#if service.isUserEmployer}}
+                <a href="/gig/{{service._id}}" class="btn btn-primary" role="button">View Expanded Listing</a>
+                {{/if}}
+
+
+
+                {{#if service.live}}
+            <div style="float: right; width: 100px">
+                <button class="btn btn-danger pull-right" id="deletePost">Delete
+                </button>
+            </div>
+            <div style="float: right; width: 20px">
+                <a href="/edit/{{service._id}}" class="btn btn-warning pull-right" id="editPost">Edit</a>
+            </div>
+            {{/if}}
+
+            </p>
+        </div>
+    </div>
+</template>

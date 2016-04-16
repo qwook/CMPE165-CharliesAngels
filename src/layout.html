@@ -54,12 +54,13 @@
                     </div>
                 </form>
                 <div class="navbar-form navbar-right">
+                    {{#if currentUser}}
                     <a href="/postgig" class="btn btn-primary post-a-gig">
                         <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Post a Gig
                     </a>
 
                     <!-- notification area, only shows if user is logged in-->
-                    {{#if currentUser}}
+                    
                     <div class="btn-group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="glyphicon glyphicon-exclamation-sign"></span> <span class="caret"></span>
@@ -71,9 +72,9 @@
                             {{/each}}
                         </ul>
                     </div>
-                    {{/if}}
+                    
                     <!-- for button on right, should have log in/ logout/settings/profile?-->
-                    {{#if currentUser}}
+                   
                     <div class="btn-group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="glyphicon glyphicon-user"></span> <span class="caret"></span>

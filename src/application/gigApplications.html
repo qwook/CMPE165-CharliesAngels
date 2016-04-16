@@ -1,0 +1,16 @@
+<template name="gigApplications">
+    <h3>Applications for {{application.gigId}}</h3>
+    <hr />
+
+    <div class="col-xs-9">
+
+        <div class="row">
+            {{#each gigApplications}}
+            <div class="col-xs-6">
+
+                {{> gigApplicationServiceListing gigApplication=this }}
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</template>
