@@ -1,27 +1,6 @@
 
 var Userdata = new Meteor.Collection("userData");
 
-
-FlowRouter.route('/editprofile/:id', {
-    subscriptions: function() {
-        this.register('userData', Meteor.subscribe('userData'));
-    },
-
-        action: function (params) {
-             FlowRouter.subsReady(function() {
-                var user = Userdata.findOne({_id: params.id});
-                 user = user || {}
-               var editId = Meteor.userId();
-      
-                BlazeLayout.render("layout", {
-                    area: "editprofileTemp",
-                    params: params,
-                    editId: editId,
-                    user: user   
-                });
-            });
-        }
-});
 if (Meteor.isServer) {
     Meteor.publish("userData", function () {
         return Meteor.users.find({});
@@ -70,7 +49,7 @@ if (Meteor.isServer) {
                 console.log("no skills");
                 return false;
             }
-             if (typeof (profileObj.gender) != "string" || profileObj.gender.length == 0) {
+             if (typeof (profileObj.gender) != "string" ) {
                 console.log("no gender");
                 return false;
             }
@@ -80,7 +59,7 @@ if (Meteor.isServer) {
                 return false;
             }
 
-              Meteor.user.update(id, {$set: {
+              Meteor.users.update(id, {$set: {
                 employer: id,
                 firstname: profileObj.firstname,
                 lastname: profileObj.lastname,
@@ -122,13 +101,12 @@ if (Meteor.isClient) {
                 var term = confirm("You can not register without agree with our terms of service!");
                 FlowRouter.go("/register");
             }
-
         }
     });
- 
 
     Template.editprofileTemp.events({
-        "submit #ucp": function(event) {
+
+        "submit .editprofileTemp": function(event) {
             event.preventDefault();
             
            var gender = event.target.gender.value 
@@ -165,18 +143,23 @@ if (Meteor.isClient) {
         }
     });
 
+
     Template.profile.helpers({
+
+   
         displayName: function(user) {
             if (!user) {
                 return "N/A";
             }
+
 
             if (user.services && user.services.facebook) {
                 if (user.services.facebook.name) {
                     return user.services.facebook.name;
                 }
             }
-            return censorEmail(user.emails[0].address) || user._id;
+            //this 0 is undefined
+            return user.emails[0].address;
         },
 
         description: function() {
@@ -190,7 +173,8 @@ if (Meteor.isClient) {
                 return true;
             }
         }
-    })
+    });
+
 }
 
 FlowRouter.route('/register', {
@@ -206,6 +190,7 @@ FlowRouter.route('/profile/:id', {
     },
     action: function(params) {
         FlowRouter.subsReady(function() {
+   
             var user = Meteor.users.findOne({_id: params.id});
             BlazeLayout.render("layout", {
                 area: "profile",
@@ -215,4 +200,23 @@ FlowRouter.route('/profile/:id', {
         });
     }
 });
+FlowRouter.route('/editprofile/:id', {
+    subscriptions: function() {
+        this.register('userData', Meteor.subscribe('userData'));
+    },
 
+        action: function (params) {
+             FlowRouter.subsReady(function() {
+                var user = Userdata.findOne({_id: params.id});
+                 user = user || {}
+               var editId = Meteor.userId();
+      
+                BlazeLayout.render("layout", {
+                    area: "editprofileTemp",
+                    params: params,
+                    editId: editId,
+                    user: user   
+                });
+            });
+        }
+});

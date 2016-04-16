@@ -2,17 +2,14 @@
 <template name="profile">
 
     <div class="jumbotron">
-        <h1>{{displayName user}}</h1>
-        
-        <h4>{{user.info}}</h4>
-        <h4>{{user.firstname}}</h4>
-        <h4>{{user.lastname}}</h4>
-        <h4>{{user.experience}}</h4>
-        <h4>{{user.education}}</h4>
-        <h4>{{user.skills}}</h4>
-        <h4>{{user.gender}}</h4>
-        <h4>{{user.phonenumber}}</h4>
 
+        <h2>Name: {{user.firstname}} {{user.lastname}}</h2>
+        <h4>Email: {{displayName user}}</h4>
+        <h4>Experience: {{user.experience}}</h4>
+        <h4>Education: {{user.education}}</h4>
+        <h4>Skills: {{user.skills}}</h4>
+        <h4>Gender: {{user.gender}}</h4>
+        <h4>Phone#: {{user.phonenumber}}</h4>
         <p>{{description}}</p>
     </div>
 
