@@ -64,8 +64,8 @@ if (Meteor.isServer) {
     // setup for uploading pdfs
     Meteor.startup(function () {
         UploadServer.init({
-            tmpDir: '/Users/Krystle/Documents/GitHub/CMPE165-CharliesAngels/uploads/tmp',
-            uploadDir: '/Users/Krystle/Documents/GitHub/CMPE165-CharliesAngels/uploads',
+            tmpDir: Meteor.rootPath + '/uploads/tmp',
+            uploadDir: Meteor.rootPath + '/uploads',
             checkCreateDirectories: true
 //            getDirectory: function(file, formData) {
 //                return formData.contentType;

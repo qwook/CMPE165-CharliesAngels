@@ -68,6 +68,7 @@ oauth@1.1.9
 oauth2@1.1.8
 observe-sequence@1.0.10
 ordered-dict@1.0.6
+ostrio:meteor-root@1.0.3
 promise@0.6.6
 random@1.0.8
 rate-limit@1.0.3
