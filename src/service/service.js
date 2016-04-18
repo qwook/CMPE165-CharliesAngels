@@ -142,6 +142,7 @@ if (Meteor.isServer) {
                 title: serviceObj.title,
                 description: serviceObj.description,
                 wage: serviceObj.wage,
+                category: serviceObj.category,
                 live: true
             });
 
@@ -179,6 +180,7 @@ if (Meteor.isServer) {
                     title: serviceObj.title,
                     description: serviceObj.description,
                     wage: serviceObj.wage,
+                    category: serviceObj.category
                 }
 
             });
@@ -200,20 +202,33 @@ if (Meteor.isClient) {
         },
         "submit .servicePostForm": function (event) {
             event.preventDefault();
+            console.log("category: " +event.target.category.value);
+            
+            //check whether selected category
+            //remind user when the category is not selected
+            if (event.target.category.value === "") {
+                var checkCategory = confirm("Please select a category!"); 
 
-            Meteor.call("createService", {
-                title: event.target.serviceTitle.value,
-                description: event.target.serviceDescription.value,
-                wage: parseFloat(event.target.serviceWage.value),
-                live: true
-            }, function (err, id) {
-                if (id) {
-                    FlowRouter.go("/gig/" + id);
-                } else {
-                    console.log(err);
-                }
-            });
+            }
+            else {
 
+                     Meteor.call("createService", {
+                    title: event.target.serviceTitle.value,
+                    description: event.target.serviceDescription.value,
+                    wage: parseFloat(event.target.serviceWage.value),
+                    category: event.target.category.value,
+                    live: true
+                }, function (err, id) {
+                    if (id) {
+                        FlowRouter.go("/gig/" + id);
+                    } else {
+                        console.log(err);
+                    }
+                });
+
+            }
+
+           
         }
     });
 
@@ -224,17 +239,27 @@ if (Meteor.isClient) {
         "submit .editpost": function () {
             event.preventDefault();
 
-            Meteor.call("updateService", this.service()._id, {
-                title: event.target.serviceTitle.value,
-                description: event.target.serviceDescription.value,
-                wage: parseFloat(event.target.serviceWage.value)
-            }, function (err, id) {
-                if (id) {
-                    FlowRouter.go("/gig/" + id);
-                } else {
-                    console.log(err);
-                }
-            });
+                //check whether selected category
+             if (event.target.category.value === "") {
+                var checkCategory = confirm("Please select a category!"); 
+
+            }
+            else
+            {
+                     Meteor.call("updateService", this.service()._id, {
+                    title: event.target.serviceTitle.value,
+                    description: event.target.serviceDescription.value,
+                    category: event.target.category.value,
+                    wage: parseFloat(event.target.serviceWage.value)
+                }, function (err, id) {
+                    if (id) {
+                        FlowRouter.go("/gig/" + id);
+                    } else {
+                        console.log(err);
+                    }
+                });
+            }
+           
 
         }
     });
@@ -243,7 +268,20 @@ if (Meteor.isClient) {
         isLoggedIn: function () {
             return Meteor.userId() !== null;
         }
+        /*
+        //need to add momentjs:moment to meteor
+        time : function()
+        {
+            return moment(this.timestamp).format('mm/yyyy a');
+        }
+        */
     });
+
+    Template.layout.helpers({
+          services: function() {
+            return Services.find({});
+        }
+    })
 
     Template.serviceListing.events({     
         
