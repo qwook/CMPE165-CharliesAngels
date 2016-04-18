@@ -1,126 +1,93 @@
-
-Services = function () {
-    return Services;
-}
-FlowRouter.route('/contractPage', {
-    action: function(params) {
-        //var service = Services.findOne({_id: params.id});
-        var service = Services.findOne({_id: "Q4PPaWypS3kgYJNkG"})
-        console.log(service);
-        // This will let us know whether it is employer or not.
-        // service.isUserEmployer = service.employer === Meteor.userId():
-        
-        var employerId = service.employer;
-        var employer = Meteor.users.findOne({_id: employerId});
-        
-        // fill in later
-        BlazeLayout.render("layout", {
-            area: "contractPage",
-            employerName: employer.profile.name,
-            musicianName: "musician",
-            service: service
+FlowRouter.route('/contract/:id', {
+    subscriptions: function() {
+        this.register('application', Meteor.subscribe('application'));
+    },
+    action: function (params) {
+        FlowRouter.subsReady(function() {
+            console.log('TEST TEST');
+            // Test application id: DW3dvWg8uBNMidjY
+            var application = Application.findOne({_id: params.id});
+            
+            
+            // Given just the application id, we can get the following:
+            var service = Services.findOne({_id: application.gigId});
+            var musician = Meteor.users.findOne({_id: application.userId});
+            var employer = Meteor.users.findOne({_id: service.employer});
+            
+            console.log(service);
+            
+            BlazeLayout.render("layout", {
+                area: "contractPage",
+                employerName: employer.emails[0].address,
+                musicianName: musician.emails[0].address,
+                service: service,
+                params: params
+            });
         });
-
-        services = function () {
-        return Services;
-        }
     }
 });
 
+// FOR TESTING
 FlowRouter.route('/signcontract', {
+     subscriptions: function() {
+        this.register('services', Meteor.subscribe('services'));
+    },
     action: function(params) {
-        // fill in later
-        BlazeLayout.render("layout", {
-            area: "contractPage",
-            employerName: "employer",
-            musicianName: "musician",
-            serviceTitle: "serviceTitle",
-            serviceDescription: "description",
-            servicePay: "1000"
-
+        FlowRouter.subsReady(function() {
+            
+            console.log('TEST');
+            // Testing service
+            var service = Services.findOne({_id: "KBex9o9NwsPAPfN3R"});
+            console.log(service);
+            console.log(service.employer);
+            // This will let us know whether it is employer or not.
+            // service.isUserEmployer = service.employer === Meteor.userId():
+            var employer = Meteor.users.findOne({_id: service.employer});
+            
+            // fill in later
+            BlazeLayout.render("layout", {
+                area: "contractPage",
+                employerName: employer.emails[0].address,
+                musicianName: "musician",
+                service: service,
+            });
         });
     }
 });
 
 if (Meteor.isServer) {
-
-
-    //file:/server/init.js
-    // setup for uploading pdfs
-    Meteor.startup(function () {
-        UploadServer.init({
-            tmpDir: 'uploads/tmp',
-            uploadDir: 'uploads/',
-            getDirectory: function(file, formData) {
-                return formData.contentType;
-            },
-            finished: function(file, folder, formFields) {
-                console.log('Write to database: ' + folder + '/' + file);
-            }
-        })
-    });
-
-
-
-    
-    Meteor.publish("contracts", function() {
-        return Contracts.find({});
-    });
     
     Meteor.methods({
-        // Sets the service listing property to false to indiciate
-        // that contract has been signed, making service no longer available to search.
-        // note: if (live === false) then service should not be returned to search
-        "finalizeContract": function(serviceObj) {
-            var service = services.find({ title: serviceObj.title });
-            service.live = false;
+        // Updates services.live to false so that it
+        //  is no longer searchable since contract
+        //  is finalized once it is signed.
+        "finalizeContract": function (mService) {
+            return Services.update(mService._id, mService);
         }
     });
-
-}
-
-if (Meteor.isClient) {
-    
-    Meteor.subscribe("services");
-    
-
     
     //file:/server/init.js
     // setup for uploading pdfs
     Meteor.startup(function () {
         UploadServer.init({
-            tmpDir: '/Users/tomi/Documents/Uploads/tmp',
-            uploadDir: '/Users/tomi/Documents/Uploads/',
-            getDirectory: function(file, formData) {
-                return formData.contentType;
-            },
-            finished: function(file, folder, formFields) {
-                console.log('Write to database: ' + folder + '/' + file);
-            }
-        })
+            tmpDir: '/Users/Daniel/Documents/GitHub/CMPE165-CharliesAngels/uploads/tmp',
+            uploadDir: '/Users/Daniel/Documents/GitHub/CMPE165-CharliesAngels/uploads',
+            checkCreateDirectories: true
+        });
     });
 }
 
 if (Meteor.isClient) {
-
     Template.contractPage.events({
-        "submit .contract-signature-employer": function () {
-            event.preventDefault();
-            var service = services.find({}); // fill in later
-            
-            service.signedByEmployer = new Date();
-            if (service.signedByMusician) {
-                service.live = false;
-            }
-        },
         "submit .contract-signature-musician": function () {
             event.preventDefault();
-            var service = services.find({}); // fill in later
             
-            service.signedByMusician = new Date();
-            if (service.SignedByEmployer) {
-                service.live = false;
-            }
+            var mService = Services.findOne({_id: this.service()._id});
+            mService.signedByMusician = new Date();
+            mService.live = false;
+            Meteor.call("finalizeContract", mService, function (err) {
+                    console.log(err)
+            });
         }
     });
 }

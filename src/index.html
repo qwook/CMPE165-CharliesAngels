@@ -1,10 +1,18 @@
 <template name="index">
-    <div class="jumbotron" style="background: url(/images/tennyson.png); color: white; background-position: center;">
+<!--     <div class="jumbotron" style="background: url(/images/tennyson.png); color: white; background-position: center;">
         <h2>Gigsearch</h2>
         <p>Post and search for music gigs near you!</p>
     </div>
+ -->
+    <div style="position: relative; background: black;">
+        <div class="map-container" style="height: 300px; width: 100%; margin-bottom: 2em; opacity: 0.7">
+            {{> googleMap name="exampleMap" options=mapOptions}}
+        </div>
+        <div style="position: absolute; left: 0; right: 0; top: 40%; color: white; font-size: 4rem; text-align: center;">Post and search for music gigs near you!</div>
+    </div>
+
     <div class="row">
-        <div class="col-xs-3">
+<!--         <div class="col-md-3">
             <h6>Filters</h6>
             <hr />
             <ul>
@@ -21,13 +29,13 @@
                     Etc
                 </li>
             </ul>
-        </div>
-        <div class="col-xs-9">
-            <h6>Search Results</h6>
-            <hr />
+        </div> -->
+        <div class="col-md-12">
+            <!-- <h6>Search Results</h6> -->
+            <!-- <hr /> -->
             <div class="row">
                 {{#each services}}
-                <div class="col-xs-6">
+                <div class="col-xs-12 col-md-6">
                     {{> serviceListing service=this}}
                 </div>
                 {{/each}}

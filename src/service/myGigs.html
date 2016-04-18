@@ -1,4 +1,16 @@
-<template name="myGigList">
-    Put some gigs here.
-
+<template name="myGigs">
+    <h3>My Gigs</h3>
+    <hr />
+    
+        <div class="col-xs-9">
+            
+            <div class="row">
+                {{#each services}}
+                <div class="col-xs-6">
+                    {{> myGigsServiceListing service=this}}
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    
 </template>

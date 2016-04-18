@@ -1,20 +1,21 @@
-
 <template name="serviceListing">
-    <div class="thumbnail">
-        <img src="/images/bottomofthehill.jpg" alt="...">
+    <div class="thumbnail" style="">
+        <div alt="..." style="height: 200px; width: 100%; background: url(/images/bottomofthehill.jpg); background-size: cover; background-position: center;"></div>
         <div class="caption">
 
-            <h6>{{service.title}}</h6>
-            <p><b>Looking for:</b> {{service.description}}</p>
-            <p><b>Paying:</b> ${{service.wage}} lump sum</p>
-
+            <h3>{{service.title}}</h3>
+            <p>{{service.description}}</p>
+            <p><b>Payment:</b> ${{service.wage}} lump sum</p>
+            
+            <hr/>
             <p>
-				{{#if service.isUserEmployer}}
-                    <a href="/gig/{{service._id}}" class="btn btn-primary" role="button">View My Listing</a>
-				{{else}}
-    				<a href="/gig/{{service._id}}" class="btn btn-primary" role="button">Respond</a>
-				{{/if}}
+      				{{#if service.isUserEmployer}}
+                          <a href="/gig/{{service._id}}" class="btn btn-primary" role="button">View</a>
+      				{{else}}
+          				<a href="/gig/{{service._id}}" class="btn btn-primary" role="button">View</a>
+      				{{/if}}
                 
+
                        
                {{#if currentUser}}
                    {{#if service.isUserEmployer}}
@@ -29,8 +30,9 @@
                             <a href="/edit/{{service._id}}" class="btn btn-warning pull-right" id="editPost">Edit</a>
                         </div>
                     {{/if}}
-                   {{/if}}
-               {{/if}}
+                    {{/if}}
+                  {{/if}}
+               
             </p>
         </div>
     </div>
