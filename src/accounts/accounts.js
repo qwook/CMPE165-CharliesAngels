@@ -128,6 +128,7 @@ if (Meteor.isClient) {
         }
     });
 
+    //get input values from editprofile template and display it to profile page
     Template.editprofileTemp.events({
 
         "submit .editprofileTemp": function(event) {
@@ -136,6 +137,7 @@ if (Meteor.isClient) {
            var gender = event.target.gender.value 
             console.log("gender" + gender);
 
+            //editId is userID
              Meteor.call("editProfile",this.editId(), {
 
                 firstname: firstname.value,
@@ -148,7 +150,6 @@ if (Meteor.isClient) {
        
             }, function (err, id) {
                 if (id) {
-                    console.log("link edit : " + id)
                     FlowRouter.go("/profile/" + id);
                 } else {  
                      console.log("you are getting error " );
@@ -156,8 +157,9 @@ if (Meteor.isClient) {
                 }
             });
         }
-    });
 
+       
+    });
 
     Template.loginBox.events({
         "submit .loginBox": function(e) {
