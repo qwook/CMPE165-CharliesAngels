@@ -70,8 +70,8 @@ if (Meteor.isServer) {
     // setup for uploading pdfs
     Meteor.startup(function () {
         UploadServer.init({
-            tmpDir: '/Users/Daniel/Documents/GitHub/CMPE165-CharliesAngels/uploads/tmp',
-            uploadDir: '/Users/Daniel/Documents/GitHub/CMPE165-CharliesAngels/uploads',
+            tmpDir: Meteor.rootPath + '/uploads/tmp',
+            uploadDir: Meteor.rootPath + '/uploads',
             checkCreateDirectories: true
         });
     });
