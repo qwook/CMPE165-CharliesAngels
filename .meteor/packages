@@ -30,3 +30,5 @@ tomi:upload-jquery
 http
 standard-minifier-css
 standard-minifier-js
+ostrio:meteor-root
+dburles:google-maps

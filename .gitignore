@@ -36,5 +36,7 @@ node_modules
 .node_repl_history
 
 # Stylesheet
-client/stylesheets/vendor/custom.bootstrap.less
-client/stylesheets/vendor/custom.bootstrap.mixins.import.less
+#client/stylesheets/vendor/custom.bootstrap.less
+#client/stylesheets/vendor/custom.bootstrap.mixins.import.less
+
+/nbproject/private/
