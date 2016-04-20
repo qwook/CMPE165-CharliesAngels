@@ -19,6 +19,11 @@ FlowRouter.route('/gig/:gigId/gigApplications/', {
 });
 
 if (Meteor.isServer) {
+    
+    Meteor.publish("application", function () {
+        return Application.find({});
+    });
+
     Meteor.methods({
         "createApplication": function (applicationObj) {
             var existing = Application.find(applicationObj);
