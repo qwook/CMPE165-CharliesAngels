@@ -40,3 +40,8 @@ node_modules
 #client/stylesheets/vendor/custom.bootstrap.mixins.import.less
 
 /nbproject/private/
+
+# Testing
+phantom_runner.js
+Makefile
+start_test.js

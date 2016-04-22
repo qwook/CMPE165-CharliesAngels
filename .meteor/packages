@@ -36,3 +36,4 @@ acemtp:algolia
 momentjs:moment
 mrgalaxy:stripe
 random
+practicalmeteor:mocha
