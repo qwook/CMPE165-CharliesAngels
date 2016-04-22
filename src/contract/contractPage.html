@@ -9,45 +9,24 @@
             <p>
                 {{employerName}} will agree to pay {{musicianName}} for the amount of ${{service.wage}} in exchange for his/her services. By signing this form below, both {{employerName}} and {{musicianName}} will agree to the following terms previously set forth by {{employerName}}'s service posting:
             </p>
-
-        <h2>Terms of Services</h2>
-        <div class="contract-template">
-            <!-- Name of employer & name of musician will be filled here: 
-                .contract-employer -> the employer's name
-                .contract-musician -> the musician's name
-            -->
+            <h4>Service:</h4>
             <p>
-                {{employerName}} will agree to pay {{musicianName}} for the amount of ${{service.wage}} in exchange for his/her services. By signing this form below, both {{employerName}} and {{musicianName}} will agree to the following terms previously set forth by {{employerName}}'s service posting:
+                Title: {{service.title}} <br />
+                Description: {{service.description}} <br />
+                Pay: ${{service.wage}}  <a class="btn btn-primary btn-xs" role="button">Edit pay</a>  <br />
             </p>
-            <!-- Pull service object and fill in data -->
-            <div class="contract-service">
-                <h4>Service:</h4>
-                <p>
-                    Title: {{service.title}} <br />
-                    Description: {{service.description}} <br />
-                    Pay: ${{service.wage}}  <a class="btn btn-primary btn-xs" role="button">Edit pay</a>  <br />
-                </p>
-            <h2>Terms of Services</h2>
-            <div class="contract-template">
-                <!-- Name of employer & name of musician will be filled here: 
-                    .contract-employer -> the employer's name
-                    .contract-musician -> the musician's name
-                -->
-                <p>
-                    {{employerName}} will agree to pay {{musicianName}} for the amount of <span class="contract-payment-sum">$$$</span> in exchange for his/her services. By signing this form below, both {{employerName}} and {{musicianName}} will agree to the following terms previously set forth by {{employerName}}'s service posting:
-                </p>
-            </div>
-            <div>
+        </div>
+        
+        <div>
             <h4>Terms of Service</h4>
             Upload terms of service
             {{> upload_bootstrap contentType='pdfs' fileTypes='.pdf' }}
-            </div>
         </div>
+        
         <form class="contract-signature-musician">
             <input type="text" placeholder="Musican signature" />
             <input type="submit" />
         </form>
-        </div>
-        </div>
+
     </body>
 </template>
