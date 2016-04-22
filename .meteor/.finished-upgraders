@@ -10,4 +10,8 @@ notices-for-facebook-graph-api-2
 1.2.0-meteor-platform-split
 1.2.0-cordova-changes
 1.2.0-breaking-changes
+<<<<<<< HEAD
 1.3.0-split-minifiers-package
+=======
+1.3.0-split-minifiers-package
+>>>>>>> d4861e398049bde3dceb1c1f144cc0fa5b98a412

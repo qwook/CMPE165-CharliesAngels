@@ -4,25 +4,35 @@
         <div class="caption">
 
             <h3>{{service.title}}</h3>
-            <p>{{service.description}}</p>
+            <p>Category: {{service.category}}</p>
+            <p>Descrition: {{service.description}}</p>
             <p><b>Payment:</b> ${{service.wage}} lump sum</p>
             
             <hr/>
             <p>
-				{{#if service.isUserEmployer}}
-                    <a href="/gig/{{service._id}}" class="btn btn-primary" role="button">View</a>
-				{{else}}
-    				<a href="/gig/{{service._id}}" class="btn btn-primary" role="button">View</a>
-				{{/if}}
+      				{{#if service.isUserEmployer}}
+                          <a href="/gig/{{service._id}}" class="btn btn-primary" role="button">View</a>
+      				{{else}}
+          				<a href="/gig/{{service._id}}" class="btn btn-primary" role="button">View</a>
+      				{{/if}}
                 
+
+                       
                {{#if currentUser}}
                    {{#if service.isUserEmployer}}
-                    <div class="pull-right">
-                        <a href="/edit/{{service._id}}" class="btn btn-warning" id="editPost"><span class="glyphicon glyphicon-pencil"></span></a>
-                        <a class="btn btn-danger" id="deletePost"><span class="glyphicon glyphicon-trash"></span></a>
-                    </div>
-                   {{/if}}
-               {{/if}}
+                    {{#if service.live}}
+                   <!-- if contract is signed from this id, employer can't delete or edit, display a console to inform employer
+                   else  employer can edit/delete-->
+                       <div style="float: right; width: 100px">
+                            <button class="btn btn-danger pull-right" id="deletePost">Delete
+                            </button>
+                        </div>
+                        <div style="float: right; width: 20px">
+                            <a href="/edit/{{service._id}}" class="btn btn-warning pull-right" id="editPost">Edit</a>
+                        </div>
+                    {{/if}}
+                    {{/if}}
+                  {{/if}}
                
             </p>
         </div>

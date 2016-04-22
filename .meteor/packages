@@ -32,3 +32,4 @@ standard-minifier-css
 standard-minifier-js
 ostrio:meteor-root
 dburles:google-maps
+acemtp:algolia

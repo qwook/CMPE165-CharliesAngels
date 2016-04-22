@@ -11,6 +11,28 @@
             <div class="col-xs-6">
             </div>
         </div>
+         <div class="row">
+            <div class="col-xs-6">
+            <label for="category">Category</label>
+                <select name="category">
+
+                        <option value= "0" >Select Category</option>
+                        <option value= "1" >Clarinet</option>
+                        <option value= "2" >Company Music</option>
+                        <option value= "3" >Church Music</option>
+                        <option value= "4" >Mysic Academy</option>
+                        <option value= "5" >Opera/Dance</option>
+                        <option value= "6" >Private Music</option>
+                        <option value= "7" >Violin</option>
+                        <option value= "8">Voice/Choir</option>
+
+                </select>
+
+               
+            </div>
+            <div class="col-xs-6">
+            </div>
+        </div>
         <div class="row">
             <div class="col-xs-6">
                 <div class="form-group">
@@ -25,7 +47,7 @@
             <div class="col-xs-6">
                 <div class="form-group">
                     <label for="serviceWage">Wage</label>
-                    <b>$</b><input type="text" value=${{service.wage}} class="form-control" name="serviceWage" id="serviceWage" placeholder="0.00">
+                    <b>$</b><input type="text" value={{service.wage}} class="form-control" name="serviceWage" id="serviceWage" placeholder="0.00">
                 </div>
      
             </div>

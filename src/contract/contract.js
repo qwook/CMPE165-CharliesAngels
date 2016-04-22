@@ -5,9 +5,8 @@ FlowRouter.route('/contract/:id', {
     action: function (params) {
         FlowRouter.subsReady(function() {
             console.log('TEST TEST');
-            // Test application id: DW3dvWg8uBNMidjY
+            // Test application id: AjvkESAD3RGgN2vdY
             var application = Application.findOne({_id: params.id});
-            
             
             // Given just the application id, we can get the following:
             var service = Services.findOne({_id: application.gigId});
@@ -36,20 +35,13 @@ FlowRouter.route('/signcontract', {
         FlowRouter.subsReady(function() {
             
             console.log('TEST');
-            // Testing service
-            var service = Services.findOne({_id: "aq24GX6Rpi9ojchC2"});
-            console.log(service);
-            console.log(service.employer);
-            // This will let us know whether it is employer or not.
-            // service.isUserEmployer = service.employer === Meteor.userId():
-            var employer = Meteor.users.findOne({_id: service.employer});
             
             // fill in later
             BlazeLayout.render("layout", {
                 area: "contractPage",
-                employerName: employer.emails[0].address,
+                employerName: "employer",
                 musicianName: "musician",
-                service: service,
+                service: null,
             });
         });
     }
@@ -89,7 +81,7 @@ if (Meteor.isClient) {
                     console.log(err)
             });
             
-            
+           FlowRouter.rou
         }
     });
 }

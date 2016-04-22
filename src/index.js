@@ -8,6 +8,8 @@ if (Meteor.isClient) {
 
     Meteor.startup(function() {
         GoogleMaps.load();
+
+      
     });
 
     Template.layout.events({
@@ -80,4 +82,5 @@ if (Meteor.isClient) {
             return Notification.find({userId: Meteor.userId()});
         },
     });
+
 }

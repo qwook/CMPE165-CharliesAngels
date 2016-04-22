@@ -12,11 +12,41 @@
                     <label for="passwordInput">Password</label>
                     <input type="password" class="form-control" id="passwordInput" name="password" placeholder="Password">
                 </div>
-                <div class="checkbox">
+               <!-- <div class="checkbox">-->
+
+                 <div>
+                <input type="checkbox" value="1" id="checkbox" class="unique-name" /> 
+                <label for="checkbox">I agree to the terms of service. <span></span></label>
+                </div>
+
+                <div>
+                    <a href="#" class="external">External Link Toggle</a>
+                </div>
+
+                <script type="text/javascript">
+
+                    function toggle(aId) {
+                        var collection = document.getElementById(aId).getElementsByTagName("input");
+                        for (var x=0; x<collection.length; x++) {
+                            if (collection[x].type.toLowerCase() == "checkbox") {
+                                if (collection[x].checked) {
+                                collection[x].checked = false;
+                                }
+                                 else {collection[x].checked = true}
+                            }
+                        }
+                    }
+
+                </script>
+
+                <!--
+
                     <label>
-                        <input type="checkbox" name="tos"> I agree to the terms of service.
+                     <input id="checkbox" checked ="{{checked}}" name="checkbox"    type="checkbox"  />  I agree to the terms of service.<br />
+
                     </label>
                 </div>
+                -->
                 <button type="submit" class="btn btn-default">Register</button>
             </form>
         </div>

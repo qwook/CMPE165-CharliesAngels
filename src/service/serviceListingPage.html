@@ -37,6 +37,7 @@
         </div>
         <div class="col-xs-9">
             <h2>{{service.title}}</h2>
+            <h4>{{service.category}}</h4>
             <hr />
             <div class="row">
                 <div class="col-xs-6">
@@ -69,6 +70,6 @@
         </div>
     </div>
     <b>{{params.id}}</b>
-	<b>Employer: {{employerName}}</b>
-    sup
+    <h4> Employer: <a href="/profile/{{service.employer}}" ><i><u> {{employerName}} </u></i> </a></h4>
+  
 </template>
