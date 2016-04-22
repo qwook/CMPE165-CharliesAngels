@@ -88,6 +88,8 @@ if (Meteor.isClient) {
             Meteor.call("finalizeContract", mService, function (err) {
                     console.log(err)
             });
+            
+            
         }
     });
 }
