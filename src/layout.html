@@ -82,22 +82,8 @@
 
                     <!-- notification area, only shows if user is logged in-->
                     
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="glyphicon glyphicon-exclamation-sign"></span> <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            {{#if hasNotifications}}
-                            {{#each notifications}}
-                            <li><div>{{description}}</div></li>
-                            <li role="separator" class="divider"></li>
-                            {{/each}}
-                            {{else}}
-                            <li><div style="margin: 20px;" class="text-muted text-center">You have no notifications.</div></li>
-                            {{/if}}
-                        </ul>
-                    </div>
-                    
+                    {{> notifications}}
+
                     <!-- for button on right, should have log in/ logout/settings/profile?-->
                    
                     <div class="btn-group">
