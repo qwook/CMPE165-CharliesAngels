@@ -19,7 +19,10 @@ if (Meteor.isClient) {
         },
         "click .logout": function (event) {
             event.preventDefault();
-            Meteor.logout();
+            Meteor.logout(function(){
+                FlowRouter.go("/");
+                
+            });
         },
 
         "click .sign-in-fb": function(e) {
@@ -81,6 +84,9 @@ if (Meteor.isClient) {
             
             return Notification.find({userId: Meteor.userId()});
         },
+        "hasNotifications": function() {
+            return Notification.find({userId: Meteor.userId()}).count()>0;
+        }
     });
 
 }

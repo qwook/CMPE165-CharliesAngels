@@ -87,10 +87,14 @@
                             <span class="glyphicon glyphicon-exclamation-sign"></span> <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
+                            {{#if hasNotifications}}
                             {{#each notifications}}
                             <li><div>{{description}}</div></li>
                             <li role="separator" class="divider"></li>
                             {{/each}}
+                            {{else}}
+                            <li><div style="margin: 20px;" class="text-muted text-center">You have no notifications.</div></li>
+                            {{/if}}
                         </ul>
                     </div>
                     
