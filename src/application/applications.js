@@ -11,9 +11,15 @@ FlowRouter.route('/myApplications', {
 
 FlowRouter.route('/gig/:gigId/gigApplications/', {
     action: function (params) {
+        var service = Services.findOne({_id: params.gigId});
+        service = service || {};
+        var application = Application.findOne({gigId: params.gigId});
+        console.log(application);
         BlazeLayout.render("layout", {
             area: "gigApplications",
-            params: params
+            params: params,
+            service: service,
+            application: application
         });
     }
 });
@@ -26,7 +32,7 @@ if (Meteor.isServer) {
 
     Meteor.methods({
         "createApplication": function (applicationObj) {
-            var existing = Application.find(applicationObj);
+            var existing = Application.find({userId: applicationObj.userId,gigId: applicationObj.gigId});
             if(existing.fetch().length > 0) 
                 throw new Meteor.Error("existing-application", "A user is applyng twice to the same gig.");
             
@@ -39,7 +45,9 @@ if (Meteor.isServer) {
                 //file upload
 
                 //new, processing ,accepted, or declined
-                status: "new"
+                status: "new",
+                //date the application was sent in at
+                dateCreated: applicationObj.dateCreated
             });
             return newApplication;
         }
@@ -47,8 +55,10 @@ if (Meteor.isServer) {
 }
 
 if (Meteor.isClient) {
+    Meteor.subscribe("services");
     Template.myApplications.helpers({
         "applications": function () {
+            //this finds your own applications
             var applications = Application.find({userId: Meteor.userId()});
             //forcibly mapping relationships
             //this attaches the gig to the application so you can use things like title, employerName, etc.
@@ -64,7 +74,7 @@ if (Meteor.isClient) {
     
     Template.gigApplications.helpers({
         "gigApplications": function () {
-            var gigApplications = Application.find({userId: Meteor.userId()});
+            var gigApplications = Application.find({gigId: "BBDKDeFMuZi3Gricv"});
             //forcibly mapping relationships
             //this attaches the gig to the application so you can use things like title, employerName, etc.
             var mapped = gigApplications.map(function(application, index){

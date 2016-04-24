@@ -142,8 +142,8 @@ if (Meteor.isServer) {
                 title: serviceObj.title,
                 description: serviceObj.description,
                 wage: serviceObj.wage,
-                category: serviceObj.category,
-                live: true
+                live: true,
+                dateCreated: serviceObj.dateCreated
             });
 
             return newService;
@@ -180,15 +180,23 @@ if (Meteor.isServer) {
                     title: serviceObj.title,
                     description: serviceObj.description,
                     wage: serviceObj.wage,
-                    category: serviceObj.category
                 }
 
             });
 
             return id;
-
+        },
+        "deleteService": function (id, serviceObj)
+        {
+            Services.remove(id, {
+                title: serviceObj.title,
+                description: serviceObj.description,
+                wage: serviceObj.wage
+            });
         }
     });
+
+
 
 }
 
@@ -202,33 +210,21 @@ if (Meteor.isClient) {
         },
         "submit .servicePostForm": function (event) {
             event.preventDefault();
-            console.log("category: " +event.target.category.value);
-            
-            //check whether selected category
-            //remind user when the category is not selected
-            if (event.target.category.value === "") {
-                var checkCategory = confirm("Please select a category!"); 
 
-            }
-            else {
+            Meteor.call("createService", {
+                title: event.target.serviceTitle.value,
+                description: event.target.serviceDescription.value,
+                wage: parseFloat(event.target.serviceWage.value),
+                live: true,
+                dateCreated: Date.now()
+            }, function (err, id) {
+                if (id) {
+                    FlowRouter.go("/gig/" + id);
+                } else {
+                    console.log(err);
+                }
+            });
 
-                     Meteor.call("createService", {
-                    title: event.target.serviceTitle.value,
-                    description: event.target.serviceDescription.value,
-                    wage: parseFloat(event.target.serviceWage.value),
-                    category: event.target.category.value,
-                    live: true
-                }, function (err, id) {
-                    if (id) {
-                        FlowRouter.go("/gig/" + id);
-                    } else {
-                        console.log(err);
-                    }
-                });
-
-            }
-
-           
         }
     });
 
@@ -239,27 +235,17 @@ if (Meteor.isClient) {
         "submit .editpost": function () {
             event.preventDefault();
 
-                //check whether selected category
-             if (event.target.category.value === "") {
-                var checkCategory = confirm("Please select a category!"); 
-
-            }
-            else
-            {
-                     Meteor.call("updateService", this.service()._id, {
-                    title: event.target.serviceTitle.value,
-                    description: event.target.serviceDescription.value,
-                    category: event.target.category.value,
-                    wage: parseFloat(event.target.serviceWage.value)
-                }, function (err, id) {
-                    if (id) {
-                        FlowRouter.go("/gig/" + id);
-                    } else {
-                        console.log(err);
-                    }
-                });
-            }
-           
+            Meteor.call("updateService", this.service()._id, {
+                title: event.target.serviceTitle.value,
+                description: event.target.serviceDescription.value,
+                wage: parseFloat(event.target.serviceWage.value)
+            }, function (err, id) {
+                if (id) {
+                    FlowRouter.go("/gig/" + id);
+                } else {
+                    console.log(err);
+                }
+            });
 
         }
     });
@@ -267,37 +253,36 @@ if (Meteor.isClient) {
     Template.serviceListingPage.helpers({
         isLoggedIn: function () {
             return Meteor.userId() !== null;
-        }
-        /*
-        //need to add momentjs:moment to meteor
-        time : function()
-        {
-            return moment(this.timestamp).format('mm/yyyy a');
-        }
-        */
-    });
-
-    Template.layout.helpers({
-          services: function() {
-            return Services.find({});
-        }
-    })
-
-    Template.serviceListing.events({     
+        },
         
-        "click #deletePost": function(event) {
-             event.preventDefault();
-
-            var result = confirm("Do you really want to delete this post?");
-            if (result) {
-                Services.remove(this.service._id);
-                FlowRouter.go("/");          
-
-            }
+        hasApplied: function () {
             
+            //this is not working yet
+            //console.log(Application.find({userId: Meteor.userId(), gigId: this.service._id}).count());
+            return Application.find({userId: Meteor.userId(), gigId: this.service._id}).count() >0
         }
     });
-    
+
+    Template.serviceListing.events({
+        "click #deletePost": function (event) {
+            event.preventDefault();
+
+            Services.remove(this.service._id, function (err, id) {
+                FlowRouter.go("/");
+            });
+        }
+    });
+
+    Template.serviceListingPage.events({
+        "click #deletePost": function (event) {
+            event.preventDefault();
+
+            Services.remove(this.service._id, function (err, id) {
+                FlowRouter.go("/");
+            });
+        }
+    });
+
     Template.myGigs.helpers({
         "services": function () {
             var services = Services.find({employer: Meteor.userId()});
@@ -313,16 +298,21 @@ if (Meteor.isClient) {
 
     Template.myGigsServiceListing.helpers({
         "applications": function () {
-            //NEEDS FIXING. NEED TO FIND A SPECIFIC GIG ID THAT IS LINKED TO THE BUTTON PRESSED
             var applications = Application.find({gigId: this.service._id});
             return applications;
         }
     });
+    
+    Template.myGigsServiceListing.events({
+        "click #deletePost": function (event) {
+            event.preventDefault();
 
-
+            Services.remove(this.service._id, function (err, id) {
+                FlowRouter.go("/");
+            });
+        }
+    });
     Template.applyForm.events({
-        //will want to call createApplication eventually. For now just button that does notify
-
         "click #sendApplication": function (event) {
             event.preventDefault();
             // We could be fancy and replace innerHTML with a spinning icon...
@@ -333,7 +323,8 @@ if (Meteor.isClient) {
             var service = Services.findOne(serviceId);
             Meteor.call("createApplication", {
                 userId: Meteor.userId(),
-                gigId: service._id
+                gigId: service._id,
+                dateCreated: Date.now()
 
             }, function (err, id) {
                 if (id) {
@@ -366,10 +357,13 @@ if (Meteor.isClient) {
                         console.log(err);
                     }
 
+
                 }
             });
+
+
+
         }
-    
     });
 
 }
