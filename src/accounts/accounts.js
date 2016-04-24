@@ -109,20 +109,18 @@ if (Meteor.isClient) {
    
         "submit .registerForm": function(e) {
             e.preventDefault();
-            console.log("you are checking: " + e.target.checked.value);
+            // console.log("you are checking: " + e.target.checked.value);
 
 
              if (e.target.checkbox.value == true ) {
-            
-                     console.log("you checked: " + e.target.checkbox.value);
                 Meteor.call("register", e.target.email.value, e.target.password.value, function() {
+                    Meteor.loginWithPassword(e.target.email.value, e.target.password.value);
                     FlowRouter.go("/");
                 });
             }
             else 
             {
-                 console.log("you can't  " + e.target.checked.value);
-                var term = confirm("You can not register without agree with our terms of service!");
+                // var term = confirm("You can not register without agree with our terms of service!");
                 FlowRouter.go("/register");
             }
         }

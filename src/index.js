@@ -78,15 +78,4 @@ if (Meteor.isClient) {
         }
     });
 
-    Template.layout.helpers({
-        "notifications": function () {
-            // Return all notifications for the current user
-            
-            return Notification.find({userId: Meteor.userId()});
-        },
-        "hasNotifications": function() {
-            return Notification.find({userId: Meteor.userId()}).count()>0;
-        }
-    });
-
 }
