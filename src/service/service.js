@@ -39,24 +39,6 @@ FlowRouter.route('/gig/:id', {
     }
 });
 
-//Page for applying to a gig
-FlowRouter.route('/apply/:id', {
-    action: function (params) {
-
-        //making space if needing functions here
-        var service = Services.findOne({_id: params.id});
-        service = service || {}
-        var employer = Meteor.users.findOne({_id: service.employer});
-
-        BlazeLayout.render("layout", {
-            area: "applyForm",
-            params: params,
-            service: service,
-            employer: employer
-        });
-    }
-});
-
 FlowRouter.route('/postgig', {
     action: function (params) {
         BlazeLayout.render("layout", {area: "servicePostForm"});
@@ -195,9 +177,7 @@ if (Meteor.isServer) {
             });
         }
     });
-
-
-
+    
 }
 
 if (Meteor.isClient) {
@@ -296,13 +276,6 @@ if (Meteor.isClient) {
         }
     });
 
-    Template.myGigsServiceListing.helpers({
-        "applications": function () {
-            var applications = Application.find({gigId: this.service._id});
-            return applications;
-        }
-    });
-    
     Template.myGigsServiceListing.events({
         "click #deletePost": function (event) {
             event.preventDefault();
@@ -312,58 +285,5 @@ if (Meteor.isClient) {
             });
         }
     });
-    Template.applyForm.events({
-        "click #sendApplication": function (event) {
-            event.preventDefault();
-            // We could be fancy and replace innerHTML with a spinning icon...
-            event.target.innerHTML = "...";
-            // event.target.dataset pulls data from our HTML "data-service-id" attribute
-            // which holds the current service the user is applying for
-            var serviceId = event.target.dataset.serviceId;
-            var service = Services.findOne(serviceId);
-            Meteor.call("createApplication", {
-                userId: Meteor.userId(),
-                gigId: service._id,
-                dateCreated: Date.now()
-
-            }, function (err, id) {
-                if (id) {
-                    Meteor.call("createNotification", {
-                        // The creator of the service is the one who needs to be notified
-                        userId: service.employer,
-                        // The notification object can be used for various things but in this
-                        // case we're telling the employer someone applied for this service
-                        objectType: "service",
-                        objectTypeId: service._id,
-                        title: "New Application",
-                        // Current logged in user is the applicant
-                        description: "New application from " + Meteor.userId() + ".",
-                        read: false
-                    }, function (err, id) {
-                        if (id) {
-                            // Update button text
-                            event.target.innerHTML = "Thank you for applying";
-                        } else {
-                            event.target.innerHTML = "There was an error making the notification for application.";
-                            // Handle this?
-                            console.log(err);
-                        }
-                    });
-                } else {
-                    if (err && err.error === "existing-application") {
-                        event.target.innerHTML = "You have already applied.";
-                    } else {
-                        event.target.innerHTML = "There was an error applying.";
-                        console.log(err);
-                    }
-
-
-                }
-            });
-
-
-
-        }
-    });
-
+    
 }

@@ -37,7 +37,7 @@ FlowRouter.route('/signcontract', {
             
             console.log('TEST');
             // Testing service
-            var service = Services.findOne({_id: "KBex9o9NwsPAPfN3R"});
+            var service = Services.findOne({_id: "BBDKDeFMuZi3Gricv"});
             console.log(service);
             console.log(service.employer);
             // This will let us know whether it is employer or not.

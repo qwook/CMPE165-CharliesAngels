@@ -1,0 +1,18 @@
+<template name="applicationPage">
+    <h3>Application for gig:</h3>
+    <!-- GIG YOU ARE APPLYING TO REFERENCE IS HERE -->
+    <div class="row">
+        <h1>{{service.title}}</h1>
+        <p><b>Looking for:</b> {{service.description}}</p>
+        <p><b>Paying:</b> ${{service.wage}} lump sum</p>
+    </div>
+    <h3>Application Information:</h3>
+    <div class="row">
+        <p><b>Applicant:</b>{{userId}}</p>
+        <p><b>Date Applied:</b>{{formatDate date}}</p>
+        <p><b>Status:</b>{{status}}</p>
+        <p><b>Description:</b>{{description}}</p>
+        
+        
+    </div>
+</template>
