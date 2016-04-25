@@ -1,4 +1,4 @@
-// import { Services } from '../service/service.js';
+
 Services = new Mongo.Collection("services");
 
 FlowRouter.route('/gig/:id', {
@@ -19,6 +19,8 @@ FlowRouter.route('/gig/:id', {
 
             var userName;
 
+            var dateformat = service.date;
+            var datePosted = moment(dateformat).format('MMMM DD, YYYY');
 
             if (user.emails && user.emails[0].address) {
                 userName = user.emails[0].address;
@@ -33,7 +35,8 @@ FlowRouter.route('/gig/:id', {
                 params: params,
                 service: service,
                 employer: user,
-                employerName: userName
+                employerName: userName,
+                date: datePosted
             });
         });
     }
@@ -143,6 +146,7 @@ if (Meteor.isServer) {
                 description: serviceObj.description,
                 wage: serviceObj.wage,
                 category: serviceObj.category,
+                date: serviceObj.date,
                 live: true
             });
 
@@ -180,7 +184,8 @@ if (Meteor.isServer) {
                     title: serviceObj.title,
                     description: serviceObj.description,
                     wage: serviceObj.wage,
-                    category: serviceObj.category
+                    category: serviceObj.category,
+                    date: serviceObj.date,
                 }
 
             });
@@ -217,6 +222,7 @@ if (Meteor.isClient) {
                     description: event.target.serviceDescription.value,
                     wage: parseFloat(event.target.serviceWage.value),
                     category: event.target.category.value,
+                    date: new Date,
                     live: true
                 }, function (err, id) {
                     if (id) {
@@ -250,7 +256,8 @@ if (Meteor.isClient) {
                     title: event.target.serviceTitle.value,
                     description: event.target.serviceDescription.value,
                     category: event.target.category.value,
-                    wage: parseFloat(event.target.serviceWage.value)
+                    wage: parseFloat(event.target.serviceWage.value),
+                    date: new Date
                 }, function (err, id) {
                     if (id) {
                         FlowRouter.go("/gig/" + id);
@@ -267,14 +274,18 @@ if (Meteor.isClient) {
     Template.serviceListingPage.helpers({
         isLoggedIn: function () {
             return Meteor.userId() !== null;
-        }
-        /*
-        //need to add momentjs:moment to meteor
+        },
+        
+    
         time : function()
         {
-            return moment(this.timestamp).format('mm/yyyy a');
+            //Services.findOne().date  is used to fine the date you just create your post
+            var dateformat = Services.findOne().date;
+            var datePosted = moment(dateformat).format('MMMM DD, YYYY');
+            
+            return datePosted;
         }
-        */
+        
     });
 
     Template.layout.helpers({
@@ -284,6 +295,20 @@ if (Meteor.isClient) {
     })
 
     Template.serviceListing.events({     
+        
+        "click #deletePost": function(event) {
+             event.preventDefault();
+
+            var result = confirm("Do you really want to delete this post?");
+            if (result) {
+                Services.remove(this.service._id);
+                FlowRouter.go("/");          
+
+            }
+            
+        }
+    });
+    Template.serviceListingPage.events({     
         
         "click #deletePost": function(event) {
              event.preventDefault();

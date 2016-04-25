@@ -38,6 +38,7 @@
         <div class="col-xs-9">
             <h2>{{service.title}}</h2>
             <h4>{{service.category}}</h4>
+            <h5>Date posted: {{date}}</h5>
             <hr />
             <div class="row">
                 <div class="col-xs-6">
@@ -59,7 +60,7 @@
 						{{#if service.live}}
 						<p><a href="/edit/{{service._id}}" class="btn btn-primary" role="button">Edit</a></p>
 						{{/if}}
-						<p><a href="#" class="btn btn-primary" role="button">Delete</a></p>
+						<p><button  id="deletePost" class="btn btn-primary" >Delete</button></p>
 						<p><a href="#" class="btn btn-primary" role="button">View Current Applications</a></p>
                         <p>Lorem ipsum dolar set amet</p>
                     </div>

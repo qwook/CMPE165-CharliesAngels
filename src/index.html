@@ -34,11 +34,92 @@
             <!-- <h6>Search Results</h6> -->
             <!-- <hr /> -->
             <div class="row">
-                {{#each services}}
-                <div class="col-xs-12 col-md-6">
-                    {{> serviceListing service=this}}
-                </div>
+
+           
+                 <select name="category" id="category">
+           
+
+                        <option value= "" >Select Category</option>
+                        <option value= "Clarinet" >Clarinet</option>
+                       
+
+                        <option value= "Company Music" >Company Music</option>
+                        <option value= "Church Music" >Church Music</option>
+                        <option value= "Music Academy<" >Mysic Academy</option>
+                        <option value= "Opera/Dance" >Opera/Dance</option>
+                        <option value= "Private Music" >Private Music</option>
+                        <option value= "Violin<" >Violin</option>
+                        <option value= "Voice/Choir" >Voice/Choir</option>
+
+                </select>
+         
+  
+                  <button class="category">
+                    <li><a class="test" value="All" href="#">View All</a></li>
+                </button>
+
+
+                {{#if currentViewIs "test"}}
+                    
+                     {{#each services}}       
+                        <div class="col-xs-12 col-md-6">
+                            {{> serviceListing service=this}}
+                        </div>
+                    {{/each}}
+
+                {{else}}
+                    {{#if currentViewIs "Music Academy"}}
+                        {{> Music Academy}}
+                    {{else}}
+                        {{#if currentViewIs "Private Music"}}
+                            {{> Private Music}}
+                        {{else}}
+                            {{#each services}}       
+                                <div class="col-xs-12 col-md-6">
+                                    {{> serviceListing service=this}}
+                                </div>
+                            {{/each}}
+                        {{/if}}
+                    {{/if}}
+                {{/if}}
+                <!--
+                {{#each category in categories}}
+                    {{#if this}}
+                     <div>{{category}}</div>
+
+
+                     {{#each services}}       
+                        <div class="col-xs-12 col-md-6">
+                            {{> serviceListing service=this}}
+                        </div>
+                    {{/each}}
+
+                    
+                    {{/if}}
                 {{/each}}
+                -->
+
+                <p>
+                <!--
+                 {{#if get_categories}}
+                        
+                           
+
+                 {{/if}}
+
+                 {{#unless get_categories}}
+                   {{#each services}}       
+                        <div class="col-xs-12 col-md-6">
+                            {{> serviceListing service=this}}
+                        </div>
+                    {{/each}}
+                {{/unless}}
+                -->
+
+       
+
+               
+                </p>
             </div>
         </div>
     </div>

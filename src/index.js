@@ -1,8 +1,11 @@
 FlowRouter.route('/', {
     action: function (params) {
-        BlazeLayout.render("layout", {area: "index"});
+        //var categorySelected = Meteor.findOne().category;
+        BlazeLayout.render("layout", {
+            area: "index" });
     }
 });
+
 
 if (Meteor.isClient) {
 
@@ -26,7 +29,10 @@ if (Meteor.isClient) {
             Meteor.loginWithFacebook();
             e.preventDefault();
         }
+      
+   
     });
+
 
     Template.contractPage.helpers({
         "services": function () {
@@ -72,9 +78,25 @@ if (Meteor.isClient) {
                     ]
                 };
             }
+        },
+     
+          
+        "change .category": function(e) {
+            Session.set('test','test');
         }
+
     });
 
+
+    Template.index.helpers({
+        services: function() {
+            if(Session.get('All')) {
+                return services.find();
+            } else {
+                return services.find();
+            }
+        }
+    })
     Template.layout.helpers({
         "notifications": function () {
             // Return all notifications for the current user

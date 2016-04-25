@@ -24,6 +24,26 @@ FlowRouter.route('/profile/:id', {
         });
     }
 });
+FlowRouter.route('/editprofile/:id', {
+    subscriptions: function() {
+       this.register('userData', Meteor.subscribe('userData'));
+     },
+
+        action: function (params) {
+              FlowRouter.subsReady(function() {
+                var user = Userdata.findOne({_id: params.id});
+                  user = user || {}
+                var editId = Meteor.userId();
+      
+                 BlazeLayout.render("layout", {
+                     area: "editprofileTemp",
+                     params: params,
+                     editId: editId,
+                     user: user   
+                 });
+            });
+         }
+ });
 
 if (Meteor.isServer) {
     Meteor.publish("userData", function () {
@@ -126,38 +146,38 @@ if (Meteor.isClient) {
         }
     });
 
-    //get input values from editprofile template and display it to profile page
-    // Template.editprofileTemp.events({
+   // get input values from editprofile template and display it to profile page
+     Template.editprofileTemp.events({
 
-    //     "submit .editprofileTemp": function(event) {
-    //         event.preventDefault();
+        "submit .editprofileTemp": function(event) {
+             event.preventDefault();
             
-    //        var gender = event.target.gender.value 
-    //         console.log("gender" + gender);
+            var gender = event.target.gender.value 
+            console.log("gender" + gender);
 
-    //         //editId is userID
-    //          Meteor.call("editProfile",this.editId(), {
+             //editId is userID
+              Meteor.call("editProfile",this.editId(), {
 
-    //             firstname: firstname.value,
-    //             lastname: lastname.value,
-    //             experience: experience.value,
-    //             education: education.value,
-    //             skills: skills.value,
-    //             gender: gender,
-    //             phonenumber: phonenumber.value,
+                 firstname: firstname.value,
+                 lastname: lastname.value,
+                 experience: experience.value,
+                 education: education.value,
+                 skills: skills.value,
+                 gender: gender,
+                phonenumber: phonenumber.value,
        
-    //         }, function (err, id) {
-    //             if (id) {
-    //                 FlowRouter.go("/profile/" + id);
-    //             } else {  
-    //                  console.log("you are getting error " );
-    //                 console.log(err);
-    //             }
-    //         });
-    //     }
+             }, function (err, id) {
+                 if (id) {
+                     FlowRouter.go("/profile/" + id);
+                 } else {  
+                      console.log("you are getting error " );
+                     console.log(err);
+                 }
+             });
+         }
 
        
-    // });
+     });
 
     Template.loginBox.events({
         "submit .loginBox": function(e) {
@@ -200,49 +220,4 @@ if (Meteor.isClient) {
     });
 
 }
-
-
-FlowRouter.route('/register', {
-    action: function(params) {
-        BlazeLayout.render("layout", {area: "register"});
-    }
-});
-
-FlowRouter.route('/profile/:id', {
-    subscriptions: function() {
-        this.register('userData', Meteor.subscribe('userData'));
-        this.register('soundcloud', Meteor.subscribe('soundcloud'));
-    },
-    action: function(params) {
-        FlowRouter.subsReady(function() {
-   
-            var user = Meteor.users.findOne({_id: params.id});
-            BlazeLayout.render("layout", {
-                area: "profile",
-                params: params,
-                user: user
-            });
-        });
-    }
-});
-// FlowRouter.route('/editprofile/:id', {
-//     subscriptions: function() {
-//         this.register('userData', Meteor.subscribe('userData'));
-//     },
-
-//         action: function (params) {
-//              FlowRouter.subsReady(function() {
-//                 var user = Userdata.findOne({_id: params.id});
-//                  user = user || {}
-//                var editId = Meteor.userId();
-      
-//                 BlazeLayout.render("layout", {
-//                     area: "editprofileTemp",
-//                     params: params,
-//                     editId: editId,
-//                     user: user   
-//                 });
-//             });
-//         }
-// });
 
