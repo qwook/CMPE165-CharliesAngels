@@ -18,7 +18,7 @@
                 <td>{{formatDate dateCreated}}</td>
                 <td>{{description}}</td>
                 <td>{{status}}</td>
-                <td><a href="/application/{{_id}}" class="btn btn-primary" id="viewApplication"><span class="glyphicon glyphicon-search"></span></a>
+                <td><a href="/myApplications/{{_id}}" class="btn btn-primary" id="viewApplication"><span class="glyphicon glyphicon-search"></span></a>
                     {{#if status="new"}}
                     <a href="/editApplication/{{_id}}" class="btn btn-warning" id="editApplication"><span class="glyphicon glyphicon-pencil"></span></a>
                     <button class="btn btn-danger" id="appTrash"><span class="glyphicon glyphicon-trash"></span></button>

@@ -16,7 +16,7 @@
                 <td><a href="/profile/{{userId}}">{{userId}}</a></td>
                 <td>{{formatDate dateCreated}}</td>
                 <td>{{status}}</td>
-                <td><a href="#" class="btn btn-primary" id="viewApplication"><span class="glyphicon glyphicon-search"></span></a>
+                <td><a href="/gig/{{gigId}}/gigApplications/{{_id}}" class="btn btn-primary" id="viewApplication"><span class="glyphicon glyphicon-search"></span></a>
                     {{#if status="new"}}
                     <button class="btn btn-primary" id="chooseApplicant"><span class="glyphicon glyphicon-check"></span></button>
                     <button class="btn btn-danger" id="declineApplicant"><span class="glyphicon glyphicon-remove"></span></button>

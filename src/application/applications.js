@@ -1,78 +1,130 @@
 Application = new Mongo.Collection("application");
 
 FlowRouter.route('/myApplications', {
+    subscriptions: function () {
+        this.register('application', Meteor.subscribe('application'));
+    },
     action: function (params) {
-        var service = Services.findOne({_id: params.gigId});
-        BlazeLayout.render("layout", {
-            area: "myApplications",
-            params: params,
-            service: service
+        FlowRouter.subsReady(function () {
+            var applications = Application.find({userId: Meteor.userId()}).fetch();
+            //this gives you access to all the service properties
+            var mapped = applications.map(function (application, index) {
+                application.gig = Services.findOne(application.gigId);
+
+                return application;
+            });
+
+            BlazeLayout.render("layout", {
+                area: "myApplications",
+                params: params,
+                applications: mapped
+            });
         });
     }
 });
+//page for viewing an application
+FlowRouter.route('/myApplications/:id', {
+    subscriptions: function () {
+        this.register('application', Meteor.subscribe('application'));
+    },
+    action: function (params) {
+        FlowRouter.subsReady(function () {
+
+            var application = Application.findOne({_id: params.id});
+
+            var service = Services.findOne({_id: application.gigId});
+
+
+            BlazeLayout.render("layout", {
+                area: "applicationPage",
+                params: params,
+                service: service,
+                application: application
+            });
+        });
+    }
+});
+//page for editing an application if it is NEW status
 FlowRouter.route('/editApplication/:id', {
     subscriptions: function () {
         this.register('application', Meteor.subscribe('application'));
     },
     action: function (params) {
         FlowRouter.subsReady(function () {
-            var service = Services.findOne({_id: params.gigId});
-
+            var application = Application.findOne({_id: params.id});
+            var service = Services.findOne({_id: application.gigId});
             BlazeLayout.render("layout", {
                 area: "editApplication",
                 params: params,
-                service:service
+                service: service,
+                application: application
             });
         });
     }
 });
 //Page for applying to a gig
 FlowRouter.route('/apply/:id', {
+    subscriptions: function () {
+        this.register('application', Meteor.subscribe('application'));
+    },
     action: function (params) {
+        FlowRouter.subsReady(function () {
+            //making space if needing functions here
+            var service = Services.findOne({_id: params.id});
+            service = service || {}
+            var employer = Meteor.users.findOne({_id: service.employer});
 
-        //making space if needing functions here
-        var service = Services.findOne({_id: params.id});
-        service = service || {}
-        var employer = Meteor.users.findOne({_id: service.employer});
-
-        BlazeLayout.render("layout", {
-            area: "applyForm",
-            params: params,
-            service: service,
-            employer: employer
+            BlazeLayout.render("layout", {
+                area: "applyForm",
+                params: params,
+                service: service,
+                employer: employer
+            });
         });
     }
 });
 //page for vewing a specific gig's applications
 FlowRouter.route('/gig/:gigId/gigApplications/', {
+    subscriptions: function () {
+        this.register('application', Meteor.subscribe('application'));
+    },
     action: function (params) {
-        var service = Services.findOne({_id: params.gigId});
-        var applications = Application.find({gigId: params.gigId, status: {$not: "declined"}}).fetch();
+        FlowRouter.subsReady(function () {
+            var service = Services.findOne({_id: params.gigId});
+            var applications = Application.find({gigId: params.gigId, status: {$not: "declined"}}).fetch();
 
-        BlazeLayout.render("layout", {
-            area: "gigApplications",
-            params: params,
-            service: service,
-            applications: applications
+            BlazeLayout.render("layout", {
+                area: "gigApplications",
+                params: params,
+                service: service,
+                applications: applications
+            });
         });
     }
 });
-//page for viewing an application
-FlowRouter.route('/application/:id', {
+//viewing a specific application from a gig's list of applicants
+FlowRouter.route('/gig/:gigId/gigApplications/:id', {
+    subscriptions: function () {
+        this.register('application', Meteor.subscribe('application'));
+    },
     action: function (params) {
-        
-        var service = Services.findOne({_id: params.gigId});
-        var application = Application.findOne({_id: params.id});
+        FlowRouter.subsReady(function () {
 
-        BlazeLayout.render("layout", {
-            area: "applicationPage",
-            params: params,
-            service: service,
-            application: application
-            
+            var application = Application.findOne({_id: params.id});
+
+            var service = Services.findOne({_id: application.gigId});
+
+
+            BlazeLayout.render("layout", {
+                area: "applicationPage",
+                params: params,
+                service: service,
+                application: application
+            });
         });
     }
 });
+
 if (Meteor.isServer) {
 
     Meteor.publish("application", function () {
@@ -101,8 +153,8 @@ if (Meteor.isServer) {
             });
             return newApplication;
         },
-        "updateApplication": function(id, applicationObj){
-            if (Meteor.userId()==null) {
+        "updateApplication": function (id, applicationObj) {
+            if (Meteor.userId() == null) {
                 console.log("not logged in");
                 return false;
             }
@@ -115,7 +167,7 @@ if (Meteor.isServer) {
                 console.log("no descript");
                 return false;
             }
-            Application.update(id, {$set: {description: serviceObj.description} });
+            Application.update(id, {$set: {description: applicationObj.description}});
             return id;
         }
     });
@@ -172,15 +224,14 @@ if (Meteor.isClient) {
         }
     });
     Template.editApplication.events({
-        "submit .editApplication": function(event, template){
+        "submit .editApplication": function (event, template) {
             event.preventDefault();
             console.log(this);
             Meteor.call("updateApplication", this.application()._id, {
                 description: event.target.description.value,
-                
             }, function (err, id) {
                 if (id) {
-                    FlowRouter.go("/application/" + id);
+                    FlowRouter.go("/myApplications/" + id);
                 } else {
                     console.log(err);
                 }
@@ -188,36 +239,6 @@ if (Meteor.isClient) {
 
         }
     });
-    Template.myApplications.helpers({
-        "applications": function () {
-            //this finds your own applications
-            var applications = Application.find({userId: Meteor.userId()});
-            //forcibly mapping relationships
-            //this attaches the gig to the application so you can use things like title, employerName, etc.
-            var mapped = applications.map(function (application, index) {
-                application.gig = Services.findOne({_id: application.gigId});
-
-                return application;
-            })
-            return mapped;
-        }
-
-    });
-    Template.applicationPage.helpers({
-        "application": function () {
-            //this finds your own applications
-            var applications = Application.find({userId: Meteor.userId()});
-            //forcibly mapping relationships
-            //this attaches the gig to the application so you can use things like title, employerName, etc.
-            var mapped = applications.map(function (application, index) {
-                application.gig = Services.findOne({_id: application.gigId});
-
-                return application;
-            })
-            return mapped;
-        }
-    });
-
     Template.myApplications.events({
         "click #appTrash": function (event) {
             event.preventDefault();
@@ -227,7 +248,7 @@ if (Meteor.isClient) {
             }
         },
         "click #viewApplication": function (event) {
-            FlowRouter.go("/application/:id");
+            FlowRouter.go("/myApplications/:id");
         },
         "click #editApplication": function (event) {
 
@@ -242,7 +263,7 @@ if (Meteor.isClient) {
             var applicationId = event.target.dataset.applicationId;
             //change status to processing of the chosen app, the button will go to the contract page
             Application.update(applicationId, {status: "processing"}, function () {
-                // hey go to asdf
+                // hey go to asdf. CHANGE THIS
                 window.location = event.target.href;
             });
         },
