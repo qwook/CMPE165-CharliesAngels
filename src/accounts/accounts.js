@@ -162,9 +162,19 @@ if (Meteor.isClient) {
     Template.loginBox.events({
         "submit .loginBox": function(e) {
             e.preventDefault();
-
-            Meteor.loginWithPassword(e.target.email.value, e.target.password.value);
-        }
+            var user = Meteor.users.findOne({
+                $and: [
+                    {username: e.target.email.value},
+                    {password: e.target.password.value} 
+                ]
+            });
+            if (!user) {
+                var invalid = confirm("Invalid email and/or password!");
+            }
+            else {
+                Meteor.loginWithPassword(e.target.email.value, e.target.password.value);
+            }
+        }  
     });
 
 
