@@ -99,7 +99,6 @@ if (Meteor.isServer) {
             return id;
         }
 
-
     });
 }
 
@@ -120,7 +119,7 @@ if (Meteor.isClient) {
             }
             else 
             {
-                var term = confirm("You can not register without agree with our terms of service!");
+                var term = confirm("You can not register without agreeing with our terms of service!");
                 FlowRouter.go("/register");
             }
         }
@@ -162,19 +161,13 @@ if (Meteor.isClient) {
     Template.loginBox.events({
         "submit .loginBox": function(e) {
             e.preventDefault();
-            var user = Meteor.users.findOne({
-                $and: [
-                    {username: e.target.email.value},
-                    {password: e.target.password.value} 
-                ]
+            
+            Meteor.loginWithPassword(e.target.email.value, e.target.password.value, function(err){
+                if(err) {
+                    var invalid = confirm("Invalid email and/or password!");
+                }
             });
-            if (!user) {
-                var invalid = confirm("Invalid email and/or password!");
-            }
-            else {
-                Meteor.loginWithPassword(e.target.email.value, e.target.password.value);
-            }
-        }  
+        }
     });
 
 
