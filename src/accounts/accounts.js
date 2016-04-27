@@ -112,7 +112,7 @@ if (Meteor.isClient) {
             // console.log("you are checking: " + e.target.checked.value);
 
 
-             if (e.target.checkbox.value == true ) {
+             if (e.target.checkbox.checked == true ) {
                 Meteor.call("register", e.target.email.value, e.target.password.value, function() {
                     Meteor.loginWithPassword(e.target.email.value, e.target.password.value);
                     FlowRouter.go("/");
@@ -120,7 +120,7 @@ if (Meteor.isClient) {
             }
             else 
             {
-                // var term = confirm("You can not register without agree with our terms of service!");
+                var term = confirm("You can not register without agree with our terms of service!");
                 FlowRouter.go("/register");
             }
         }
