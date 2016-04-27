@@ -1,3 +1,5 @@
+Contracts = new Mongo.Collection('contracts');
+
 FlowRouter.route('/contract/:id', {
     subscriptions: function() {
         this.register('application', Meteor.subscribe('application'));
@@ -10,10 +12,19 @@ FlowRouter.route('/contract/:id', {
             
             // Given just the application id, we can get the following:
             var service = Services.findOne({_id: application.gigId});
-            var musician = Meteor.users.findOne({_id: application.userId});
             var employer = Meteor.users.findOne({_id: service.employer});
+            var musician = Meteor.users.findOne({_id: application.userId});
             
-            console.log(service);
+            
+            var contract = Contracts.insert({
+                serviceId: service._id,
+                applicationId: application._id,
+                employerId: employer._id,
+                musicianId: musician._id,
+                dateSigned: new Date()
+            });
+            
+            console.log(contract);
             
             BlazeLayout.render("layout", {
                 area: "contractPage",
@@ -57,11 +68,15 @@ FlowRouter.route('/signcontract', {
 
 if (Meteor.isServer) {
     
+    Meteor.publish("contracts", function () {
+        return Contracts.find({});
+    });
+    
     Meteor.methods({
         // Updates services.live to false so that it
         //  is no longer searchable since contract
         //  is finalized once it is signed.
-        "finalizeContract": function (mService) {
+        "finalizeContract": function (mService, mContract) {
             return Services.update(mService._id, mService);
         }
     });
@@ -78,18 +93,18 @@ if (Meteor.isServer) {
 }
 
 if (Meteor.isClient) {
+
     Template.contractPage.events({
         "submit .contract-signature-musician": function () {
             event.preventDefault();
             
+            var mContract = Contracts.findOne({_id: this.contract()._id});
             var mService = Services.findOne({_id: this.service()._id});
             mService.signedByMusician = new Date();
             mService.live = false;
-            Meteor.call("finalizeContract", mService, function (err) {
-                    console.log(err)
+            Meteor.call("finalizeContract", mService, mContract, function (err) {
+                console.log(err)
             });
-            
-           FlowRouter.rou
         }
     });
 }
