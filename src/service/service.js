@@ -175,6 +175,8 @@ if (Meteor.isServer) {
                 description: serviceObj.description,
                 wage: serviceObj.wage
             });
+            //because the service is deleted, it needs to delete any applications associated with the gigid. 
+            Application.remove({gigId: id});
         }
     });
     
