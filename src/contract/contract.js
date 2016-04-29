@@ -1,31 +1,27 @@
-Services = function () {
-    return Services;
-}
-
-Applications = function () {
-    return Application;
-}
-
 FlowRouter.route('/contract/:id', {
     subscriptions: function() {
         this.register('application', Meteor.subscribe('application'));
     },
     action: function (params) {
         FlowRouter.subsReady(function() {
-            var application = Applications.findOne({_id: params._id});
-            console.log('TEST');
-            // Test application id: vRTYxj2m6fwircSfB
+            console.log('TEST TEST');
+            // Test application id: DW3dvWg8uBNMidjY
+            var application = Application.findOne({_id: params.id});
+            
             
             // Given just the application id, we can get the following:
             var service = Services.findOne({_id: application.gigId});
             var musician = Meteor.users.findOne({_id: application.userId});
             var employer = Meteor.users.findOne({_id: service.employer});
             
+            console.log(service);
+            
             BlazeLayout.render("layout", {
                 area: "contractPage",
                 employerName: employer.emails[0].address,
                 musicianName: musician.emails[0].address,
                 service: service,
+                params: params
             });
         });
     }
@@ -41,7 +37,7 @@ FlowRouter.route('/signcontract', {
             
             console.log('TEST');
             // Testing service
-            var service = Services.findOne({_id: "aq24GX6Rpi9ojchC2"});
+            var service = Services.findOne({_id: "BBDKDeFMuZi3Gricv"});
             console.log(service);
             console.log(service.employer);
             // This will let us know whether it is employer or not.
@@ -60,33 +56,38 @@ FlowRouter.route('/signcontract', {
 });
 
 if (Meteor.isServer) {
+    
+    Meteor.methods({
+        // Updates services.live to false so that it
+        //  is no longer searchable since contract
+        //  is finalized once it is signed.
+        "finalizeContract": function (mService) {
+            return Services.update(mService._id, mService);
+        }
+    });
+    
     //file:/server/init.js
     // setup for uploading pdfs
     Meteor.startup(function () {
         UploadServer.init({
-            tmpDir: '/Users/Krystle/Documents/GitHub/CMPE165-CharliesAngels/uploads/tmp',
-            uploadDir: '/Users/Krystle/Documents/GitHub/CMPE165-CharliesAngels/uploads',
+            tmpDir: Meteor.rootPath + '/uploads/tmp',
+            uploadDir: Meteor.rootPath + '/uploads',
             checkCreateDirectories: true
-//            getDirectory: function(file, formData) {
-//                return formData.contentType;
-//            },
-//            finished: function(file, folder, formFields) {
-//                console.log('Write to database: ' + folder + '/' + file);
-//            }
         });
     });
 }
 
 if (Meteor.isClient) {
-    
     Template.contractPage.events({
         "submit .contract-signature-musician": function () {
             event.preventDefault();
-            var mService = this.service();
+            
+            var mService = Services.findOne({_id: this.service()._id});
             mService.signedByMusician = new Date();
-            if (mservice.SignedByEmployer) {
-                service.live = false;
-            }
+            mService.live = false;
+            Meteor.call("finalizeContract", mService, function (err) {
+                    console.log(err)
+            });
         }
     });
 }

@@ -41,3 +41,8 @@ node_modules
 client/stylesheets/vendor/custom.bootstrap.less
 client/stylesheets/vendor/custom.bootstrap.mixins.import.less
 
+# Stylesheet
+#client/stylesheets/vendor/custom.bootstrap.less
+#client/stylesheets/vendor/custom.bootstrap.mixins.import.less
+
+/nbproject/private/

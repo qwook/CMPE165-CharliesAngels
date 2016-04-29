@@ -5,6 +5,13 @@ FlowRouter.route('/', {
 });
 
 if (Meteor.isClient) {
+
+    Meteor.startup(function() {
+        GoogleMaps.load();
+
+      
+    });
+
     Template.layout.events({
         "click .post-a-gig": function (event) {
         },
@@ -12,7 +19,15 @@ if (Meteor.isClient) {
         },
         "click .logout": function (event) {
             event.preventDefault();
-            Meteor.logout();
+            Meteor.logout(function(){
+                FlowRouter.go("/");
+                
+            });
+        },
+
+        "click .sign-in-fb": function(e) {
+            Meteor.loginWithFacebook();
+            e.preventDefault();
         }
     });
 
@@ -33,13 +48,34 @@ if (Meteor.isClient) {
             });
             return mapped;
         },
+        "mapOptions": function() {
+            // Make sure the maps API has loaded
+            if (GoogleMaps.loaded()) {
+                // Map initialization options
+                return {
+                    streetViewControl: false, // hide the yellow Street View pegman
+                    scaleControl: false, // allow users to zoom the Google Map
+                    center: new google.maps.LatLng(37.3382, -121.8863),
+                    disableDefaultUI: true,
+                    draggable: false,
+                    scrollwheel: false,
+                    panControl: false,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP,
+                    zoom: 16,
+                    styles: [
+                        {
+                            "stylers": [
+                            { "hue": "#002bff" },
+                            { "invert_lightness": true },
+                            { "saturation": -63 },
+                            { "lightness": 30 },
+                            { "gamma": 0.54 }
+                            ]
+                        }
+                    ]
+                };
+            }
+        }
     });
 
-    Template.layout.helpers({
-        "notifications": function () {
-            // Return all notifications for the current user
-            
-            return Notification.find({userId: Meteor.userId()});
-        },
-    });
 }

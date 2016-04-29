@@ -7,37 +7,48 @@
 
 <template name="feedbackListing">
 	<div>
-		<h6>John Smith</h6>
+		<h6>{{fromUser}}</h6>
+
 		{{#each stars}}
 		<span class="glyphicon glyphicon-star"></span>&nbsp;
 		{{/each}}
+		<p>{{description}}</p>
 		<hr />
 	</div>
 </template>
 
 <template name="stars">
-	
+		<span class="glyphicon glyphicon-star star" style="{{style 1}}" value="1"></span>&nbsp;
+		<span class="glyphicon glyphicon-star star" style="{{style 2}}" value="2"></span>&nbsp;
+		<span class="glyphicon glyphicon-star star" style="{{style 3}}" value="3"></span>&nbsp;
+		<span class="glyphicon glyphicon-star star" style="{{style 4}}" value="4"></span>&nbsp;
+		<span class="glyphicon glyphicon-star star" style="{{style 5}}" value="5"></span>&nbsp;
+		<input type="text" name="stars" class="hiddenStar" style="display: none;" />
 </template>
 
 <template name="createFeedback">
 
 	<form class="createFeedback">
-		from: {{displayName currentUser}}<br/>
-		to: 
+		From: {{displayName currentUser}}<br/>
+		To: 
 		<select name="to">
 			{{#each users}}
 				<option value={{_id}}>{{displayName this}}</option>
 			{{/each}}
-		</select><br/>
-		{{> stars}}
-		service: 
+		</select>
+		<br/>	{{> stars}}
+		<br/> Service: 
 		<select name="service">
 			{{#each services}}
 				<option value={{_id}}>{{title}}</option>
 			{{/each}}
 		</select><br/>
-		<input name="description" type="text" />
-		<input type="submit" />
+		<dd> Add a comment </dd>
+		<dd>
+			 <textarea name="description" id="description" class="inputbox" rows="3" cols="30"></textarea>
+         </dd>
+	
+		<input class="btn btn-primary" type="submit" style="color:white;background-color:green;border:2px solid #336600;padding:5px" />
 	</form>
 
 </template>

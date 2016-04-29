@@ -1,16 +1,30 @@
 <template name="gigApplications">
-    <h3>Applications for {{application.gigId}}</h3>
-    <hr />
-
-    <div class="col-xs-9">
-
-        <div class="row">
-            {{#each gigApplications}}
-            <div class="col-xs-6">
-
-                {{> gigApplicationServiceListing gigApplication=this }}
-            </div>
+    <h3>Applications for {{service.title}} ({{service._id}})</h3>
+    <hr /> 
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Applicant</th>
+                <th>Date Sent</th>
+                <th>Status</th>
+                <th>Controls</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each applications}}
+            <tr>
+                <td><a href="/profile/{{userId}}">{{userId}}</a></td>
+                <td>{{formatDate dateCreated}}</td>
+                <td>{{status}}</td>
+                <td><a href="/gig/{{gigId}}/gigApplications/{{_id}}" class="btn btn-primary" id="viewApplication"><span class="glyphicon glyphicon-search"></span></a>
+                    {{#if status="new"}}
+                    <button class="btn btn-primary" id="chooseApplicant"><span class="glyphicon glyphicon-check"></span></button>
+                    <button class="btn btn-danger" id="declineApplicant"><span class="glyphicon glyphicon-remove"></span></button>
+                    {{/if}}
+                </td>
+                
+            </tr>
             {{/each}}
-        </div>
-    </div>
+        </tbody>
+    </table>
 </template>
