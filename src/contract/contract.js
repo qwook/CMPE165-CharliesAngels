@@ -16,6 +16,14 @@ FlowRouter.route('/contract/:id', {
             var musician = Meteor.users.findOne({_id: application.userId});
             
             
+            application.acceptedByEmployer = true;
+            application.wage = service.wage;
+            
+            this.Meteor.call("updateApp", application, function (err) {
+                console.log("Error updating application in contract.js");
+                console.log(err);
+            });
+
             var contract = Contracts.insert({
                 serviceId: service._id,
                 applicationId: application._id,
@@ -31,40 +39,13 @@ FlowRouter.route('/contract/:id', {
                 employerName: employer.emails[0].address,
                 musicianName: musician.emails[0].address,
                 service: service,
+                application: application,
                 params: params
             });
         });
     }
 });
 
-// FOR TESTING
-FlowRouter.route('/signcontract', {
-     subscriptions: function() {
-        this.register('services', Meteor.subscribe('services'));
-    },
-    action: function(params) {
-        FlowRouter.subsReady(function() {
-            
-            console.log('TEST');
-
-            // Testing service
-            var service = Services.findOne({_id: "BBDKDeFMuZi3Gricv"});
-            console.log(service);
-            console.log(service.employer);
-            // This will let us know whether it is employer or not.
-            // service.isUserEmployer = service.employer === Meteor.userId():
-            var employer = Meteor.users.findOne({_id: service.employer});
-            
-            // fill in later
-            BlazeLayout.render("layout", {
-                area: "contractPage",
-                employerName: "employer",
-                musicianName: "musician",
-                service: null,
-            });
-        });
-    }
-});
 
 if (Meteor.isServer) {
     
@@ -73,11 +54,14 @@ if (Meteor.isServer) {
     });
     
     Meteor.methods({
-        // Updates services.live to false so that it
+        // Updates service.live to false so that it
         //  is no longer searchable since contract
         //  is finalized once it is signed.
-        "finalizeContract": function (mService, mContract) {
+        "finalizeContract": function (mService) {
             return Services.update(mService._id, mService);
+        },
+        "updateApp": function (mApplication) {
+            return Application.update(mApplication._id, mApplication);
         }
     });
     
@@ -102,9 +86,47 @@ if (Meteor.isClient) {
             var mService = Services.findOne({_id: this.service()._id});
             mService.signedByMusician = new Date();
             mService.live = false;
-            Meteor.call("finalizeContract", mService, mContract, function (err) {
-                console.log(err)
+            Meteor.call("finalizeContract", mService, function (err) {
+                console.log("Error updating service in contract.js");
             });
-        }
+        },
+        "click .contract-edit-wage": function (event) {
+            event.preventDefault();
+            
+            var mApplication = this.application()
+            mApplication.editingWage = true;
+            mApplication.acceptedByEmployer = false;
+            
+            BlazeLayout.render("layout", {
+                area: "contractPage",
+                employerName: this.employerName(),
+                musicianName: this.musicianName(),
+                service: this.service(),
+                application: mApplication,
+                params: this.params()
+            });
+        },
+        "submit .contract-edit-wage-submit": function (event) {
+            event.preventDefault();
+            
+            var mApplication = this.application();
+            mApplication.wage = event.target.serviceWage.value;
+            mApplication.editingWage = false;
+            mApplication.waitingOnEmployer = true;
+            
+            Meteor.call("updateApp", mApplication, function (err) {
+                console.log("Error updating application in contract.js");
+                console.log(err);
+            });
+                        
+            BlazeLayout.render("layout", {
+                area: "contractPage",
+                employerName: this.employerName(),
+                musicianName: this.musicianName(),
+                service: this.service(),
+                application: mApplication,
+                params: this.params()
+            });
+        },
     });
 }
