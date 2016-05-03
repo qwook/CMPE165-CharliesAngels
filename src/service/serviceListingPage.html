@@ -36,9 +36,12 @@
 
         </div>
         <div class="col-xs-9">
-            <h2>{{service.title}}</h2>
-            <h4>{{service.category}}</h4>
-            <h5>Date posted: {{date}}</h5>
+
+            <h2>{{service.title}}</h2> 
+
+            <h4>In {{service.category}} category</h4>
+            <h5>Date posted: {{date}} </h5>
+             <h5>{{countDate}} day ago</h5>
             <hr />
             <div class="row">
                 <div class="col-xs-6">
@@ -47,7 +50,7 @@
                     <!-- If user is not the employer of the service post then display the apply for position button  -->
                     {{#if currentUser}}
                     {{#unless service.isUserEmployer}}
-                    <p><a href="/apply/{{service._id}}" class="btn btn-primary" role="button">Apply</a></p>
+                    <p><a href="/apply/{{service._id}}" class="btn btn-primary" id="editPost" role="button">Apply</a></p>
                     {{/unless}}
                     {{/if}}
                 </div>
