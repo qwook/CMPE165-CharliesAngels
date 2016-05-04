@@ -1,0 +1,134 @@
+
+<template name ="editprofileTemp">
+<form class="editprofileTemp">
+    <div name ="Profile">
+        <div class = "inner">
+            <span class ="corners-top">
+                <span></span>
+            </span>
+            <div style="width: 100%;">
+
+                <div id="cpmain" class="ucp-main">
+                   
+                        <h2> Edit Your Profile</h2>
+                        <div class="panel">
+                            <div class="inner">
+                                <span class="corners-top">
+                                    <span></span>
+                                </span>
+                                <p>
+                                    "Notice that these information can be viewed by employers. Please careful provide your information below.
+                                    The information with * is required."
+                                </p>
+                                <fieldset>
+                                    <dl>
+                                        <dt>
+                                            <label for="firstname">First Name*:</label>
+                                        </dt>
+                                        <dd>
+                                            <input type="text" name="firstname" value={{user.firstname}} id="firstname" maxlength="255" class="inputbox"  placeholder="First name"> 
+                                        </dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>
+                                            <label for="lastname">Last Name*:</label>
+                                        </dt>
+                                        <dd>
+                                            <input type="text" name="lastname" id="lastname" maxlength="255" class="inputbox" placeholder="Last name"> 
+                                        </dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>
+                                            <label for="address">Adresss:</label>
+                                        </dt>
+                                        <dd>
+                                            <input type="text" name="address" id="address" maxlength="255" value class="inputbox" placeholder="123 address"> 
+                                        </dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>
+                                            <label for="experience">Work Experience:</label>
+                                        </dt>
+                                        <dd>
+                                            <textarea name="experience" id="experience" class="inputbox" rows="3" cols="30"> 
+                                            </textarea>
+                                        </dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>
+                                            <label for="education">Education:</label>
+                                        </dt>
+                                        <dd>
+                                            <textarea name="education" id="education" class="inputbox" rows="3" cols="30"> 
+                                            </textarea>
+                                        </dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>
+                                            <label for="skills">Skills:</label>
+                                        </dt>
+                                        <dd>
+                                            <textarea name="skills" id="skills" class="inputbox" rows="3" cols="30"> 
+                                            </textarea>
+                                        </dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>
+                                            <label for="gender_x">Gender:</label>
+                                            <br>
+                                            <span>Please identify your gender</span>
+                                        </dt>
+                                        <dd>
+                                            <label for="gender_m">
+                                                <input type="radio" name="gender" id="gender_m" value="Male" checked="checked">Male
+                                            </label>
+                                            <label for="gender_f">
+                                                <input type="radio" name="gender" id="gender_f" value="Female">Female
+                                            </label>
+                                            <label for="gender_x">
+                                                <input type="radio" name="gender" id="gender_x" value="">Prefer Not to Answer
+                                            </label>
+                                        </dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>
+                                            <label for="phonenumber">Phone Number: *</label>                
+                                            <br>
+                                            <span>Please enter your phone number</span>
+                                        </dt>
+                                        <dd>
+                                            <input type="text" class="inputbox autowidth" name="phonenumber" id="phonenumber" size="17" maxlength="13" vk_1fbd3="subscribed">
+                                        </dd>
+
+                                    </dl>
+                                </fieldset>
+                                <span class="corners-bottom">
+                                    <span></span>
+                                </span>
+                            </div>
+                        </div>
+                        
+                            <button type="reset" id="resetButton" onclick="myFunction()"  value="Reset form" class="btn btn-primary button2" >Reset
+                            </button>
+                            
+                            <button type="submit" id="submitButton" name="submit" href ="/editprofile/{{this._id}}" value="Submit" class="btn btn-warning button1">Submit
+                            </button>
+                        
+
+                </div>
+                <div class="clear"></div>
+            </div>
+            <span class="corners-bottom">
+                <span></span>
+            </span>
+        </div>
+    </div>
+
+ </form>
+     <script>
+    function myFunction() {
+        <!--document.find("id").reset()-->
+        document.getElementById("cpmain").reset();
+    }
+    </script>
+</template>
