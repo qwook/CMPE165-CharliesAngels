@@ -1,0 +1,38 @@
+<!-- want top area displaying the gig you are applying for in a condensed format --> 
+<!-- want a section to fill out information, and/or upload a file as a resume  -->
+
+<template name="applyForm">
+    <!-- GIG YOU ARE APPLYING TO REFERENCE IS HERE -->
+    <div class="row">
+        <h6>{{service.title}}</h6>
+        <p><b>Looking for:</b> {{service.description}}</p>
+        <p><b>Paying:</b> ${{service.wage}} lump sum</p>
+    </div>
+    <!--line separating the gig and the application form-->
+    <hr>
+    <form class="applyForm" id="applyForm">
+
+        <div class="form-group">
+            <label for="description">Please give a description of your qualifications:</label>
+            <input type="text" name="description" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="resume"><h4>Resume</h4></label>
+            <p class="help-block">Upload your own resume in a pdf.</p>
+            {{> upload_bootstrap contentType='pdfs' fileTypes='.pdf' }}
+          </div>  
+          <button name="sendApplication" class="btn btn-primary" type="submit" role="button">Send in Application</button>
+    </form>
+</template>
+
+<template name="editApplication">
+    <form class="editApplication">
+        <div class="form-group">
+            <label for="description">Please give a description of your qualifications:</label>
+            <input type="text" value={{application.description}} class="form-control" name="description" id="description">
+        </div>
+        
+         <button class="btn btn-success"  type="submit">Save</button>
+    </form>
+
+</template>

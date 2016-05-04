@@ -51,7 +51,7 @@
                 <div class="navbar-header">
                     <a class="navbar-brand" href="/"><img style="height: 30px; display: inline-block; margin: 0; margin-top: -5px; margin-right: 5px;" src="/images/logo.png" />&nbsp;Gigsearch</a>
                 </div>
-                <form class="navbar-form navbar-left"  role="search">
+                <form class="navbar-form navbar-left" role="search">
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Electronic, San Jose">
                         <span class="input-group-btn">
@@ -59,6 +59,18 @@
                         </span>
                     </div>
                 </form>
+
+                <select name="category">
+                    <option value= "" >Select Category</option>
+                    <option value= "Clarinet" >Clarinet</option>
+                    <option value= "Company Music" >Company Music</option>
+                    <option value= "Church Music" >Church Music</option>
+                    <option value= "Mysic Academy<" >Mysic Academy</option>
+                    <option value= "Opera/Dance" >Opera/Dance</option>
+                    <option value= "Private Music" >Private Music</option>
+                    <option value= "Violin<" >Violin</option>
+                    <option value= "Voice/Choir" >Voice/Choir</option>
+                </select>
                
 
                 <div class="navbar-form navbar-right">
@@ -69,18 +81,8 @@
 
                     <!-- notification area, only shows if user is logged in-->
                     
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="glyphicon glyphicon-exclamation-sign"></span> <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            {{#each notifications}}
-                            <li><div>{{description}}</div></li>
-                            <li role="separator" class="divider"></li>
-                            {{/each}}
-                        </ul>
-                    </div>
-                    
+                    {{> notifications}}
+
                     <!-- for button on right, should have log in/ logout/settings/profile?-->
                    
                     <div class="btn-group">

@@ -1,16 +1,35 @@
 <template name="myApplications">
     <h3>My Applications</h3>
     <hr />
-
-    <div class="col-xs-9">
-
-        <div class="row">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Gig</th>
+                <th>Date Sent</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Controls</th>
+            </tr>
+        </thead>
+        <tbody>
             {{#each applications}}
-            <div class="col-xs-6">
-
-                {{> myApplicationsServiceListing application=this}}
-            </div>
+            <tr>
+                <td><a href="/gig/{{gigId}}">{{gig.title}}</a></td>
+                <td>{{formatDate dateCreated}}</td>
+                <td>{{description}}</td>
+                <td>{{status}}</td>
+                <td><a href="/myApplications/{{_id}}" class="btn btn-primary" id="viewApplication"><span class="glyphicon glyphicon-search"></span></a>
+                    {{#if status="new"}}
+                    <a href="/editApplication/{{_id}}" class="btn btn-warning" id="editApplication"><span class="glyphicon glyphicon-pencil"></span></a>
+                    <button class="btn btn-danger" id="appTrash"><span class="glyphicon glyphicon-trash"></span></button>
+                    {{/if}}
+                </td>
+                
+            </tr>
             {{/each}}
-        </div>
-    </div>
+        </tbody>
+    </table>
+    
+    
+   
 </template>

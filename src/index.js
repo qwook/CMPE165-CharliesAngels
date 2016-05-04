@@ -1,11 +1,9 @@
+
 FlowRouter.route('/', {
     action: function (params) {
-        //var categorySelected = Meteor.findOne().category;
-        BlazeLayout.render("layout", {
-            area: "index" });
+        BlazeLayout.render("layout", {area: "index"});
     }
 });
-
 
 if (Meteor.isClient) {
 
@@ -22,22 +20,17 @@ if (Meteor.isClient) {
         },
         "click .logout": function (event) {
             event.preventDefault();
-            Meteor.logout();
+            Meteor.logout(function(){
+                FlowRouter.go("/");
+                
+            });
         },
 
         "click .sign-in-fb": function(e) {
             Meteor.loginWithFacebook();
             e.preventDefault();
         }
-      
-   
     });
-
-    Template.index.currentViewIs = function(view) {
-        if(Session.get('currentView') == view)
-            return true;
-        return false;
-    }
 
     Template.contractPage.helpers({
         "services": function () {
@@ -83,31 +76,13 @@ if (Meteor.isClient) {
                     ]
                 };
             }
-        },
-     
-          
-        "change .category": function(e) {
-            Session.set('test','test');
         }
-
     });
 
-
-    Template.index.helpers({
-        services: function() {
-            if(Session.get('All')) {
-                return services.find();
-            } else {
-                return services.find();
-            }
-        }
-    })
-    Template.layout.helpers({
-        "notifications": function () {
-            // Return all notifications for the current user
-            
-            return Notification.find({userId: Meteor.userId()});
-        },
-    });
+    Template.index.currentViewIs = function (view) {
+        if( Session.get('currentView') == view)
+            return true;
+        return false;
+    };
 
 }

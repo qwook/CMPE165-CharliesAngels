@@ -35,6 +35,13 @@ FlowRouter.route('/signcontract', {
         FlowRouter.subsReady(function() {
             
             console.log('TEST');
+            // Testing service
+            var service = Services.findOne({_id: "BBDKDeFMuZi3Gricv"});
+            console.log(service);
+            console.log(service.employer);
+            // This will let us know whether it is employer or not.
+            // service.isUserEmployer = service.employer === Meteor.userId():
+            var employer = Meteor.users.findOne({_id: service.employer});
             
             // fill in later
             BlazeLayout.render("layout", {
