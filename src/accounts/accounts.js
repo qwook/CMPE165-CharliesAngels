@@ -146,7 +146,7 @@ if (Meteor.isClient) {
     });
 
    // get input values from editprofile template and display it to profile page
-     Template.editprofileTemp.events({
+     /*Template.editprofileTemp.events({
 
         "submit .editprofileTemp": function(event) {
              event.preventDefault();
@@ -176,7 +176,7 @@ if (Meteor.isClient) {
          }
 
        
-     });
+     });*/
 
     Template.loginBox.events({
         "submit .loginBox": function(e) {

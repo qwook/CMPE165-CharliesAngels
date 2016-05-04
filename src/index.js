@@ -33,6 +33,11 @@ if (Meteor.isClient) {
    
     });
 
+    Template.index.currentViewIs = function(view) {
+        if(Session.get('currentView') == view)
+            return true;
+        return false;
+    }
 
     Template.contractPage.helpers({
         "services": function () {

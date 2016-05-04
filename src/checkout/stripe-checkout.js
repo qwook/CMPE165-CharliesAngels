@@ -7,7 +7,7 @@ FlowRouter.route('/stripe-checkout', {
     }
   });
 if (Meteor.isClient) {
-  Template.hello.events({
+/*  Template.hello.events({
     'click button': function(e) {
       e.preventDefault();
 
@@ -24,7 +24,7 @@ if (Meteor.isClient) {
         }
       });
     }
-  });
+  });*/
 }
 
 if (Meteor.isServer) {
