@@ -63,6 +63,7 @@ modules-runtime@0.6.2
 momentjs:moment@2.13.1
 mongo@1.1.6
 mongo-id@1.0.3
+mrgalaxy:stripe@2.2.2
 nemo64:bootstrap@3.3.5_2
 nemo64:bootstrap-data@3.3.5
 npm-bcrypt@0.7.8_2
