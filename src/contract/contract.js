@@ -9,19 +9,23 @@ FlowRouter.route('/contract/:id', {
             console.log('TEST TEST');
             // Test application id: AjvkESAD3RGgN2vdY
             var application = Application.findOne({_id: params.id});
-            
+            console.log(application.wage);
             // Given just the application id, we can get the following:
             var service = Services.findOne({_id: application.gigId});
             var employer = Meteor.users.findOne({_id: service.employer});
             var musician = Meteor.users.findOne({_id: application.userId});
             
-            
+            // Update application wage if visitng contract for first time
             application.acceptedByEmployer = true;
-            application.wage = service.wage;
+            if (!application.wage) {
+                application.wage = service.wage;
+            }
             
-            this.Meteor.call("updateApp", application, function (err) {
-                console.log("Error updating application in contract.js");
-                console.log(err);
+            Meteor.call("updateApp", application, function(err) {
+                if (err) {
+                    console.log('Error updating application in contract.js');
+                    console.log(err);
+                }
             });
 
             var contract = Contracts.insert({
@@ -40,6 +44,7 @@ FlowRouter.route('/contract/:id', {
                 musicianName: musician.emails[0].address,
                 service: service,
                 application: application,
+                userId: Meteor.userId(),
                 params: params
             });
         });
@@ -79,7 +84,7 @@ if (Meteor.isServer) {
 if (Meteor.isClient) {
 
     Template.contractPage.events({
-        "submit .contract-signature-musician": function () {
+        "submit .contract-signature-musician": function (event) {
             event.preventDefault();
             
             var mContract = Contracts.findOne({_id: this.contract()._id});
@@ -90,6 +95,18 @@ if (Meteor.isClient) {
                 console.log("Error updating service in contract.js");
             });
         },
+        "submit .contract-signature-employer": function (event) {
+            event.preventDefault();
+            
+            var mContract = Contracts.findOne({_id: this.contract()._id});
+            var mService = Services.findOne({_id: this.service()._id});
+            mService.signedByMusician = new Date();
+            mService.live = false;
+            Meteor.call("finalizeContract", mService, function (err) {
+                console.log("Error updating service in contract.js");
+            });
+        },
+        // Shows form to edit wage
         "click .contract-edit-wage": function (event) {
             event.preventDefault();
             
@@ -106,6 +123,7 @@ if (Meteor.isClient) {
                 params: this.params()
             });
         },
+        // Submits form to edit wage
         "submit .contract-edit-wage-submit": function (event) {
             event.preventDefault();
             
@@ -115,8 +133,10 @@ if (Meteor.isClient) {
             mApplication.waitingOnEmployer = true;
             
             Meteor.call("updateApp", mApplication, function (err) {
-                console.log("Error updating application in contract.js");
-                console.log(err);
+                if (err) {
+                    console.log("Error update application in contract.js");
+                    console.log(err);
+                }
             });
                         
             BlazeLayout.render("layout", {
