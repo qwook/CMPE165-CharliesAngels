@@ -119,7 +119,6 @@ if (Meteor.isServer) {
             return id;
         }
 
-
     });
 }
 
@@ -132,7 +131,7 @@ if (Meteor.isClient) {
             // console.log("you are checking: " + e.target.checked.value);
 
 
-             if (e.target.checkbox.value == true ) {
+             if (e.target.checkbox.checked == true ) {
                 Meteor.call("register", e.target.email.value, e.target.password.value, function() {
                     Meteor.loginWithPassword(e.target.email.value, e.target.password.value);
                     FlowRouter.go("/");
@@ -140,7 +139,7 @@ if (Meteor.isClient) {
             }
             else 
             {
-                // var term = confirm("You can not register without agree with our terms of service!");
+                var term = confirm("You can not register without agreeing with our terms of service!");
                 FlowRouter.go("/register");
             }
         }
@@ -182,8 +181,12 @@ if (Meteor.isClient) {
     Template.loginBox.events({
         "submit .loginBox": function(e) {
             e.preventDefault();
-
-            Meteor.loginWithPassword(e.target.email.value, e.target.password.value);
+            
+            Meteor.loginWithPassword(e.target.email.value, e.target.password.value, function(err){
+                if(err) {
+                    var invalid = confirm("Invalid email and/or password!");
+                }
+            });
         }
     });
 
