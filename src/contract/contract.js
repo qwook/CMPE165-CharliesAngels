@@ -103,7 +103,14 @@ if (Meteor.isClient) {
             mService.signedByMusician = new Date();
             mService.live = false;
             Meteor.call("finalizeContract", mService, function (err) {
-                console.log("Error updating service in contract.js");
+                if (err) {
+                    console.log("Error finalizing contract in contract.js");
+                }
+            });
+            Meteor.call("createNotification", {
+                userId: mService.employer,
+                mService
+                title: "Contract signed by musician",
             });
         },
         // Shows form to edit wage
