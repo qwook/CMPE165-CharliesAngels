@@ -71,7 +71,13 @@ if (Meteor.isServer) {
         UploadServer.init({
             tmpDir: Meteor.rootPath + '/uploads/tmp',
             uploadDir: Meteor.rootPath + '/uploads',
-            checkCreateDirectories: true
+            checkCreateDirectories: true,
+            getDirectory: function(fileInfo, formData) {
+                return formData.contentType;
+            },
+            finished: function(fileInfo, fileData) {
+                // How to associate with contract?
+            }
         });
     });
 }

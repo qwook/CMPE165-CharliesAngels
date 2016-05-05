@@ -135,7 +135,7 @@ if (Meteor.isServer) {
         "createApplication": function (applicationObj) {
             var existing = Application.find({userId: applicationObj.userId, gigId: applicationObj.gigId});
             if (existing.fetch().length > 0)
-                throw new Meteor.Error("existing-application", "A user is applyng twice to the same gig.");
+                throw new Meteor.Error("existing-application", "A user is applying twice to the same gig.");
 
             var newApplication = Application.insert({
                 //user that is applying for position
@@ -170,6 +170,22 @@ if (Meteor.isServer) {
             Application.update(id, {$set: {description: applicationObj.description}});
             return id;
         }
+    });
+    
+        //file:/server/init.js
+    // setup for uploading pdfs
+    Meteor.startup(function () {
+        UploadServer.init({
+            tmpDir: Meteor.rootPath + '/uploads/tmp',
+            uploadDir: Meteor.rootPath + '/uploads',
+            checkCreateDirectories: true,
+            getDirectory: function(fileInfo, formData) {
+                return formData.contentType;
+            },
+            finished: function(fileInfo, fileData) {
+                // Applications.update or insert?? Not sure how to associate with Applications object yet
+            }
+        });
     });
 }
 
