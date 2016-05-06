@@ -7,7 +7,7 @@ FlowRouter.route('/contract/:id', {
     action: function (params) {
         FlowRouter.subsReady(function() {
             console.log('TEST TEST');
-            // Test application id: AjvkESAD3RGgN2vdY
+            // Test application id: GFrMEiAzG4eb2dBrg
             var application = Application.findOne({_id: params.id});
             console.log(application.wage);
             // Given just the application id, we can get the following:
@@ -139,6 +139,8 @@ if (Meteor.isClient) {
                 title: "Contract signed by musician",
                 description: "The musician has signed the application you send him and the contract is now finalized"
             });
+            
+            FlowRouter.go("/payment/" + mApplication._id);
         },
         "submit .contract-signature-employer": function (event) {
             event.preventDefault();

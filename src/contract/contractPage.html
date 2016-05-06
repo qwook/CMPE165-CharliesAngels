@@ -33,16 +33,16 @@
             {{> upload_bootstrap contentType='pdfs' fileTypes='.pdf' }}
         </div>
         
-        {{#if application.acceptedByEmployer}}
-            <form class="contract-signature-employer">
-                <input type="text" placeholder="Employer signature" />
-                <a href="/" class="btn btn-primary btn-sm" type="submit">Sign contract</a>
-            </form>
-            {{else}}
+<!--         {{#if application.acceptedByEmployer}} -->
+<!--             <form class="contract-signature-employer"> -->
+<!--                 <input type="text" placeholder="Employer signature" /> -->
+<!--                 <a href="/" class="btn btn-primary btn-sm" type="submit">Sign contract</a> -->
+<!--             </form> -->
+<!--             {{else}} -->
             <form class="contract-signature-musician">
                 <input type="text" placeholder="Musican signature" />
-                <a href="/" class="btn btn-primary btn-sm" type="submit">Sign contract</a>
+                <a href="/payment/{{application._id}}" class="btn btn-primary btn-sm" type="submit">Sign contract</a>
             </form>
-        {{/if}}
+<!--         {{/if}} -->
     </body>
 </template>
