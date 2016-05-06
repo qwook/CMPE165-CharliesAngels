@@ -13,7 +13,17 @@
             <p>
                 Title: {{service.title}} <br />
                 Description: {{service.description}} <br />
-                Pay: ${{service.wage}}  <a class="btn btn-primary btn-xs" role="button">Edit pay</a>  <br />
+                Pay:
+                    {{#if application.editingWage}}
+                        <form class="contract-edit-wage-submit">
+                            <input type="number" name="serviceWage" value={{application.wage}} placeholder="Enter wage"/>
+                            <button type="input" class="btn btn-secondary btn-xs">Submit</button>
+                        </form>
+                    {{else}}
+                        ${{application.wage}}
+                        <a class="contract-edit-wage btn btn-secondary btn-xs" role="button" type="submit">Edit pay</a>
+                    {{/if}}
+                    <br />
             </p>
         </div>
         
@@ -23,10 +33,16 @@
             {{> upload_bootstrap contentType='pdfs' fileTypes='.pdf' }}
         </div>
         
-        <form class="contract-signature-musician">
-            <input type="text" placeholder="Musican signature" />
-            <input type="submit" />
-        </form>
-
+        {{#if application.acceptedByEmployer}}
+            <form class="contract-signature-employer">
+                <input type="text" placeholder="Employer signature" />
+                <a href="/" class="btn btn-primary btn-sm" type="submit">Sign contract</a>
+            </form>
+            {{else}}
+            <form class="contract-signature-musician">
+                <input type="text" placeholder="Musican signature" />
+                <a href="/" class="btn btn-primary btn-sm" type="submit">Sign contract</a>
+            </form>
+        {{/if}}
     </body>
 </template>
