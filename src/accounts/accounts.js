@@ -123,6 +123,26 @@ if (Meteor.isServer) {
 }
 
 if (Meteor.isClient) {
+
+    Template.registerHelper("displayName", function(user) {
+        if (!user) {
+            return "N/A";
+        }
+
+        try {
+            if (user.services && user.services.facebook) {
+                if (user.services.facebook.name) {
+                    return user.services.facebook.name;
+                }
+            }
+
+            return censorEmail(user.emails[0].address) || user._id;
+        } catch(e) {
+            return "ERROR";
+        }
+    });
+
+
     Meteor.subscribe("userData");
     Template.register.events({
    
@@ -192,23 +212,6 @@ if (Meteor.isClient) {
 
 
     Template.profile.helpers({
-
-   
-        displayName: function(user) {
-            if (!user) {
-                return "N/A";
-            }
-
-
-            if (user.services && user.services.facebook) {
-                if (user.services.facebook.name) {
-                    return user.services.facebook.name;
-                }
-            }
-            //this 0 is undefined
-            return user.emails[0].address;
-        },
-
         description: function() {
             if (this.user().profile) {
                 return this.user().profile.description || ""

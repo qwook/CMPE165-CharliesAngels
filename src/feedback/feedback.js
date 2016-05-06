@@ -117,21 +117,7 @@ if (Meteor.isClient) {
 
         users: function() {
             return Meteor.users.find({});
-        },
-
-        displayName: function(user) {
-            if (!user) {
-                return "N/A";
-            }
-
-            if (user.services && user.services.facebook) {
-                if (user.services.facebook.name) {
-                    return user.services.facebook.name;
-                }
-            }
-            return censorEmail(user.emails[0].address) || user._id;
         }
-
     });
 
     Template.createFeedback.events({
