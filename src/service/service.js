@@ -223,7 +223,7 @@ if (Meteor.isClient) {
             }
             else {
 
-                     Meteor.call("createService", {
+                    Meteor.call("createService", {
                     title: event.target.serviceTitle.value,
                     description: event.target.serviceDescription.value,
                     wage: parseFloat(event.target.serviceWage.value),
@@ -251,14 +251,14 @@ if (Meteor.isClient) {
         "submit .editpost": function () {
             event.preventDefault();
 
-                //check whether selected category
-             if (event.target.category.value === "") {
-                var checkCategory = confirm("Please select a category!"); 
+            //check whether selected category
+            if (event.target.category.value === "") {
+            var checkCategory = confirm("Please select a category!"); 
 
             }
             else
             {
-                     Meteor.call("updateService", this.service()._id, {
+                    Meteor.call("updateService", this.service()._id, {
                     title: event.target.serviceTitle.value,
                     description: event.target.serviceDescription.value,
                     category: event.target.category.value,
@@ -295,7 +295,7 @@ if (Meteor.isClient) {
     });
 
     Template.layout.helpers({
-          services: function() {
+        services: function() {
             return Services.find({});
         }
     })
@@ -303,7 +303,7 @@ if (Meteor.isClient) {
     Template.serviceListing.events({     
         
         "click #deletePost": function(event) {
-             event.preventDefault();
+            event.preventDefault();
 
             var result = confirm("Do you really want to delete this post?");
             if (result) {
@@ -317,7 +317,7 @@ if (Meteor.isClient) {
     Template.serviceListingPage.events({     
         
         "click #deletePost": function(event) {
-             event.preventDefault();
+            event.preventDefault();
 
             var result = confirm("Do you really want to delete this post?");
             if (result) {
@@ -396,25 +396,37 @@ if (Meteor.isClient) {
     
     });
 
-             Template.index.helpers({
+            Template.index.helpers({
           
             filteredPosts: function () {
-              var ListId = Session.get('selectedListId');
-              return Services.find({category: ListId});
-            },
-            filteredWage: function () {
-                var filter = Session.get('filter');
-                  
-      
-                if (filter != null) {
-                    return Services.find(filter, {sort: {createdAt: -1}});
+            var ListId = Session.get('selectedListId');
+            var filter = Session.get('filter');
 
-                } else {
-                    return Services.find({}, {sort: {createdAt: -1}});
-                };
-      
+
+            //if list is not empty, find category
+                if (ListId != null && filter != null) 
+                {
+                   return Services.find(filter, {sort: {createdAt: -1}}, {category: ListId});
+
+                } 
+                else if  (ListId == null && filter == null) 
+                {
+                    return Services.find({},{sort: {createdAt: -1}}, {category: ListId});
+                }
+
+                else if  (ListId == null && filter != null) 
+                {
+                      return Services.find(filter, {sort: {createdAt: -1}});
+
+                } else 
+                {
+                    return Services.find({}, {category: ListId});
+                }
+                
+              
             },
-             filteredDate: function () {
+ 
+            filteredDate: function () {
                 var filter = Session.get('filter');
                   
       
@@ -426,40 +438,84 @@ if (Meteor.isClient) {
                 };
       
             }
-          });
-          Template.index.events({
+        });
+            Template.index.events({
 
-            'change select': function (e) {
-              var ListId = $(e.currentTarget).val();
-              Session.set('selectedListId', ListId);
-            },
+            "submit .filter": function () {
+            event.preventDefault();
+            console.log("clicked");
 
-            'click .wageFilter': function(event) {
-                var filter = event.target.getAttribute('data-filter');
+            var ListId = event.target.category.value;
+            Session.set('selectedListId', ListId);
+
+            var filter = event.target.getAttribute('data-filter');
                 var filterNum = parseInt(filter);
-                 var min= 0;
+                var min= 0;
                 var max= 0;
 
                 if(filterNum === 25){
                     min = 0;
-                     max = 25;
+                    max = 25;
                 }
                 else if(filterNum === 50){
                     min = 25;
-                     max = 50;
+                    max = 50;
                 }
                 else if(filterNum === 100){
                     min = 50;
-                     max = 100;
+                    max = 100;
                 }
                 else if(filterNum === 200){
                     min = 100;
-                     max = 200;
+                    max = 200;
                 }
 
                 else if(filterNum === 10000){
                     min = 200;
-                     max = 10000;
+                    max = 10000;
+                }
+                else {
+                    max = 1000*1000; // give a big number if wage is more than 10000, check this later
+                }
+                    
+                Session.set('filter', { wage: {$gte: min, $lte: max} } );
+
+             },
+
+            /*
+            'change select': function (e) {
+                var ListId = $(e.currentTarget).val();
+                Session.set('selectedListId', ListId);
+            },
+            */
+            /*
+
+            'click .wageFilter': function(event) {
+                var filter = event.target.getAttribute('data-filter');
+                var filterNum = parseInt(filter);
+                var min= 0;
+                var max= 0;
+
+                if(filterNum === 25){
+                    min = 0;
+                    max = 25;
+                }
+                else if(filterNum === 50){
+                    min = 25;
+                    max = 50;
+                }
+                else if(filterNum === 100){
+                    min = 50;
+                    max = 100;
+                }
+                else if(filterNum === 200){
+                    min = 100;
+                    max = 200;
+                }
+
+                else if(filterNum === 10000){
+                    min = 200;
+                    max = 10000;
                 }
                 else {
                     max = 1000*1000; // give a big number if wage is more than 10000, check this later
@@ -468,10 +524,12 @@ if (Meteor.isClient) {
 
                 Session.set('filter', { wage: {$gte: min, $lte: max} } );
             },
-             'click .dateFilter': function(event) {
+            */
+
+            'click .dateFilter': function(event) {
                 var filter = event.target.getAttribute('data-filter');
                 var filterNum = parseInt(filter);
-                 var start = 0;
+                var start = 0;
                 var end = 0;
 
             var filterNumFormat = moment(currentDate).format('MMMM DD, YYYY h:mm');
@@ -485,24 +543,24 @@ if (Meteor.isClient) {
 
                 if(filterNum === 1){
                     start = 0;
-                     end = 1;
+                    end = 1;
                 }
                 else if(filterNum === 3){
                     start = 1;
-                     end = 3;
+                    end = 3;
                 }
                 else if(filterNum === 7){
                     start = 3;
-                     end = 7;
+                    end = 7;
                 }
                 else if(filterNum === 30){
                     start = 7;
-                     end = 30;
+                    end = 30;
                 }
 
                 else if(filterNum === 10000){
                     start = 31;
-                     end = 10000;
+                    end = 10000;
                 }
                 else {
                     end = 1000*1000; // give a big number if wage is more than 10000, check this later

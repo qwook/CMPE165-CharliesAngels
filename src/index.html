@@ -12,14 +12,15 @@
     </div>
 
     <div class="row">
-         <div class="col-md-3">
+        <div class="col-md-3">
             <h6>Filters</h6>
             <hr />
+            <form class ="filter">
             <ul>
                 <li>
-                     <select>
+                <select name="category">
 
-                   <option value= "" >Select Category</option>
+                        <option value= "" >Select Category</option>
                         <option value= "Clarinet">Clarinet</option>
                         <option value= "Company Music" >Company Music</option>
                         <option value= "Church Music" >Church Music</option>
@@ -29,12 +30,12 @@
                         <option value= "Violin<" >Violin</option>
                         <option value= "Voice/Choir" >Voice/Choir</option>
          
-                    </select>
+                </select>
                 </li>
                 <b>Wage</b>
                 
 
-                 <span >
+                <span >
                     <div>                        
                         <a class="a-link-normal wageFilter" data-filter="24" href="#">Under $25</a>
                         
@@ -50,7 +51,7 @@
                         <div>
                         <a class="a-link-normal wageFilter" data-filter="100" href="#">$50 to $100</a>
                         
-                    </div>
+                        </div>
                 </span>
                 <span>
                         <div>
@@ -59,15 +60,22 @@
                     </div>
                 </span>
                 <span>
-                    <div>
+                <div>
                     <a class="a-link-normal wageFilter" data-filter="10000" href="#">$200 & Above</a>
                         
                     </div>
                 </span>
+                    <div class="row">
+                    <div class="col-xs-6">
+                <button class="btn btn-success" type="submit">Search</button>
+            </div>
+        </div>
+            </ul>
+        </form>
 
                 <b>Date</b>
 
-                 <span >
+                <span >
                     <div>                        
                         <a class="a-link-normal dateFilter" data-filter="1" href="#">In 1 day</a>
                         
@@ -93,14 +101,14 @@
                 </span>
                 <span>
                     <div>
-                    <a class="a-link-normal dateFilter" data-filter="10000" href="#">Above 1 month</a>
+                        <a class="a-link-normal dateFilter" data-filter="10000" href="#">Above 1 month</a>
                         
                     </div>
                 </span>
 
  
       
-            </ul>
+        
         </div>
 
         <div class="col-md-12">
@@ -108,34 +116,34 @@
             <!-- <hr /> -->
             <div class="row">
 
-              <hr/>
-              <h4>Search Result</h4>
+            <hr/>
+                <h4>Search Result</h4>
    
                  
-                  {{#each filteredPosts}}
+                    {{#each filteredPosts}}
                    
-                         <div class="col-xs-12 col-md-6">
+                        <div class="col-xs-12 col-md-6">
                             {{> serviceListing service=this}}
                         </div>
 
-                  {{/each}}
+                    {{/each}}
 
 
                <!--this code works for filteredWage, I dont know how to combine this to filteredPost part
 
-                       {{#each filteredWage}}
-                         <div class="col-xs-12 col-md-6">
+                        {{#each filteredWage}}
+                            <div class="col-xs-12 col-md-6">
                             {{> serviceListing service=this}}
                         </div>
-                      {{/each}}
+                        {{/each}}
 
    
-                     {{#each filteredDate}}
-                         <div class="col-xs-12 col-md-6">
+                        {{#each filteredDate}}
+                            <div class="col-xs-12 col-md-6">
                             {{> serviceListing service=this}}
-                        </div>
-                      {{/each}}
-                      -->
+                            </div>
+                        {{/each}}
+                -->
             </div>
         </div>
     </div>
