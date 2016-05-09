@@ -125,6 +125,12 @@ if (Meteor.isServer) {
 if (Meteor.isClient) {
 
     Template.registerHelper("displayName", function(user) {
+        try {
+          if (typeof user == "string") {
+            user = Meteor.users.findOne({_id: user});
+          }
+        } catch (e) {}
+
         if (!user) {
             return "N/A";
         }

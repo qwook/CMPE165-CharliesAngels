@@ -212,11 +212,11 @@ if (Meteor.isClient) {
                         userId: service.employer,
                         // The notification object can be used for various things but in this
                         // case we're telling the employer someone applied for this service
-                        objectType: "service",
-                        objectTypeId: service._id,
-                        title: "New Application",
-                        // Current logged in user is the applicant
-                        description: "New application from " + Meteor.userId() + ".",
+                        type: "notificationNewApplication",
+                        templateData: {
+                            from: Meteor.userId(),
+                            gigId: service._id
+                        },
                         read: false
                     }, function (err, id) {
                         if (id) {

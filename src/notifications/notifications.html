@@ -1,3 +1,8 @@
+<template name="notificationNewApplication">
+  <li><a href="/gig/{{templateData.gigId}}"><div style="min-width: 300px; padding: 10px">New application from <strong>{{displayName templateData.from}}</strong> for <strong>{{displayGigName templateData.gigId}}</strong></div></a></li>
+  <li role="separator" class="divider"></li>
+</template>
+
 <template name="notifications">
 
   <div class="btn-group">
@@ -7,8 +12,7 @@
       <ul class="dropdown-menu">
           {{#if hasNotifications}}
             {{#each notifications}}
-              <li><div>{{description}}</div></li>
-              <li role="separator" class="divider"></li>
+              {{> Template.dynamic template=type}}
             {{/each}}
           {{else}}
             <li><div style="margin: 20px;" class="text-muted text-center">You have no notifications.</div></li>

@@ -193,6 +193,23 @@ if (Meteor.isClient) {
 
     Meteor.subscribe("services");
 
+    Template.registerHelper("displayGigName", function(gig) {
+        try {
+            console.log(typeof gig);
+            console.log(gig);
+            if (typeof gig == "string") {
+                gig = Services.findOne({_id: gig});
+                console.log("uh");
+            }
+        } catch(e) {}
+
+        try {
+            return gig.title;
+        } catch(e) {
+            return "ERROR";
+        }
+    })
+
     Template.servicePostForm.events({
         "input #serviceWage": function (event) {
             event.target.value = event.target.value.replace(/\D/g, "");

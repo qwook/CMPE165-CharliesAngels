@@ -16,20 +16,16 @@ if (Meteor.isServer) {
 
     Meteor.methods({
         "createNotification": function (notificationObj) {
-            //makes a notification to the employee when you apply for a service listing
+            // makes a notification to the employee when you apply for a service listing
             // createServiceApplicationNotification = function(service) {
             var newNotification = Notification.insert({
-                //user that the notification is going to
+                // user that the notification is going to
                 userId: notificationObj.userId,
-                // what kind of notification is going, aka gig, application, friend request, etc
-                objectType: notificationObj.objectType,
-                //what specific thing you are referencing. aka gig id, user id, etc
-                objectTypeId: notificationObj.objectTypeId,
-                //notification title
-                title: notificationObj.title,
-                //description of notification
-                description: notificationObj.description,
-                //lets you know if the notification was read
+                // type of notification to switch between templates
+                type: notificationObj.type,
+                // Data necessary for the Template (see notifications.html)
+                templateData: notificationObj.templateData,
+                // has the user clicked on the notification
                 read: false
             });
             return newNotification;
