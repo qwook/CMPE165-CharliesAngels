@@ -1,5 +1,3 @@
-
-
 var Userdata = new Meteor.Collection("userData");
 
 FlowRouter.route('/register', {
@@ -60,48 +58,6 @@ if (Meteor.isServer) {
         },
         
         "editProfile": function(id, profileObj) {
-        
-           
-            if (!this.userId) {
-                console.log("not logged in");
-                return false;
-            }
-
-            if (!profileObj) {
-                console.log("no profile obj");
-                return false;
-            }
-
-            if (typeof (profileObj.firstname) != "string" || profileObj.firstname.length == 0) {
-                console.log("no firstname");
-                return false;
-            }
-
-            if (typeof (profileObj.lastname) != "string" || profileObj.lastname.length == 0) {
-                console.log("no lastname");
-                return false;
-            }
-             if (typeof (profileObj.experience) != "string" || profileObj.experience.length == 0) {
-                console.log("no experience");
-                return false;
-            }
-             if (typeof (profileObj.education) != "string" || profileObj.education.length == 0) {
-                console.log("no education");
-                return false;
-            }
-             if (typeof (profileObj.skills) != "string" || profileObj.skills.length == 0) {
-                console.log("no skills");
-                return false;
-            }
-             if (typeof (profileObj.gender) != "string" ) {
-                console.log("no gender");
-                return false;
-            }
-
-            if (Number.isNaN(parseInt(profileObj.phonenumber, 11))) {
-                console.log("no phonenumber");
-                return false;
-            }
 
               Meteor.users.update(id, {$set: {
                 employer: id,
@@ -146,14 +102,14 @@ if (Meteor.isClient) {
     });
 
    // get input values from editprofile template and display it to profile page
-     /*Template.editprofileTemp.events({
+     Template.editprofileTemp.events({
 
         "submit .editprofileTemp": function(event) {
              event.preventDefault();
             
             var gender = event.target.gender.value 
             console.log("gender" + gender);
-
+            
              //editId is userID
               Meteor.call("editProfile",this.editId(), {
 
@@ -163,20 +119,20 @@ if (Meteor.isClient) {
                  education: education.value,
                  skills: skills.value,
                  gender: gender,
-                phonenumber: phonenumber.value,
+                 phonenumber: phonenumber.value,
        
              }, function (err, id) {
                  if (id) {
                      FlowRouter.go("/profile/" + id);
                  } else {  
-                      console.log("you are getting error " );
+                     console.log("you are getting error " );
                      console.log(err);
                  }
              });
          }
 
        
-     });*/
+     });
 
     Template.loginBox.events({
         "submit .loginBox": function(e) {
