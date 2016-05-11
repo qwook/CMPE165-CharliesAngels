@@ -1,23 +1,29 @@
 
 <template name="profile">
 
-    <div class="jumbotron" style="color:white;background-color:#008080;text-shadow: 4px 4px 2px #008080">
+    <!-- <div class="jumbotron" style="color:white;background-color:#333"> -->
 
-        <h2>{{displayName user}}</h2>
-        <h4>Experience: {{user.experience}}</h4>
-        <h4>Education: {{user.education}}</h4>
-        <h4>Skills: {{user.skills}}</h4>
-        <h4>Gender: {{user.gender}}</h4>
-        <h4>Phone#: {{user.phonenumber}}</h4>
-        <p>{{description}}</p>
-    </div>
-
-    <div class="row">
+    <div class ="row">
         <div class="col-xs-8">
+            <h1>{{displayName user}}</h1>
+            <h4>{{user.description}}</h4>
+            {{#if user.gender.length}}
+                <h4>Gender: {{user.gender}}</h4>
+            {{/if}}
+        </div>
+        <div class="col-xs-4">
+            <br />
             {{#if isCurrentUser}}
                 <a href="/editprofile/{{user._id}}" class="btn btn-warning editprofile-button"><span class="glyphicon glyphicon-edit"></span> Edit Your Profile</a>
             {{/if}}
+        </div>
+    </div>
 
+    <br />
+    <!-- </div> -->
+
+    <div class="row">
+        <div class="col-xs-8">
             <h4>Portfolio</h4>
             <hr/>
 

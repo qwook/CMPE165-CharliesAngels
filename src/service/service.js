@@ -4,6 +4,7 @@ Services = new Mongo.Collection("services");
 FlowRouter.route('/gig/:id', {
     subscriptions: function () {
         this.register('services', Meteor.subscribe('services'));
+        this.register('feedbackAvg', Meteor.subscribe('feedbackAvg'));
     },
     action: function (params) {
         FlowRouter.subsReady(function () {
@@ -13,6 +14,9 @@ FlowRouter.route('/gig/:id', {
             service = service || {}
             //used for displaying the apply button for employees (see servicelistingpage.html)
             service.isUserEmployer = service.employer === Meteor.userId();
+
+            var feedbackAvg = FeedbackAvg.findOne({_id: service.employer});
+            console.log(feedbackAvg);
 
             // get employer user object
             var user = Meteor.users.findOne({_id: service.employer});
@@ -34,6 +38,7 @@ FlowRouter.route('/gig/:id', {
                 area: "serviceListingPage",
                 params: params,
                 service: service,
+                feedbackAvg: feedbackAvg,
                 employer: user,
                 employerName: userName,
                 date: datePosted
@@ -279,6 +284,10 @@ if (Meteor.isClient) {
     });
 
     Template.serviceListingPage.helpers({
+        stars: function() {
+            // Hack to do a "for i = 0; i < this.rating; i++" in the html...
+            return (new Array(parseInt(this.feedbackAvg().avg)+1)).join().split('');
+        },
         isLoggedIn: function () {
             return Meteor.userId() !== null;
         },        

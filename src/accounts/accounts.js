@@ -59,18 +59,16 @@ if (Meteor.isServer) {
         
         "editProfile": function(id, profileObj) {
 
-              Meteor.users.update(id, {$set: {
-                employer: id,
-                firstname: profileObj.firstname,
-                lastname: profileObj.lastname,
-                experience: profileObj.experience,
-                education: profileObj.education,
-                skills: profileObj.skills,
-                gender: profileObj.gender,
-                phonenumber: profileObj.phonenumber,
+              Meteor.users.update(id, {$set:
+                {
+                    employer: id,
+                    firstname: profileObj.firstname,
+                    lastname: profileObj.lastname,
+                    description: profileObj.description,
+                    gender: profileObj.gender,
+                    phonenumber: profileObj.phonenumber,
                 }
             });
-             console.log("returned "+id);
 
             return id;
         }
@@ -141,9 +139,7 @@ if (Meteor.isClient) {
 
                  firstname: firstname.value,
                  lastname: lastname.value,
-                 experience: experience.value,
-                 education: education.value,
-                 skills: skills.value,
+                 description: description.value,
                  gender: gender,
                  phonenumber: phonenumber.value,
        

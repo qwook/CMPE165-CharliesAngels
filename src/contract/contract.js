@@ -141,9 +141,16 @@ if (Meteor.isClient) {
                 }
             });
             Meteor.call("createNotification", {
+                // The creator of the service is the one who needs to be notified
                 userId: mService.employer,
-                mService
-                title: "Contract signed by musician",
+                // The notification object can be used for various things but in this
+                // case we're telling the employer someone applied for this service
+                type: "notificationContractSigned",
+                templateData: {
+                    from: Meteor.userId(),
+                    gigId: mService._id
+                },
+                read: false
             });
         },
         // Shows form to edit wage

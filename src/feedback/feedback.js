@@ -21,6 +21,40 @@ FlowRouter.route('/createFeedback', {
 
 if (Meteor.isServer) {
 
+    Meteor.publish('feedbackAvg', function() {
+
+        var sub = this;
+        // This works for Meteor 0.6.5
+        var db = MongoInternals.defaultRemoteCollectionDriver().mongo.db;
+
+        // Your arguments to Mongo's aggregation. Make these however you want.
+        var pipeline = [
+            { $group: {
+                _id: "$to",
+                avg: { $avg: "$rating" }
+            }}
+        ];
+
+        db.collection("Feedback").aggregate(        
+            pipeline,
+            // Need to wrap the callback so it gets called in a Fiber.
+            Meteor.bindEnvironment(
+                function(err, result) {
+                    // Add each of the results to the subscription.
+                    _.each(result, function(e) {
+                        // Generate a random disposable id for aggregated documents
+                        sub.added("FeedbackAvg", e._id, e);
+                    });
+                    sub.ready();
+                },
+                function(error) {
+                    Meteor._debug( "Error doing aggregation: " + error);
+                }
+            )
+        );
+
+    });
+
     Meteor.publish('feedback', function() {
         return Feedback.find({});
     });
@@ -72,6 +106,8 @@ if (Meteor.isServer) {
 }
 
 if (Meteor.isClient) {
+
+    FeedbackAvg = new Meteor.Collection('FeedbackAvg');
 
     Template.feedbackList.helpers({
 
@@ -130,7 +166,7 @@ if (Meteor.isClient) {
             Meteor.call("createFeedback",
                 Meteor.userId(),
                 event.target.to.value,
-                event.target.stars.value,
+                parseInt(event.target.stars.value),
                 event.target.description.value,
                 event.target.service.value
             );
