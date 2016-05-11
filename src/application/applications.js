@@ -298,6 +298,15 @@ if (Meteor.isClient) {
         }
     });
 
+    Template.applicationPage.helpers({
+        "statusIs": function(status) {
+            return this.application().status == status;
+        },
+        "applicationSync": function() {
+            return Application.findOne({_id: this.application()._id});
+        }
+    })
+
     Template.applicationPage.events({
         "click .accept-gig-application": function(event) {
             event.preventDefault();
@@ -308,8 +317,8 @@ if (Meteor.isClient) {
 
             var _this = this;
             //change status to processing of the chosen app, the button will go to the contract page
-            Application.update({_id: this._id}, {$set: {status: "processing"}}, function () {
-                FlowRouter.go("/contract/" + _this._id);
+            Application.update({_id: this.application()._id}, {$set: {status: "processing"}}, function () {
+                FlowRouter.go("/contract/" + _this.application()._id);
             });
         },
 
@@ -318,7 +327,7 @@ if (Meteor.isClient) {
 
             var _this = this;
             //change status to processing of the chosen app, the button will go to the contract page
-            Application.update({_id: this._id}, {$set: {status: "declined"}}, function () {
+            Application.update({_id: this.application()._id}, {$set: {status: "declined"}}, function () {
                 FlowRouter.go("/gig/" + _this.service()._id + "/gigApplications/");
             });
         }

@@ -1,15 +1,13 @@
 <template name="paymentPage">
-  <div class="container">
-  <div class='col-md-5'>
-    <h3>Payment for service:</h3>
-    <p>
-      Title: {{service.title}} <br />
-      Description: {{service.description}} <br />
-      Pay: ${{service.wage}} <br />
-    </p>
-  </div>
       <div class='row'>
-          <div class='col-md-4'></div>
+        <div class='col-md-12'>
+          <h3>Payment for service:</h3>
+          <p>
+            Title: {{service.title}} <br />
+            Description: {{service.description}} <br />
+            Pay: ${{service.wage}} <br />
+          </p>
+        </div>
           <div class='col-md-4'>
             <script src='https://js.stripe.com/v2/' type='text/javascript'></script>
             <form accept-charset="UTF-8" action="/" id="payment-form" method="post">
@@ -43,7 +41,7 @@
                 <div class='col-md-12'>
                   <div class='form-control total btn btn-info'>
                     Total:
-                    <span class='amount'>${{application.wage}}</span>
+                    <span class='amount'>${{service.wage}}</span>
                   </div>
                 </div>
               </div>
@@ -63,5 +61,4 @@
           </div>
           <div class='col-md-4'></div>
       </div>
-  </div>
 </template>

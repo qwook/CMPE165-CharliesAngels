@@ -2,19 +2,51 @@
     <h1>Application for <a href="/gig/{{service._id}}">{{service.title}}</a></h1>
 
     <p><b>Musician:</b> <a href="/profile/{{application.userId}}">{{displayName application.userId}}</a></p>
-    <p><b>Date Applied:</b> {{formatDate application.dateCreated}}</p>
-    <p><b>Status:</b> {{application.status}}</p>
-    <p><b>Description:</b> {{application.description}}</p>
+    <p><b>Date Applied:</b> {{formatDate applicationSync.dateCreated}}</p>
+    {{#if applicationSync.paid}}
+    <p><b>Status: Paid!</b></p>
+    {{else}}
+        <p><b>Status:</b> {{applicationSync.status}}</p>
+    {{/if}}
+
+    <p><b>Description:</b> {{applicationSync.description}}</p>
    
+    {{#if isEmployer}}
+      {{#if applicationSync.paid}}
+        {{> createFeedback}}
+      {{/if}}
+    {{else}}
+      {{#if service.signedByMusician}}
+        {{> createFeedback}}
+      {{/if}}
+    {{/if}}
+
+
     {{#if isEmployer}}
       <br />
       <a href="/gig/{{service._id}}/gigApplications/" class="btn btn-primary"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp;View all Applications</a>
-      <a class="accept-gig-application btn btn-success">Accept</a>
-      <a class="reject-gig-application btn btn-danger">Deny</a>
-    {{/if}}
 
-    {{#if service.signedByEmployer}}
-      <a href="/contract/{{application._id}}" class="btn btn-info">View Contract</a>
+      {{#if statusIs "new"}}
+        <a class="accept-gig-application btn btn-success">Accept</a>
+        <a class="reject-gig-application btn btn-danger">Deny</a>
+      {{/if}}
+
+      {{#if statusIs "processing"}}
+        <a href="/contract/{{application._id}}" class="btn btn-info">View Contract</a>
+      {{/if}}
+
+      {{#if service.signedByMusician}}
+        {{#if not applicationSync.paid}}
+          <a href="/payment/{{application._id}}" class="btn btn-info">Pay Now!</a>
+        {{/if}}
+      {{/if}}
+
+    {{else}}
+
+      {{#if service.signedByEmployer}}
+        <a href="/contract/{{application._id}}" class="btn btn-success">View Contract</a>
+      {{/if}}
+
     {{/if}}
 
 </template>

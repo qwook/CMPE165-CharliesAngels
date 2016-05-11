@@ -13,6 +13,11 @@
   <li role="separator" class="divider"></li>
 </template>
 
+<template name="notificationContractSigned">
+  <li style="{{readStyle templateData}}"><a href="/gig/{{templateData.gigId}}/gigApplications/{{templateData.application}}"><div style="width: 300px; padding: 5px; white-space: normal;">Contract signed by <strong>{{displayName templateData.from}}</strong> for <strong>{{displayGigName templateData.gigId}}</strong></div></a></li>
+  <li role="separator" class="divider"></li>
+</template>
+
 <template name="notifications">
 
   <div class="btn-group">

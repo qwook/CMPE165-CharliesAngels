@@ -15,25 +15,29 @@
         </div>
         <div class="row">
             <div class="col-xs-6">
-            <label for="category">Category</label>
-            <br />
-            {{> categoryDropdown}}
-            <br />
-                <select name="category" style="display: none;">
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <!-- <br /> -->
+                    <!-- {{> categoryDropdown}} -->
+                    <!-- <select name="category" style="display: none;"> -->
+                    <select name="category" class="form-control">
 
-                        <option value= "Clarinet" >Select Category</option>
-                        <option value= "Clarinet" >Clarinet</option>
-                        <option value= "Company Music" >Company Music</option>
-                        <option value= "Church Music" >Church Music</option>
-                        <option value= "Mysic Academy<" >Mysic Academy</option>
-                        <option value= "Opera/Dance" >Opera/Dance</option>
-                        <option value= "Private Music" >Private Music</option>
-                        <option value= "Violin<" >Violin</option>
-                        <option value= "Voice/Choir" >Voice/Choir</option>
+                            <option value= "" >Select Category</option>
+                            <option value= "Rock" >Rock</option>
+                            <option value= "Electronic" >Electronic</option>
+                            <option value= "Jazz" >Jazz</option>
+                            <option value= "Mongolian Throat Singing" >Mongolian Throat Singing</option>
+                            <option value= "Clarinet" >Clarinet</option>
+                            <option value= "Company Music" >Company Music</option>
+                            <option value= "Church Music" >Church Music</option>
+                            <option value= "Mysic Academy" >Mysic Academy</option>
+                            <option value= "Opera/Dance" >Opera/Dance</option>
+                            <option value= "Private Music" >Private Music</option>
+                            <option value= "Violin" >Violin</option>
+                            <option value= "Voice/Choir" >Voice/Choir</option>
 
-                </select>
-
-               
+                    </select>
+                </div>
             </div>
             <div class="col-xs-6">
             </div>

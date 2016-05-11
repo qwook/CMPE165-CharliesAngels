@@ -37,17 +37,23 @@
         {{#if isEmployer}}
             <form class="contract-signature-employer">
                 {{#if applicationSync.tosUrl}}
-                    <input class="btn btn-primary" type="submit" value="Send Contract"/>
+                    {{#if not service.signedByEmployer}}
+                        <input class="btn btn-primary" type="submit" value="Send Contract"/>
+                    {{/if}}
                     <a class="btn btn-danger contract-remove-tos">Remove ToS</a>
                 {{/if}}
             </form>
         {{else}}
-            <form class="contract-signature-musician input-group">
-                <input type="text" class="form-control" placeholder="Musican signature" />
-                <span class="input-group-btn">
-                    <input class="btn btn-primary" type="submit" value="Sign contract"/>
-                </span>
-            </form>
+            {{#if not service.signedByMusician}}
+                <form class="contract-signature-musician input-group">
+                    <input type="text" class="form-control" placeholder="Musican signature" />
+                    <span class="input-group-btn">
+                        <input class="btn btn-primary" type="submit" value="Sign contract"/>
+                    </span>
+                </form>
+            {{else}}
+                <p>Already signed!</p>
+            {{/if}}
         {{/if}}
     {{/if}}
 </template>

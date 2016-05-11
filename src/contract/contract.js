@@ -173,7 +173,23 @@ if (Meteor.isClient) {
                 }
             });
 
-            FlowRouter.go('/payment/' + mApplication._id);
+            Meteor.call("createNotification", {
+                // The creator of the service is the one who needs to be notified
+                userId: mService.employer,
+                // The notification object can be used for various things but in this
+                // case we're telling the employer someone applied for this service
+                type: "notificationContractSigned",
+                templateData: {
+                    from: mApplication.userId,
+                    gigId: mService._id,
+                    // contract: mContract._id,
+                    application: mApplication._id
+                },
+                read: false
+            }, function() {
+                alert("Successfully signed contract!");
+            });
+            // FlowRouter.go('/payment/' + mApplication._id);
         },
         "submit .contract-signature-employer": function (event) {
             event.preventDefault();
@@ -190,12 +206,6 @@ if (Meteor.isClient) {
                 }
             });
 
-            console.log("created notification", {
-                    from: mService.employer,
-                    gigId: mService._id,
-                    // contract: mContract._id,
-                    application: application._id
-                });
             Meteor.call("createNotification", {
                 // The creator of the service is the one who needs to be notified
                 userId: application.userId,

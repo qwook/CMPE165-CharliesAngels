@@ -15,10 +15,14 @@
     <div class="row">
         <form class ="filter">
             <div class="col-xs-3">
-                <b>Categories</b>
-                <br />
-                <select name="category">
-                    <option value= "" >Select Category</option>
+                <b>Category</b>
+                <hr />
+                <select name="category" class="category form-control">
+                    <option value= "" >View All</option>
+                    <option value= "Rock" >Rock</option>
+                    <option value= "Electronic" >Electronic</option>
+                    <option value= "Jazz" >Jazz</option>
+                    <option value= "Mongolian Throat Singing" >Mongolian Throat Singing</option>
                     <option value= "Clarinet">Clarinet</option>
                     <option value= "Company Music" >Company Music</option>
                     <option value= "Church Music" >Church Music</option>
@@ -32,7 +36,14 @@
             <div class="col-xs-3">
 
                 <b>Wage</b>
+                <hr />
                 
+                <span >
+                    <div>                        
+                        <a class="a-link-normal wageFilter" data-filter="-1" href="#">All</a>
+                        
+                    </div>
+                </span>
                 <span >
                     <div>                        
                         <a class="a-link-normal wageFilter" data-filter="24" href="#">Under $25</a>
@@ -41,36 +52,31 @@
                 </span>
                 <span>
                     <div>
-                        <a class="a-link-normal wageFilter" data-filter="50" href="#">$25-$50</a>
+                        <a class="a-link-normal wageFilter" data-filter="50" href="#">$25 - $50</a>
                         
                     </div>
                 </span>
                 <span>
                     <div>
-                        <a class="a-link-normal wageFilter" data-filter="100" href="#">$50 to $100</a>
+                        <a class="a-link-normal wageFilter" data-filter="100" href="#">$50 - $100</a>
                         
                         </div>
                 </span>
                 <span>
                     <div>
-                        <a class="a-link-normal wageFilter" data-filter="200" href="#">$100 to $200</a>
+                        <a class="a-link-normal wageFilter" data-filter="200" href="#">$100 - $200</a>
                         
                     </div>
                 </span>
                 <span>
                     <div>
-                        <a class="a-link-normal wageFilter" data-filter="10000" href="#">$200 & Above</a>
+                        <a class="a-link-normal wageFilter" data-filter="10000" href="#">$200+</a>
                         
                     </div>
                 </span>
-                <div class="row">
-                    <div class="col-xs-6">
-                        <button class="btn btn-success" type="submit">Search</button>
-                    </div>
-                </div>
             </div>
         </form>
-
+<!-- 
         <div class="col-xs-6">
 
             <b>Date</b>
@@ -99,9 +105,9 @@
                 <div>
                     <a class="a-link-normal dateFilter" data-filter="10000" href="#">Above 1 month</a>
                 </div>
-            </span>
+            </span> -->
 
-        </div>
+        <!-- </div> -->
     </div>
     <div class="row">
         <div class="col-xs-12">
