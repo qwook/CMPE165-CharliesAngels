@@ -87,6 +87,7 @@ FlowRouter.route('/apply/:id', {
 FlowRouter.route('/gig/:gigId/gigApplications/', {
     subscriptions: function () {
         this.register('application', Meteor.subscribe('application'));
+        this.register('feedbackAvg', Meteor.subscribe('feedbackAvg'));
     },
     action: function (params) {
         FlowRouter.subsReady(function () {
@@ -214,6 +215,7 @@ if (Meteor.isClient) {
                         // case we're telling the employer someone applied for this service
                         type: "notificationNewApplication",
                         templateData: {
+                            application: id,
                             from: Meteor.userId(),
                             gigId: service._id
                         },
@@ -270,6 +272,13 @@ if (Meteor.isClient) {
 
         }
 
+    });
+
+    Template.gigApplications.helpers({
+        "stars": function() {
+            var feedbackAvg = FeedbackAvg.findOne({_id: this.userId}).avg;
+            return (new Array(parseInt(feedbackAvg)+1)).join().split('');
+        }
     });
 
     Template.gigApplications.events({

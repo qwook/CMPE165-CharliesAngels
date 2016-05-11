@@ -7,18 +7,25 @@
                 <th>Applicant</th>
                 <th>Date Sent</th>
                 <th>Status</th>
-                <th>Controls</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             {{#each applications}}
             <tr>
-                <td><a href="/profile/{{userId}}">{{userId}}</a></td>
+                <td>
+                    <a href="/profile/{{userId}}">{{displayName userId}}</a>
+                    <br />
+                    
+                    {{#each stars}}
+                    <span class="glyphicon glyphicon-star"></span>&nbsp;
+                    {{/each}}
+                </td>
                 <td>{{formatDate dateCreated}}</td>
                 <td>{{status}}</td>
-                <td><a href="/gig/{{gigId}}/gigApplications/{{_id}}" class="btn btn-primary" id="viewApplication"><span class="glyphicon glyphicon-search"></span></a>
+                <td><a href="/gig/{{gigId}}/gigApplications/{{_id}}" class="btn btn-primary" id="viewApplication">Details</a>
                     {{#if status="new"}}
-                    <button class="btn btn-primary" id="chooseApplicant"><span class="glyphicon glyphicon-check"></span></button>
+                    <button class="btn btn-success" id="chooseApplicant">Accept</button>
                     <button class="btn btn-danger" id="declineApplicant"><span class="glyphicon glyphicon-remove"></span></button>
                     {{/if}}
                 </td>

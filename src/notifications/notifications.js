@@ -29,12 +29,37 @@ if (Meteor.isServer) {
                 read: false
             });
             return newNotification;
+        },
+
+        "readNotification": function(notificationId) {
+            console.log(notificationId, Meteor.userId());
+            Notification.update({
+                _id: notificationId,
+                userId: Meteor.userId()
+            }, {
+                $set: {read: true}
+            });
         }
     });
 
 }
 
 if (Meteor.isClient) {
+
+    Template.registerHelper("readStyle", function() {
+        if (!this.read) {
+            return "background: rgb(214, 214, 214)";
+        } else {
+            return "";
+        }
+    });
+
+
+    Template.notifications.events({
+        "click li": function() {
+            Meteor.call("readNotification", this._id);
+        }
+    })
 
     Template.notifications.helpers({
         "notifications": function () {
@@ -44,6 +69,16 @@ if (Meteor.isClient) {
         },
         "hasNotifications": function() {
             return Notification.find({userId: Meteor.userId()}).count()>0;
+        },
+        "notificationClass": function() {
+            if (Notification.find({userId: Meteor.userId(), read: false}).count() > 0) {
+                return "danger";
+            } else {
+                return "default"
+            }
+        },
+        "notificationCount": function() {
+            return Notification.count({userId: Meteor.userId(), read: false}).count();
         }
     });
 

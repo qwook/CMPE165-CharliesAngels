@@ -1,18 +1,12 @@
 <template name="applicationPage">
-    <h3>Application for gig:</h3>
-    <!-- GIG YOU ARE APPLYING TO REFERENCE IS HERE -->
-    <div class="row">
-        <h1>{{service.title}}</h1>
-        <p><b>Looking for:</b> {{service.description}}</p>
-        <p><b>Paying:</b> ${{service.wage}} lump sum</p>
-    </div>
-    <h3>Application Information:</h3>
-    <div class="row">
-        <p><b>Applicant:</b>{{application.userId}}</p>
-        <p><b>Date Applied:</b>{{formatDate application.dateCreated}}</p>
-        <p><b>Status:</b>{{application.status}}</p>
-        <p><b>Description:</b>{{application.description}}</p>
-        
-        
-    </div>
+    <h1>Application for <a href="/gig/{{service._id}}">{{service.title}}</a></h1>
+
+    <p><b>Musician:</b> <a href="/profile/{{application.userId}}">{{displayName application.userId}}</a></p>
+    <p><b>Date Applied:</b> {{formatDate application.dateCreated}}</p>
+    <p><b>Status:</b> {{application.status}}</p>
+    <p><b>Description:</b> {{application.description}}</p>
+   
+    <br />
+    <a href="/gig/{{service._id}}/gigApplications/" class="btn btn-primary"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp;View all Applications for {{service.title}}</a>
+
 </template>
