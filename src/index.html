@@ -11,116 +11,132 @@
         <div style="position: absolute; left: 0; right: 0; top: 40%; color: white; font-size: 4rem; text-align: center; padding: 0px 20px">Post and search for music gigs near you!</div>
     </div>
 
+
     <div class="row">
-<!--         <div class="col-md-3">
-            <h6>Filters</h6>
-            <hr />
-            <ul>
-                <li>
-                    Filter 1
-                </li>
-                <li>
-                    Filter 2
-                </li>
-                <li>
-                    Filter 3
-                </li>
-                <li>
-                    Etc
-                </li>
-            </ul>
-        </div> -->
-        <div class="col-md-12">
+        <form class ="filter">
+            <div class="col-xs-3">
+                <b>Categories</b>
+                <br />
+                <select name="category">
+                    <option value= "" >Select Category</option>
+                    <option value= "Clarinet">Clarinet</option>
+                    <option value= "Company Music" >Company Music</option>
+                    <option value= "Church Music" >Church Music</option>
+                    <option value= "Music Academy" >Mysic Academy</option>
+                    <option value= "Opera/Dance" >Opera/Dance</option>
+                    <option value= "Private Music" >Private Music</option>
+                    <option value= "Violin" >Violin</option>
+                    <option value= "Voice/Choir" >Voice/Choir</option>
+                </select>
+            </div>
+            <div class="col-xs-3">
+
+                <b>Wage</b>
+                
+                <span >
+                    <div>                        
+                        <a class="a-link-normal wageFilter" data-filter="24" href="#">Under $25</a>
+                        
+                    </div>
+                </span>
+                <span>
+                    <div>
+                        <a class="a-link-normal wageFilter" data-filter="50" href="#">$25-$50</a>
+                        
+                    </div>
+                </span>
+                <span>
+                    <div>
+                        <a class="a-link-normal wageFilter" data-filter="100" href="#">$50 to $100</a>
+                        
+                        </div>
+                </span>
+                <span>
+                    <div>
+                        <a class="a-link-normal wageFilter" data-filter="200" href="#">$100 to $200</a>
+                        
+                    </div>
+                </span>
+                <span>
+                    <div>
+                        <a class="a-link-normal wageFilter" data-filter="10000" href="#">$200 & Above</a>
+                        
+                    </div>
+                </span>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <button class="btn btn-success" type="submit">Search</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="col-xs-6">
+
+            <b>Date</b>
+
+            <span >
+                <div>                        
+                    <a class="a-link-normal dateFilter" data-filter="1" href="#">In 1 day</a>
+                </div>
+            </span>
+            <span>
+                <div>
+                    <a class="a-link-normal dateFilter" data-filter="3" href="#">1-3 days</a>
+                </div>
+            </span>
+            <span>
+                <div>
+                    <a class="a-link-normal dateFilter" data-filter="7" href="#">3-7 days</a>
+                </div>
+            </span>
+            <span>
+                <div>
+                    <a class="a-link-normal dateFilter" data-filter="30" href="#">7-30 days</a>
+                </div>
+            </span>
+            <span>
+                <div>
+                    <a class="a-link-normal dateFilter" data-filter="10000" href="#">Above 1 month</a>
+                </div>
+            </span>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+
             <!-- <h6>Search Results</h6> -->
             <!-- <hr /> -->
-            <div class="row">
 
-           
-                 <select name="category" id="category">
-           
-
-                        <option value= "" >Select Category</option>
-                        <option value= "Clarinet" >Clarinet</option>
-                       
-
-                        <option value= "Company Music" >Company Music</option>
-                        <option value= "Church Music" >Church Music</option>
-                        <option value= "Music Academy<" >Mysic Academy</option>
-                        <option value= "Opera/Dance" >Opera/Dance</option>
-                        <option value= "Private Music" >Private Music</option>
-                        <option value= "Violin<" >Violin</option>
-                        <option value= "Voice/Choir" >Voice/Choir</option>
-
-                </select>
-         
-  
-                  <button class="category">
-                    <li><a class="test" value="All" href="#">View All</a></li>
-                </button>
-
-
-                {{#if currentViewIs "test"}}
-                    
-                     {{#each services}}       
+            <hr/>
+                <h4>Search Result</h4>
+   
+                 
+                <div class="row">
+                    {{#each filteredPosts}}
+                   
                         <div class="col-xs-12 col-md-6">
                             {{> serviceListing service=this}}
                         </div>
+
                     {{/each}}
-
-                {{else}}
-                    {{#if currentViewIs "Music Academy"}}
-                        {{> Music Academy}}
-                    {{else}}
-                        {{#if currentViewIs "Private Music"}}
-                            {{> Private Music}}
-                        {{else}}
-                            {{#each services}}       
-                                <div class="col-xs-12 col-md-6">
-                                    {{> serviceListing service=this}}
-                                </div>
-                            {{/each}}
-                        {{/if}}
-                    {{/if}}
-                {{/if}}
-                <!--
-                {{#each category in categories}}
-                    {{#if this}}
-                     <div>{{category}}</div>
+                </div>
 
 
-                     {{#each services}}       
-                        <div class="col-xs-12 col-md-6">
+               <!--this code works for filteredWage, I dont know how to combine this to filteredPost part
+                        {{#each filteredWage}}
+                            <div class="col-xs-12 col-md-6">
                             {{> serviceListing service=this}}
                         </div>
-                    {{/each}}
-
-                    
-                    {{/if}}
-                {{/each}}
+                        {{/each}}
+   
+                        {{#each filteredDate}}
+                            <div class="col-xs-12 col-md-6">
+                            {{> serviceListing service=this}}
+                            </div>
+                        {{/each}}
                 -->
-
-                <p>
-                <!--
-                 {{#if get_categories}}
-                        
-                           
-
-                 {{/if}}
-
-                 {{#unless get_categories}}
-                   {{#each services}}       
-                        <div class="col-xs-12 col-md-6">
-                            {{> serviceListing service=this}}
-                        </div>
-                    {{/each}}
-                {{/unless}}
-                -->
-
-       
-
-               
-                </p>
-            </div>
         </div>
     </div>
 </template>
