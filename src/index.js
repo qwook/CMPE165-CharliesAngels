@@ -32,6 +32,10 @@ if (Meteor.isClient) {
         }
     });
 
+    Template.registerHelper("not", function(a) {
+        return !a;
+    });
+
     Template.contractPage.helpers({
         "services": function () {
             return Services.find({});
@@ -40,7 +44,7 @@ if (Meteor.isClient) {
 
     Template.index.helpers({
         "services": function () {
-            var services = Services.find({});
+            var services = Services.find({live: true});
 
             var mapped = services.map(function (service, index, array) {
                 //gives access to index for isUserEmployer flag for the edit and such buttons

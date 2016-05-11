@@ -16,27 +16,26 @@ FlowRouter.route('/contract/:id', {
             var musician = Meteor.users.findOne({_id: application.userId});
             
             // Update application wage if visitng contract for first time
-            application.acceptedByEmployer = true;
-            if (!application.wage) {
-                application.wage = service.wage;
-            }
+            // application.acceptedByEmployer = true;
+            // if (!application.wage) {
+            //     application.wage = service.wage;
+            // }
             
-            Meteor.call("updateApp", application, function(err) {
-                if (err) {
-                    console.log('Error updating application in contract.js');
-                    console.log(err);
-                }
-            });
+            // Meteor.call("updateApp", application, function(err) {
+            //     if (err) {
+            //         console.log('Error updating application in contract.js');
+            //         console.log(err);
+            //     }
+            // });
 
-            var contract = Contracts.insert({
-                serviceId: service._id,
-                applicationId: application._id,
-                employerId: employer._id,
-                musicianId: musician._id,
-                dateSigned: new Date()
-            });
+            // var contract = Contracts.insert({
+            //     serviceId: service._id,
+            //     applicationId: application._id,
+            //     employerId: employer._id,
+            //     musicianId: musician._id,
+            //     dateSigned: new Date()
+            // });
             
-            console.log(contract);
             
             BlazeLayout.render("layout", {
                 area: "contractPage",
@@ -93,6 +92,11 @@ if (Meteor.isServer) {
             return Services.update(mService._id, mService);
         },
         "updateApp": function (mApplication) {
+            var application = Application.findOne({_id: mApplication._id});
+
+            if (mApplication.wage) {
+                Services.update({_id: application.gigId}, {$set: {wage: mApplication.wage}});
+            }
             return Application.update(mApplication._id, mApplication);
         }
     });
@@ -119,6 +123,7 @@ if (Meteor.isClient) {
     Template.contractPage.events({
         "submit .contract-signature-musician": function (event) {
             event.preventDefault();
+            console.log('lel')
             
             var mContract = Contracts.findOne({_id: this.contract()._id});
             var mService = Services.findOne({_id: this.service()._id});
@@ -130,25 +135,36 @@ if (Meteor.isClient) {
         },
         "submit .contract-signature-employer": function (event) {
             event.preventDefault();
+            console.log('lel')
             
-            var mContract = Contracts.findOne({_id: this.contract()._id});
+            // var mContract = Contracts.findOne({_id: this.contract()._id});
             var mService = Services.findOne({_id: this.service()._id});
+            var application = Application.findOne({_id: this.application()._id});
             mService.signedByMusician = new Date();
             mService.live = false;
+            console.log("yo");
             Meteor.call("finalizeContract", mService, function (err) {
                 if (err) {
                     console.log("Error finalizing contract in contract.js");
                 }
             });
+            console.log("created notification", {
+                    from: mService.employer,
+                    gigId: mService._id,
+                    // contract: mContract._id,
+                    application: application._id
+                });
             Meteor.call("createNotification", {
                 // The creator of the service is the one who needs to be notified
-                userId: mService.employer,
+                userId: application.userId,
                 // The notification object can be used for various things but in this
                 // case we're telling the employer someone applied for this service
-                type: "notificationContractSigned",
+                type: "notificationContractSent",
                 templateData: {
-                    from: Meteor.userId(),
-                    gigId: mService._id
+                    from: mService.employer,
+                    gigId: mService._id,
+                    // contract: mContract._id,
+                    application: application._id
                 },
                 read: false
             });

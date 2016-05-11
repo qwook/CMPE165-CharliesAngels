@@ -3,11 +3,9 @@
 
 <template name="applyForm">
     <!-- GIG YOU ARE APPLYING TO REFERENCE IS HERE -->
-    <div class="row">
-        <h6>{{service.title}}</h6>
-        <p><b>Looking for:</b> {{service.description}}</p>
-        <p><b>Paying:</b> ${{service.wage}} lump sum</p>
-    </div>
+    <h1>{{service.title}}</h1>
+    <p><b>Looking for:</b> {{service.description}}</p>
+    <p><b>Paying:</b> ${{service.wage}} lump sum</p>
     <!--line separating the gig and the application form-->
     <hr>
     <form class="applyForm" id="applyForm">

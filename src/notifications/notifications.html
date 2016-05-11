@@ -3,11 +3,20 @@
   <li role="separator" class="divider"></li>
 </template>
 
+<template name="notificationContractSent">
+  <li style="{{readStyle templateData}}"><a href="/gig/{{templateData.gigId}}/gigApplications/{{templateData.application}}"><div style="min-width: 300px; padding: 10px">Contract sent from <strong>{{displayName templateData.from}}</strong> for <strong>{{displayGigName templateData.gigId}}</strong></div></a></li>
+  <li role="separator" class="divider"></li>
+</template>
+
 <template name="notifications">
 
   <div class="btn-group">
       <button type="button" class="btn btn-{{notificationClass}} dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <span class="glyphicon glyphicon-exclamation-sign"></span> <span class="caret"></span>
+          {{#if hasUnreadNotifications}}
+            {{notificationCount}}
+          {{else}}
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+          {{/if}}
       </button>
       <ul class="dropdown-menu">
           {{#if hasNotifications}}

@@ -200,11 +200,8 @@ if (Meteor.isClient) {
 
     Template.registerHelper("displayGigName", function(gig) {
         try {
-            console.log(typeof gig);
-            console.log(gig);
             if (typeof gig == "string") {
                 gig = Services.findOne({_id: gig});
-                console.log("uh");
             }
         } catch(e) {}
 
@@ -303,42 +300,22 @@ if (Meteor.isClient) {
             
             //this is not working yet
             //console.log(Application.find({userId: Meteor.userId(), gigId: this.service._id}).count());
-            return Application.find({userId: Meteor.userId(), gigId: this.service._id}).count() >0
-        }
-    });
-
-    Template.serviceListing.events({
-        "click #deletePost": function (event) {
-            event.preventDefault();
-
-            Services.remove(this.service._id, function (err, id) {
-                FlowRouter.go("/");
-            });
-        }
-    });
-
-    Template.serviceListingPage.events({
-        "click #deletePost": function (event) {
-            event.preventDefault();
-
-            Services.remove(this.service._id, function (err, id) {
-                FlowRouter.go("/");
-            });
+            return Application.find({userId: Meteor.userId(), gigId: this.service()._id}).count() > 0
+        },
+        application: function() {
+            return Application.findOne({userId: Meteor.userId(), gigId: this.service()._id});
         }
     });
 
     Template.serviceListingPage.events({     
-        
         "click #deletePost": function(event) {
-             event.preventDefault();
+            event.preventDefault();
 
             var result = confirm("Do you really want to delete this post?");
             if (result) {
-                Services.remove(this.service._id);
+                Services.remove(this.service()._id);
                 FlowRouter.go("/");          
-
             }
-            
         }
     });
     

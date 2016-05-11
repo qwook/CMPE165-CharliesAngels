@@ -6,7 +6,9 @@
     <p><b>Status:</b> {{application.status}}</p>
     <p><b>Description:</b> {{application.description}}</p>
    
-    <br />
-    <a href="/gig/{{service._id}}/gigApplications/" class="btn btn-primary"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp;View all Applications for {{service.title}}</a>
+    {{#if isEmployer}}
+      <br />
+      <a href="/gig/{{service._id}}/gigApplications/" class="btn btn-primary"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp;View all Applications for {{service.title}}</a>
+    {{/if}}
 
 </template>

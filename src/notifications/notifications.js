@@ -67,6 +67,12 @@ if (Meteor.isClient) {
             
             return Notification.find({userId: Meteor.userId()});
         },
+        "notificationCount": function() {
+            return Notification.find({userId: Meteor.userId(), read: false}).count();
+        },
+        "hasUnreadNotifications": function() {
+            return Notification.find({userId: Meteor.userId(), read: false}).count()>0;
+        },
         "hasNotifications": function() {
             return Notification.find({userId: Meteor.userId()}).count()>0;
         },
@@ -76,9 +82,6 @@ if (Meteor.isClient) {
             } else {
                 return "default"
             }
-        },
-        "notificationCount": function() {
-            return Notification.count({userId: Meteor.userId(), read: false}).count();
         }
     });
 

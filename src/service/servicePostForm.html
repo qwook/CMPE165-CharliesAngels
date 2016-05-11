@@ -1,6 +1,7 @@
 
 <template name="servicePostForm">
-    <h1>Post a gig here!</h1>
+    <h1>Post a Gig</h1>
+    <hr />
     <form class="servicePostForm">
         <div class="row">
             <div class="col-xs-6">
@@ -15,9 +16,12 @@
         <div class="row">
             <div class="col-xs-6">
             <label for="category">Category</label>
-                <select name="category">
+            <br />
+            {{> categoryDropdown}}
+            <br />
+                <select name="category" style="display: none;">
 
-                        <option value= "" >Select Category</option>
+                        <option value= "Clarinet" >Select Category</option>
                         <option value= "Clarinet" >Clarinet</option>
                         <option value= "Company Music" >Company Music</option>
                         <option value= "Church Music" >Church Music</option>

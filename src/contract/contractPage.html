@@ -1,50 +1,48 @@
 <template name="contractPage">
-    <head>
-        <meta charset="UTF-8">
-        <title></title>
-    </head>
-    <body>
-        <h2>Contract of Agreement</h2>
-        <div class="contract-template">
-            <p>
-                {{employerName}} will agree to pay {{musicianName}} for the amount of ${{service.wage}} in exchange for his/her services. By signing this form below, both {{employerName}} and {{musicianName}} will agree to the following terms previously set forth by {{employerName}}'s service posting:
-            </p>
-            <h4>Service:</h4>
-            <p>
-                Title: {{service.title}} <br />
-                Description: {{service.description}} <br />
-                Pay:
-                    {{#if application.editingWage}}
-                        <form class="contract-edit-wage-submit">
-                            <input type="number" name="serviceWage" value={{application.wage}} placeholder="Enter wage"/>
-                            <button type="input" class="btn btn-secondary btn-xs">Submit</button>
-                        </form>
-                    {{else}}
-                        ${{application.wage}}
-                        <a class="contract-edit-wage btn btn-secondary btn-xs" role="button" type="submit">Edit pay</a>
-                    {{/if}}
-                    <br />
-            </p>
-        </div>
-        
-        <div>
-            <h4>Terms of Service</h4>
-            Upload terms of service
-            {{> upload_bootstrap contentType='pdfs' fileTypes='.pdf' }}
-        </div>
-        
-        {{#if userId}}
-            {{#if application.acceptedByEmployer}}
-                <form class="contract-signature-employer">
-                    <input type="text" placeholder="Employer signature" />
-                    <a href="/" class="btn btn-primary btn-sm" type="submit">Sign contract</a>
-                </form>
+    <h2>Contract of Agreement</h2>
+    <div class="contract-template">
+        <p>{{employerName}} will agree to pay {{musicianName}} for the amount of ${{service.wage}} in exchange for his/her services.</p>
+        <p>By signing this form below, both {{employerName}} and {{musicianName}} will agree to the following terms previously set forth by {{employerName}}'s service posting:</p>
+        <div class="well">
+            <h4><strong>{{service.title}}</strong></h4>
+            <p>{{service.description}}</p>
+            <p>Wage:
+                {{#if application.editingWage}}
+                    <form class="contract-edit-wage-submit">
+                        <input type="number" name="serviceWage" value={{service.wage}} placeholder="Enter wage"/>
+                        <button type="input" class="btn btn-secondary btn-xs">Submit</button>
+                    </form>
                 {{else}}
-                <form class="contract-signature-musician">
-                    <input type="text" placeholder="Musican signature" />
-                    <a href="/" class="btn btn-primary btn-sm" type="submit">Sign contract</a>
-                </form>
-            {{/if}}
+                    ${{application.wage}}
+                    <a class="contract-edit-wage btn btn-secondary btn-xs" role="button" type="submit">Edit pay</a>
+                {{/if}}
+            </p>
+        </div>
+    </div>
+            <hr />
+
+    <div>
+        <h4>Terms of Service</h4>
+        <p>Upload terms of service</p>
+        {{> upload_bootstrap contentType='pdfs' fileTypes='.pdf' }}
+    </div>
+    
+    <br />
+    {{#if userId}}
+        {{#if application.acceptedByEmployer}}
+            <form class="contract-signature-employer input-group">
+                <input type="text" class="form-control" placeholder="Employer signature" />
+                <span class="input-group-btn">
+                    <input class="btn btn-primary" type="submit" value="Sign contract"/>
+                </span>
+            </form>
+        {{else}}
+            <form class="contract-signature-musician input-group">
+                <input type="text" class="form-control" placeholder="Musican signature" />
+                <span class="input-group-btn">
+                    <input class="btn btn-primary" type="submit" value="Sign contract"/>
+                </span>
+            </form>
         {{/if}}
-    </body>
+    {{/if}}
 </template>

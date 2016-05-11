@@ -7,6 +7,7 @@ FlowRouter.route('/myApplications', {
     action: function (params) {
         FlowRouter.subsReady(function () {
             var applications = Application.find({userId: Meteor.userId()}).fetch();
+
             //this gives you access to all the service properties
             var mapped = applications.map(function (application, index) {
                 application.gig = Services.findOne(application.gigId);
@@ -34,12 +35,14 @@ FlowRouter.route('/myApplications/:id', {
 
             var service = Services.findOne({_id: application.gigId});
 
+            var isEmployer = service.employer == Meteor.userId();
 
             BlazeLayout.render("layout", {
                 area: "applicationPage",
                 params: params,
                 service: service,
-                application: application
+                application: application,
+                isEmployer: isEmployer
             });
         });
     }
@@ -92,13 +95,13 @@ FlowRouter.route('/gig/:gigId/gigApplications/', {
     action: function (params) {
         FlowRouter.subsReady(function () {
             var service = Services.findOne({_id: params.gigId});
-            var applications = Application.find({gigId: params.gigId, status: {$not: "declined"}}).fetch();
+            // var applications = Application.find({gigId: params.gigId, status: {$not: "declined"}}).fetch();
 
             BlazeLayout.render("layout", {
                 area: "gigApplications",
                 params: params,
                 service: service,
-                applications: applications
+                // applications: applications
             });
         });
     }
@@ -115,12 +118,14 @@ FlowRouter.route('/gig/:gigId/gigApplications/:id', {
 
             var service = Services.findOne({_id: application.gigId});
 
+            var isEmployer = service.employer == Meteor.userId();
 
             BlazeLayout.render("layout", {
                 area: "applicationPage",
                 params: params,
                 service: service,
-                application: application
+                application: application,
+                isEmployer: isEmployer
             });
         });
     }
@@ -276,8 +281,19 @@ if (Meteor.isClient) {
 
     Template.gigApplications.helpers({
         "stars": function() {
-            var feedbackAvg = FeedbackAvg.findOne({_id: this.userId}).avg;
+            var avg = FeedbackAvg.findOne({_id: this.userId});
+            var feedbackAvg = 0
+            if (avg) {
+                feedbackAvg = avg.avg;
+            }
             return (new Array(parseInt(feedbackAvg)+1)).join().split('');
+        },
+        "applications": function() {
+            var applications = Application.find({gigId: this.service()._id}).fetch();
+            return applications;
+        },
+        "statusIs": function(cmp) {
+            return this.status == cmp;
         }
     });
 
@@ -285,18 +301,22 @@ if (Meteor.isClient) {
         "click #chooseApplicant": function (event) {
             event.preventDefault();
 
-            var applicationId = event.target.dataset.applicationId;
+
+            console.log(this);
+            var _this = this;
             //change status to processing of the chosen app, the button will go to the contract page
-            Application.update(applicationId, {status: "processing"}, function () {
+            Application.update({_id: this._id}, {$set: {status: "processing"}}, function () {
                 // hey go to asdf. CHANGE THIS
-                window.location = event.target.href;
+                // window.location = event.target.href;
+                FlowRouter.go("/contract/" + _this._id);
+                // Services.update({_id: _this.gigId}, {$set: {live: false}});
             });
         },
         "click #declineApplicant": function (event) {
             event.preventDefault();
             console.log(this);
             //change status to processing of the chosen app, the button will go to the contract page
-            Application.update(this._id, {$set: {status: "declined"}});
+            Application.update({_id: this._id}, {$set: {status: "declined"}});
         }
 
     });
