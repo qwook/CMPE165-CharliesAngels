@@ -8,7 +8,13 @@
    
     {{#if isEmployer}}
       <br />
-      <a href="/gig/{{service._id}}/gigApplications/" class="btn btn-primary"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp;View all Applications for {{service.title}}</a>
+      <a href="/gig/{{service._id}}/gigApplications/" class="btn btn-primary"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp;View all Applications</a>
+      <a class="accept-gig-application btn btn-success">Accept</a>
+      <a class="reject-gig-application btn btn-danger">Deny</a>
+    {{/if}}
+
+    {{#if service.signedByEmployer}}
+      <a href="/contract/{{application._id}}" class="btn btn-info">View Contract</a>
     {{/if}}
 
 </template>

@@ -14,7 +14,11 @@ FlowRouter.route('/contract/:id', {
             var service = Services.findOne({_id: application.gigId});
             var employer = Meteor.users.findOne({_id: service.employer});
             var musician = Meteor.users.findOne({_id: application.userId});
-            
+           
+            console.log(service.employer);
+            console.log(Meteor.userId());
+            var isEmployer = (service.employer === Meteor.userId());
+
             // Update application wage if visitng contract for first time
             // application.acceptedByEmployer = true;
             // if (!application.wage) {
@@ -44,7 +48,8 @@ FlowRouter.route('/contract/:id', {
                 service: service,
                 application: application,
                 userId: Meteor.userId(),
-                params: params
+                params: params,
+                isEmployer: isEmployer
             });
         });
     }
@@ -98,6 +103,9 @@ if (Meteor.isServer) {
                 Services.update({_id: application.gigId}, {$set: {wage: mApplication.wage}});
             }
             return Application.update(mApplication._id, mApplication);
+        },
+        "uploadTermsOfService": function(appId, url) {
+            Application.update({_id: appId}, {$set: {tosUrl: url}});
         }
     });
     
@@ -120,34 +128,68 @@ if (Meteor.isServer) {
 
 if (Meteor.isClient) {
 
+    Template.contractPage.helpers({
+        "employer": function() {
+            return Meteor.users.findOne({_id: this.service().employer});
+        },
+
+        "musician": function() {
+            return Meteor.users.findOne({_id: this.application().userId});
+        },
+
+        "uploadCallbacks": function() {
+            var _this = this;
+            return {
+                finished: function(index, fileInfo, context) {
+                    var url = fileInfo.baseUrl + fileInfo.path.replace("/", "");
+                    Meteor.call("uploadTermsOfService", _this.application()._id, url);
+                }
+            }
+        },
+
+        "applicationSync": function() {
+            return Application.findOne({_id: this.application()._id});
+        }
+    })
+
     Template.contractPage.events({
+        "click .contract-remove-tos": function() {
+            Meteor.call("uploadTermsOfService", this.application()._id, null);
+        },
+
         "submit .contract-signature-musician": function (event) {
             event.preventDefault();
-            console.log('lel')
-            
-            var mContract = Contracts.findOne({_id: this.contract()._id});
+
+            // var mContract = Contracts.findOne({_id: this.contract()._id});
             var mService = Services.findOne({_id: this.service()._id});
             mService.signedByMusician = new Date();
             mService.live = false;
+
+            var mApplication = this.application();
+
             Meteor.call("finalizeContract", mService, function (err) {
-                console.log("Error updating service in contract.js");
+                if (err) {
+                    console.log("Error updating service in contract.js");
+                }
             });
+
+            FlowRouter.go('/payment/' + mApplication._id);
         },
         "submit .contract-signature-employer": function (event) {
             event.preventDefault();
-            console.log('lel')
             
             // var mContract = Contracts.findOne({_id: this.contract()._id});
             var mService = Services.findOne({_id: this.service()._id});
             var application = Application.findOne({_id: this.application()._id});
-            mService.signedByMusician = new Date();
+            mService.signedByEmployer = new Date();
             mService.live = false;
-            console.log("yo");
+            
             Meteor.call("finalizeContract", mService, function (err) {
                 if (err) {
                     console.log("Error finalizing contract in contract.js");
                 }
             });
+
             console.log("created notification", {
                     from: mService.employer,
                     gigId: mService._id,
@@ -167,6 +209,8 @@ if (Meteor.isClient) {
                     application: application._id
                 },
                 read: false
+            }, function() {
+                alert("Successfully sent contract!");
             });
         },
         // Shows form to edit wage

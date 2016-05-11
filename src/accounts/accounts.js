@@ -10,6 +10,7 @@ FlowRouter.route('/profile/:id', {
     subscriptions: function() {
         this.register('userData', Meteor.subscribe('userData'));
         this.register('soundcloud', Meteor.subscribe('soundcloud'));
+        this.register('feedbackAvg', Meteor.subscribe('feedbackAvg'));
     },
     action: function(params) {
         FlowRouter.subsReady(function() {
@@ -96,6 +97,14 @@ if (Meteor.isClient) {
                 }
             }
 
+            if (user.firstname && user.lastname) {
+                return user.firstname + " " + user.lastname
+            } else if (!user.firstname && user.lastname) {
+                return user.lastname;
+            } else if (user.firstname && !user.lastname) {
+                return user.firstname;
+            }
+
             return censorEmail(user.emails[0].address) || user._id;
         } catch(e) {
             return "ERROR";
@@ -180,6 +189,15 @@ if (Meteor.isClient) {
             if (this.user()._id == Meteor.userId()) {
                 return true;
             }
+        },
+
+        stars: function() {
+            var avg = FeedbackAvg.findOne({_id: this.user()._id});
+            var feedbackAvg = 0
+            if (avg) {
+                feedbackAvg = avg.avg;
+            }
+            return (new Array(parseInt(feedbackAvg)+1)).join().split('');
         }
     });
 

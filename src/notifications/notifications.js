@@ -65,7 +65,7 @@ if (Meteor.isClient) {
         "notifications": function () {
             // Return all notifications for the current user
             
-            return Notification.find({userId: Meteor.userId()});
+            return Notification.find({userId: Meteor.userId()}).fetch().reverse();
         },
         "notificationCount": function() {
             return Notification.find({userId: Meteor.userId(), read: false}).count();

@@ -25,7 +25,7 @@
                                             <label for="firstname">First Name:</label>
                                         </dt>
                                         <dd>
-                                            <input type="text" name="firstname" value={{user.firstname}} id="firstname" maxlength="255" class="inputbox"  placeholder="First name"> 
+                                            <input type="text" name="firstname" value={{currentUser.firstname}} id="firstname" maxlength="255" class="inputbox"  placeholder="First name"> 
                                         </dd>
                                     </dl>
                                     <dl>
@@ -33,7 +33,7 @@
                                             <label for="lastname">Last Name:</label>
                                         </dt>
                                         <dd>
-                                            <input type="text" name="lastname" id="lastname" maxlength="255" class="inputbox" placeholder="Last name"> 
+                                            <input type="text" name="lastname" value={{currentUser.lastname}} id="lastname" maxlength="255" class="inputbox" placeholder="Last name"> 
                                         </dd>
                                     </dl>
                                     <dl>
@@ -41,7 +41,7 @@
                                             <label for="address">Description:</label>
                                         </dt>
                                         <dd>
-                                            <textarea name="description" id="description" maxlength="255" class="inputbox" placeholder="Describe yourself and your skills!">{{user.description}}</textarea> 
+                                            <textarea name="description" id="description" maxlength="255" class="inputbox" placeholder="Describe yourself and your skills!">{{currentUser.description}}</textarea> 
                                         </dd>
                                     </dl>
                                     <dl>

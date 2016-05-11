@@ -329,6 +329,10 @@ if (Meteor.isClient) {
                 return service;
             });
             return mapped;
+        },
+
+        "hasServices": function() {
+            return Services.find({employer: Meteor.userId()}).count() > 0
         }
     });
 

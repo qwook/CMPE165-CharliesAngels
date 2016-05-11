@@ -6,6 +6,11 @@
     <div class ="row">
         <div class="col-xs-8">
             <h1>{{displayName user}}</h1>
+            <p>
+            {{#each stars}}
+            <span class="glyphicon glyphicon-star"></span>&nbsp;
+            {{/each}}
+            </p>
             <h4>{{user.description}}</h4>
             {{#if user.gender.length}}
                 <h4>Gender: {{user.gender}}</h4>

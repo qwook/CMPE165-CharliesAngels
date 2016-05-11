@@ -7,7 +7,7 @@
 
 <template name="feedbackListing">
 	<div>
-		<h6>{{fromUser}}</h6>
+		<h6><a href="/profile/{{from}}">{{displayName from}}</a></h6>
 
 		{{#each stars}}
 		<span class="glyphicon glyphicon-star"></span>&nbsp;

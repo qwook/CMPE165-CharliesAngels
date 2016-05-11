@@ -1,10 +1,15 @@
 <template name="notificationNewApplication">
-  <li style="{{readStyle templateData}}"><a href="/gig/{{templateData.gigId}}/gigApplications/{{templateData.application}}"><div style="min-width: 300px; padding: 10px">New application from <strong>{{displayName templateData.from}}</strong> for <strong>{{displayGigName templateData.gigId}}</strong></div></a></li>
+  <li style="{{readStyle templateData}}"><a href="/gig/{{templateData.gigId}}/gigApplications/{{templateData.application}}"><div style="width: 300px; padding: 5px; white-space: normal;">New application from <strong>{{displayName templateData.from}}</strong> for <strong>{{displayGigName templateData.gigId}}</strong></div></a></li>
   <li role="separator" class="divider"></li>
 </template>
 
 <template name="notificationContractSent">
-  <li style="{{readStyle templateData}}"><a href="/gig/{{templateData.gigId}}/gigApplications/{{templateData.application}}"><div style="min-width: 300px; padding: 10px">Contract sent from <strong>{{displayName templateData.from}}</strong> for <strong>{{displayGigName templateData.gigId}}</strong></div></a></li>
+  <li style="{{readStyle templateData}}"><a href="/contract/{{templateData.application}}"><div style="width: 300px; padding: 5px; white-space: normal;">Contract sent from <strong>{{displayName templateData.from}}</strong> for <strong>{{displayGigName templateData.gigId}}</strong></div></a></li>
+  <li role="separator" class="divider"></li>
+</template>
+
+<template name="notificationWageUpdated">
+  <li style="{{readStyle templateData}}"><a href="/contract/{{templateData.application}}"><div style="width: 300px; padding: 5px; white-space: normal;"><strong>{{displayName templateData.from}}</strong> changed the wage for <strong>{{displayGigName templateData.gigId}}</strong></div></a></li>
   <li role="separator" class="divider"></li>
 </template>
 

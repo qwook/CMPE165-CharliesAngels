@@ -2,15 +2,16 @@
     <h3>My Gigs</h3>
     <hr />
     
-        <div class="col-xs-9">
-            
-            <div class="row">
-                {{#each services}}
-                <div class="col-xs-6">
-                    {{> myGigsServiceListing service=this}}
-                </div>
-                {{/each}}
-            </div>
+    <div class="row">
+        {{#each services}}
+        <div class="col-xs-12 col-md-6">
+            {{> myGigsServiceListing service=this}}
         </div>
+        {{/each}}
+    </div>
+
+    {{#if not hasServices}}
+    <p>Hey, looks like you have no gigs! Why don't you <a href="/postgig">post one</a>?</p>
+    {{/if}}
     
 </template>

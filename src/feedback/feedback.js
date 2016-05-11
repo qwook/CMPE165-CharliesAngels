@@ -123,21 +123,6 @@ if (Meteor.isClient) {
 
     Template.feedbackListing.helpers({
 
-        fromUser: function() {
-            var user = Meteor.users.findOne({_id: this.from});
-
-            if (!user) {
-                return "N/A";
-            }
-
-            if (user.services && user.services.facebook) {
-                if (user.services.facebook.name) {
-                    return user.services.facebook.name;
-                }
-            }
-            return censorEmail(user.emails[0].address) || user._id;
-        },
-
         stars: function() {
             // Hack to do a "for i = 0; i < this.rating; i++" in the html...
             return (new Array(parseFloat(this.rating)+1)).join().split('');

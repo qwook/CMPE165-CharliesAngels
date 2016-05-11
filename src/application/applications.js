@@ -211,8 +211,8 @@ if (Meteor.isClient) {
                 gigId: service._id,
                 dateCreated: Date.now(),
                 description: event.target.description.value
-            }, function (err, id) {
-                if (id) {
+            }, function (err, appId) {
+                if (appId) {
                     Meteor.call("createNotification", {
                         // The creator of the service is the one who needs to be notified
                         userId: service.employer,
@@ -220,15 +220,16 @@ if (Meteor.isClient) {
                         // case we're telling the employer someone applied for this service
                         type: "notificationNewApplication",
                         templateData: {
-                            application: id,
+                            application: appId,
                             from: Meteor.userId(),
                             gigId: service._id
                         },
                         read: false
                     }, function (err, id) {
                         if (id) {
+                            FlowRouter.go("/myApplications/" + appId);
                             // Update button text
-                            event.target.sendApplication.innerHTML = "Thank you for applying";
+                            // event.target.sendApplication.innerHTML = "Thank you for applying";
                         } else {
                             event.target.sendApplication.innerHTML = "There was an error making the notification for application.";
                             // Handle this?
@@ -297,12 +298,36 @@ if (Meteor.isClient) {
         }
     });
 
+    Template.applicationPage.events({
+        "click .accept-gig-application": function(event) {
+            event.preventDefault();
+
+            console.log(this);
+            console.log(this.service());
+            console.log(this._id);
+
+            var _this = this;
+            //change status to processing of the chosen app, the button will go to the contract page
+            Application.update({_id: this._id}, {$set: {status: "processing"}}, function () {
+                FlowRouter.go("/contract/" + _this._id);
+            });
+        },
+
+        "click .reject-gig-application": function(event) {
+            event.preventDefault();
+
+            var _this = this;
+            //change status to processing of the chosen app, the button will go to the contract page
+            Application.update({_id: this._id}, {$set: {status: "declined"}}, function () {
+                FlowRouter.go("/gig/" + _this.service()._id + "/gigApplications/");
+            });
+        }
+    })
+
     Template.gigApplications.events({
         "click #chooseApplicant": function (event) {
             event.preventDefault();
 
-
-            console.log(this);
             var _this = this;
             //change status to processing of the chosen app, the button will go to the contract page
             Application.update({_id: this._id}, {$set: {status: "processing"}}, function () {
