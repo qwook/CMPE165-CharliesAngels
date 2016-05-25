@@ -146,38 +146,7 @@ if (Meteor.isClient) {
         }
     });
 
-   // get input values from editprofile template and display it to profile page
-     Template.editprofileTemp.events({
 
-        "submit .editprofileTemp": function(event) {
-             event.preventDefault();
-            
-            var gender = event.target.gender.value 
-            console.log("gender" + gender);
-
-             //editId is userID
-              Meteor.call("editProfile",this.editId(), {
-
-                 firstname: firstname.value,
-                 lastname: lastname.value,
-                 experience: experience.value,
-                 education: education.value,
-                 skills: skills.value,
-                 gender: gender,
-                phonenumber: phonenumber.value,
-       
-             }, function (err, id) {
-                 if (id) {
-                     FlowRouter.go("/profile/" + id);
-                 } else {  
-                      console.log("you are getting error " );
-                     console.log(err);
-                 }
-             });
-         }
-
-       
-     });
 
     Template.loginBox.events({
         "submit .loginBox": function(e) {
